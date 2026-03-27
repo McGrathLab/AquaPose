@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from pathlib import Path
 
 import click
@@ -38,6 +39,9 @@ def _run_training(
             :func:`~aquapose.training.yolo_training.train_yolo` beyond
             those in ``cli_args``.
     """
+    if tag is None:
+        tag = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     from aquapose.logging import setup_file_logging
 
     from .run_manager import (
@@ -120,13 +124,12 @@ def _run_training(
     type=str,
     help="Human-readable tag for this run (e.g. 'round2-high-conf').",
 )
-@click.option("--epochs", default=100, type=int, help="Number of training epochs.")
+@click.option("--epochs", default=300, type=int, help="Number of training epochs.")
 @click.option("--batch-size", default=16, type=int, help="Batch size.")
 @click.option(
     "--device", default=None, type=str, help="Torch device (auto-detect if omitted)."
 )
-@click.option("--val-split", default=0.2, type=float, help="Validation split fraction.")
-@click.option("--imgsz", default=640, type=int, help="Training image size (square).")
+@click.option("--imgsz", default=960, type=int, help="Training image size (square).")
 @click.option(
     "--model",
     default="yolo26n-obb",
@@ -140,7 +143,7 @@ def _run_training(
     help="Pretrained weights for transfer learning.",
 )
 @click.option(
-    "--patience", default=100, type=int, help="Early-stopping patience in epochs."
+    "--patience", default=50, type=int, help="Early-stopping patience in epochs."
 )
 @click.option(
     "--mosaic",
@@ -168,7 +171,6 @@ def yolo_obb(
     epochs: int,
     batch_size: int,
     device: str | None,
-    val_split: float,
     imgsz: int,
     model: str,
     weights: str | None,
@@ -182,7 +184,6 @@ def yolo_obb(
         "epochs": epochs,
         "batch_size": batch_size,
         "device": device,
-        "val_split": val_split,
         "imgsz": imgsz,
         "model": model,
         "weights": str(weights) if weights else None,
@@ -258,7 +259,6 @@ def compare(
 @click.option(
     "--device", default=None, type=str, help="Torch device (auto-detect if omitted)."
 )
-@click.option("--val-split", default=0.2, type=float, help="Validation split fraction.")
 @click.option("--imgsz", default=640, type=int, help="Training image size (square).")
 @click.option(
     "--model",
@@ -289,7 +289,6 @@ def seg(
     epochs: int,
     batch_size: int,
     device: str | None,
-    val_split: float,
     imgsz: int,
     model: str,
     weights: str | None,
@@ -301,7 +300,6 @@ def seg(
         "epochs": epochs,
         "batch_size": batch_size,
         "device": device,
-        "val_split": val_split,
         "imgsz": imgsz,
         "model": model,
         "weights": str(weights) if weights else None,
@@ -325,13 +323,12 @@ def seg(
     type=str,
     help="Human-readable tag for this run (e.g. 'round2-high-conf').",
 )
-@click.option("--epochs", default=100, type=int, help="Number of training epochs.")
+@click.option("--epochs", default=300, type=int, help="Number of training epochs.")
 @click.option("--batch-size", default=16, type=int, help="Batch size.")
 @click.option(
     "--device", default=None, type=str, help="Torch device (auto-detect if omitted)."
 )
-@click.option("--val-split", default=0.2, type=float, help="Validation split fraction.")
-@click.option("--imgsz", default=320, type=int, help="Training image size (square).")
+@click.option("--imgsz", default=128, type=int, help="Training image size (square).")
 @click.option(
     "--model",
     default="yolo26n-pose",
@@ -345,7 +342,7 @@ def seg(
     help="Pretrained weights for transfer learning.",
 )
 @click.option(
-    "--patience", default=100, type=int, help="Early-stopping patience in epochs."
+    "--patience", default=50, type=int, help="Early-stopping patience in epochs."
 )
 @click.option(
     "--mosaic",
@@ -366,7 +363,7 @@ def seg(
 )
 @click.option(
     "--degrees",
-    default=5.0,
+    default=10.0,
     type=float,
     help="Max rotation augmentation in degrees (0.0 to disable).",
 )
@@ -384,7 +381,6 @@ def pose(
     epochs: int,
     batch_size: int,
     device: str | None,
-    val_split: float,
     imgsz: int,
     model: str,
     weights: str | None,
@@ -400,7 +396,6 @@ def pose(
         "epochs": epochs,
         "batch_size": batch_size,
         "device": device,
-        "val_split": val_split,
         "imgsz": imgsz,
         "model": model,
         "weights": str(weights) if weights else None,

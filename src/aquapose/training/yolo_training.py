@@ -22,7 +22,6 @@ def train_yolo(
     epochs: int = 100,
     batch_size: int = 16,
     device: str | None = None,
-    val_split: float = 0.2,
     imgsz: int = 640,
     model: str | None = None,
     weights: Path | None = None,
@@ -49,7 +48,6 @@ def train_yolo(
         batch_size: Images per batch.
         device: Torch device string (e.g. ``"cuda:0"``, ``"cpu"``). Auto-
             detected if None.
-        val_split: Validation split fraction (informational only).
         imgsz: Training image size (square).
         model: YOLO model variant name. When None, uses the default for the
             given ``model_type``.
@@ -154,7 +152,6 @@ def train_yolo_obb(
     epochs: int = 100,
     batch_size: int = 16,
     device: str | None = None,
-    val_split: float = 0.2,
     imgsz: int = 640,
     model: str = "yolo26n-obb",
     weights: Path | None = None,
@@ -173,7 +170,6 @@ def train_yolo_obb(
         epochs=epochs,
         batch_size=batch_size,
         device=device,
-        val_split=val_split,
         imgsz=imgsz,
         model=model,
         weights=weights,
@@ -189,7 +185,6 @@ def train_yolo_seg(
     epochs: int = 100,
     batch_size: int = 16,
     device: str | None = None,
-    val_split: float = 0.2,
     imgsz: int = 640,
     model: str = "yolo26n-seg",
     weights: Path | None = None,
@@ -208,7 +203,6 @@ def train_yolo_seg(
         epochs=epochs,
         batch_size=batch_size,
         device=device,
-        val_split=val_split,
         imgsz=imgsz,
         model=model,
         weights=weights,
@@ -224,7 +218,6 @@ def train_yolo_pose(
     epochs: int = 100,
     batch_size: int = 16,
     device: str | None = None,
-    val_split: float = 0.2,
     imgsz: int = 640,
     model: str = "yolo26n-pose",
     weights: Path | None = None,
@@ -247,7 +240,6 @@ def train_yolo_pose(
         epochs=epochs,
         batch_size=batch_size,
         device=device,
-        val_split=val_split,
         imgsz=imgsz,
         model=model,
         weights=weights,

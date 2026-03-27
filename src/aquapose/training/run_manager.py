@@ -202,7 +202,7 @@ def write_summary(
         "training_config": {
             k: v
             for k, v in training_args.items()
-            if k in ("epochs", "batch_size", "imgsz", "patience", "mosaic", "val_split")
+            if k in ("epochs", "batch_size", "imgsz", "patience", "mosaic")
         },
         "metrics": {
             "best_epoch": best_metrics.get("best_epoch", -1),

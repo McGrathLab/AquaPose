@@ -55,6 +55,7 @@ def crossing_paths(
     angle (more ambiguous — nearly parallel velocities).
 
     The crossing half-angle is derived from ``difficulty``:
+
     - difficulty=0 → 90° crossing (head-on, easy — opposite velocities)
     - difficulty=1 → near-parallel paths (~5° crossing, hard — similar
       velocities, slow approach and divergence)

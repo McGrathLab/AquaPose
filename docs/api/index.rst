@@ -6,8 +6,8 @@ API Reference
 
    calibration
    core
+   engine
+   evaluation
    io
-   mesh
-   optimization
-   segmentation
-   utils
+   synthetic
+   training

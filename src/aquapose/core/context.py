@@ -51,7 +51,7 @@ def load_stage_cache(path: str | Path) -> PipelineContext:
     """Load a stage cache pickle file and return the embedded PipelineContext.
 
     Args:
-        path: Path to a *_cache.pkl file written by DiagnosticObserver.
+        path: Path to a ``*_cache.pkl`` file written by DiagnosticObserver.
 
     Returns:
         The deserialized PipelineContext.

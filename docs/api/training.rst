@@ -1,7 +1,7 @@
-Mesh
-====
+Training
+========
 
-.. automodule:: aquapose.mesh
+.. automodule:: aquapose.training
    :members:
    :undoc-members:
    :show-inheritance:

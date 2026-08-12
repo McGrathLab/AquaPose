@@ -1,7 +1,7 @@
-Utils
-=====
+Synthetic
+=========
 
-.. automodule:: aquapose.utils
+.. automodule:: aquapose.synthetic
    :members:
    :undoc-members:
    :show-inheritance:

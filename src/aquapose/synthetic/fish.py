@@ -34,7 +34,7 @@ class FishConfig:
         heading_rad: Heading angle in radians, rotation around the Z axis.
             0 means the fish points along the positive X axis.
         curvature: Body curvature in m^-1. 0 produces a straight fish.
-            Non-zero values produce a circular arc with radius=1/|curvature|.
+            Non-zero values produce a circular arc with ``radius=1/|curvature|``.
         sinusoidal_amplitude: Lateral amplitude for sinusoidal (S-shaped) spine
             in metres. 0 disables sinusoidal shape. When non-zero, the spine
             follows a sine wave with one full period over the body length,

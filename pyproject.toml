@@ -75,6 +75,10 @@ typecheck = "basedpyright src/ {args}"
 check = ["lint", "typecheck"]
 
 [tool.hatch.envs.docs]
+# Detached: docs build from src/ via sys.path (see docs/conf.py) with the heavy
+# runtime deps mocked out (autodoc_mock_imports). Installing the project here
+# would pull CUDA torch (~5.8GB), which exceeds Read the Docs build limits.
+detached = true
 dependencies = [
     "sphinx>=6.2",
     "furo",
@@ -83,6 +87,7 @@ dependencies = [
     "sphinx-design",
     "nbsphinx>=0.9.8",
     "sphinxcontrib-mermaid",
+    "numpy",
 ]
 
 [tool.hatch.envs.docs.scripts]

@@ -105,37 +105,37 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | TBD | Pending |
-| FOUND-02 | TBD | Pending |
-| FOUND-03 | TBD | Pending |
-| FOUND-04 | TBD | Pending |
-| FOUND-05 | TBD | Pending |
-| QA-01 | TBD | Pending |
-| QA-02 | TBD | Pending |
-| QA-03 | TBD | Pending |
-| QA-04 | TBD | Pending |
-| DOCS-01 | TBD | Pending |
-| DOCS-02 | TBD | Pending |
-| DOCS-03 | TBD | Pending |
-| DOCS-04 | TBD | Pending |
-| DOCS-05 | TBD | Pending |
-| DOCS-06 | TBD | Pending |
-| DOCS-07 | TBD | Pending |
-| DOCS-08 | TBD | Pending |
-| DATA-01 | TBD | Pending |
-| DATA-02 | TBD | Pending |
-| DATA-03 | TBD | Pending |
-| README-01 | TBD | Pending |
-| README-02 | TBD | Pending |
-| README-03 | TBD | Pending |
-| README-04 | TBD | Pending |
-| REC-01 | TBD | Pending |
+| FOUND-01 | 108 | Pending |
+| FOUND-02 | 108 | Pending |
+| FOUND-03 | 108 | Pending |
+| FOUND-04 | 108 | Pending |
+| FOUND-05 | 108 | Pending |
+| QA-01 | 109 | Pending |
+| QA-02 | 109 | Pending |
+| QA-03 | 109 | Pending |
+| QA-04 | 109 | Pending |
+| DOCS-01 | 110 | Pending |
+| DOCS-02 | 110 | Pending |
+| DOCS-03 | 113 | Pending |
+| DOCS-04 | 113 | Pending |
+| DOCS-05 | 112 | Pending |
+| DOCS-06 | 112 | Pending |
+| DOCS-07 | 113 | Pending |
+| DOCS-08 | 114 | Pending |
+| DATA-01 | 111 | Pending |
+| DATA-02 | 111 | Pending |
+| DATA-03 | 111 | Pending |
+| README-01 | 114 | Pending |
+| README-02 | 114 | Pending |
+| README-03 | 114 | Pending |
+| README-04 | 114 | Pending |
+| REC-01 | 108 | Pending |
 
 **Coverage:**
 - v4.0 requirements: 25 total
-- Mapped to phases: 0 (roadmap pending)
-- Unmapped: 25
+- Mapped to phases: 25 (Phases 108-114)
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-08-12*
-*Last updated: 2026-08-12 at start of v4.0 Publication milestone*
+*Last updated: 2026-08-12 — ROADMAP.md created, all 25 requirements mapped to Phases 108-114*

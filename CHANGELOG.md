@@ -2,6 +2,14 @@
 
 <!-- version list -->
 
+## v1.1.1 (2026-08-12)
+
+### Bug Fixes
+
+- **docs**: Repair Sphinx build and gate it on push
+  ([`a66287a`](https://github.com/McGrathLab/AquaPose/commit/a66287add7fd471e45d20fb656a66bb30a18d918))
+
+
 ## v1.1.0 (2026-03-06)
 
 ### Chores

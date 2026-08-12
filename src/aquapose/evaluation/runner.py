@@ -571,7 +571,9 @@ class EvalRunner:
 
         import numpy as np
 
-        # Subsample chunks if n_frames is set.
+        # Take the first N contiguous chunks to cover n_frames.
+        # Contiguous loading preserves temporal continuity for fragmentation
+        # analysis and per-chunk trend charts.
         if n_frames is not None:
             chunk_size = 300
             try:
@@ -585,8 +587,7 @@ class EvalRunner:
                 pass
             max_chunks = max(1, math.ceil(n_frames / chunk_size))
             if len(chunk_paths) > max_chunks:
-                step = len(chunk_paths) / max_chunks
-                chunk_paths = [chunk_paths[int(i * step)] for i in range(max_chunks)]
+                chunk_paths = chunk_paths[:max_chunks]
 
         # Accumulators — lightweight lists of scalars.
         det_confidences: list[float] = []

@@ -62,4 +62,5 @@ See [Contributing](docs/contributing.md) for full development guidelines.
 
 ## License
 
-[MIT](LICENSE)
+AquaPose is licensed under [AGPL-3.0-or-later](LICENSE). See
+[LICENSING.md](LICENSING.md) for why.

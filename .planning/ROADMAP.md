@@ -432,7 +432,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 Plans:
 **Wave 1**
 
-- [ ] 108-01-PLAN.md — Merge `main` into `dev` (D-01) resolving all 113 conflicts by a path-scoped policy, purge the 29 silently-resurrected files, keep main's `.planning/` archive, resolve `pyproject.toml` to `1.2.0-dev.0`, and re-apply `a66287a`'s four dropped docstring hunks
+- [x] 108-01-PLAN.md — Merge `main` into `dev` (D-01) resolving all 113 conflicts by a path-scoped policy, purge the 29 silently-resurrected files, keep main's `.planning/` archive, resolve `pyproject.toml` to `1.2.0-dev.0`, and re-apply `a66287a`'s four dropped docstring hunks
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -537,7 +537,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 108. Branch Reconciliation & Repo Hygiene | 0/TBD | Not started | - |
+| 108. Branch Reconciliation & Repo Hygiene | 1/5 | In Progress|  |
 | 109. Correctness — Green Test Suite & Config Consolidation | 0/TBD | Not started | - |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |

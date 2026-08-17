@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Phase 108 context gathered
-last_updated: "2026-08-17T15:40:28.667Z"
-last_activity: 2026-08-17 -- Phase 108 planning complete
+stopped_at: Completed 108-01-PLAN.md
+last_updated: "2026-08-17T16:39:22.671Z"
+last_activity: 2026-08-17
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 0
+  completed_plans: 1
   percent: 0
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 108 (branch-reconciliation-repo-hygiene) — EXECUTING
-Plan: 1 of 5
+Plan: 2 of 5
 Status: Ready to execute
-Last activity: 2026-08-17 -- Phase 108 planning complete
+Last activity: 2026-08-17
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Recent decisions affecting current work:
 - [Phase 102 testing]: Zero-shot MegaDescriptor-T achieves 97.4% Rank-1, 73.6% mAP on clean segment (frames 0-599). Fish 2↔8 pair most confusable (0.869 cosine similarity).
 - [Phase 106-01]: Use SimpleNamespace for embed config to avoid forbidden engine/ import in core/ module (import boundary rule)
 - [Phase 106-01]: Remove top-level mine-reid-crops command; delete scripts/train_reid_head.py — both superseded by reid group subcommands
+- [Phase 108]: Merged main into dev via real --no-ff merge (113 conflicts resolved by stated path-scoped policy, 29 silently-resurrected hazard-2 paths purged) — Establishes true ancestry (D-01) so every future main-to-dev sync is conflict-free (FOUND-03)
 
 ### Pending Todos
 
@@ -78,5 +79,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last activity: 2026-08-12 — v4.0 ROADMAP.md created (7 phases, 108-114), REQUIREMENTS.md traceability filled in
-Stopped at: Phase 108 context gathered
-Resume file: .planning/phases/108-branch-reconciliation-repo-hygiene/108-CONTEXT.md
+Stopped at: Completed 108-01-PLAN.md
+Resume file: None

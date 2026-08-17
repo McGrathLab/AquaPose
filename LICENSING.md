@@ -48,12 +48,18 @@ forward.
 
 ## The MIT-to-AGPL boundary
 
-Releases up to and including **v1.1.1** were published under the MIT
+Releases up to and including **v1.1.1** were released under the MIT
 License, and that grant stands — it is not being revoked or reinterpreted.
 Starting with **v1.2.0**, AquaPose is licensed AGPL-3.0-or-later. We are not
 taking a position here on whether the earlier MIT releases were already
 out of compliance given the AGPL/GPL dependency chain in effect at the
 time; we are simply recording the boundary going forward.
 
-The v1.1.0 and v1.1.1 releases are **not** being yanked from PyPI. They
-remain available under their original MIT terms.
+Two distribution channels are affected differently:
+
+- **PyPI.** Exactly one version was ever uploaded: **v1.0.0**, published
+  under the MIT License. It is **not** being yanked and remains available
+  under its original MIT terms.
+- **Git tags.** `v1.1.0` and `v1.1.1` exist only as tags in this
+  repository; neither was uploaded to PyPI. They likewise remain under
+  their original MIT terms, and the tags are not being deleted or moved.

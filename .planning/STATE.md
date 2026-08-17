@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Completed 108-03-PLAN.md
-last_updated: "2026-08-17T17:05:26.708Z"
+stopped_at: Completed 108-04-PLAN.md
+last_updated: "2026-08-17T17:20:44.300Z"
 last_activity: 2026-08-17
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 108 (branch-reconciliation-repo-hygiene) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-08-17
 
@@ -60,6 +60,7 @@ Recent decisions affecting current work:
 - [Phase 108]: Merged main into dev via real --no-ff merge (113 conflicts resolved by stated path-scoped policy, 29 silently-resurrected hazard-2 paths purged) — Establishes true ancestry (D-01) so every future main-to-dev sync is conflict-free (FOUND-03)
 - [Phase 108-02]: Relicensed AquaPose MIT to AGPL-3.0-or-later (PEP 639 SPDX string form accepted by hatchling on first attempt) — LICENSING.md names Ultralytics (AGPL-3.0) and python-igraph/leidenalg (GPL-2.0+) as the forcing dependencies; v1.1.1 MIT grant stands, AGPL applies from 1.2.0
 - [Phase 108]: [Phase 108-03]: un-ignored .planning/ (D-18), removed dead tests/integration/segmentation and 4 stale top-level src/aquapose/ residue dirs (D-20), quarantined then permanently deleted the untracked SAM2 source clone after correcting the plan's model-weights premise and getting explicit user confirmation (OI-02) — Satisfies FOUND-04; pyproject.toml was not touched, confirming 108-02's ownership claim held with no conflict
+- [Phase 108]: [Phase 108-04]: Backfilled v3.11 Appearance-Based ReID and v2.2 Backends milestone entries into MILESTONES.md and re-sorted the tail into chronological order (REC-01) - all numeric fields measured from git, never estimated; two orphaned/unreachable commits discovered in dev's history and routed around during derivation
 
 ### Pending Todos
 
@@ -67,10 +68,10 @@ Recent decisions affecting current work:
 
 ### Blockers/Concerns
 
-- Docs build is RED on `dev` — 4 dead `automodule` targets (`aquapose.mesh`, `aquapose.optimization`, `aquapose.segmentation`, `aquapose.utils`) fail under `sphinx-build -W`. Read the Docs is connected but cannot build until the `a66287a` repair is forward-ported. Addressed by Phase 108.
+- Docs build is RED on `dev` — 4 dead `automodule` targets (`aquapose.mesh`, `aquapose.optimization`, `aquapose.segmentation`, `aquapose.utils`) fail under `sphinx-build -W`. Read the Docs is connected but cannot build until the `a66287a` repair is forward-ported. Addressed by Phase 108 (108-01 merge delivered the repaired docs tree; verification is 108-05's remaining scope item).
 - 8 failing tests on `dev` — `test_luts.py::test_forward_lut_cast_ray_matches_model` is a tier-one blocker; the other 7 are stale CLI-help assertions and fixtures in `training/` and `evaluation/`. Addressed by Phase 109.
-- `.planning/` is gitignored on `dev` (commit `78d9b7a`) — planning commits require `git add -f`.
-- v3.11 has no MILESTONES.md entry — it was in progress when `.planning/` was untracked. ROADMAP.md and `phases/102-107/` retain the record; backfill scheduled in Phase 108.
+- ~~`.planning/` is gitignored on `dev`~~ — **resolved by 108-03**: the `.gitignore:100` rule was removed; `.planning/` is tracked normally.
+- ~~v3.11 has no MILESTONES.md entry~~ — **resolved by 108-04**: `v3.11 Appearance-Based ReID` and `v2.2 Backends` entries backfilled, tail re-sorted into chronological order (REC-01 satisfied).
 
 ### Environment Notes
 
@@ -81,5 +82,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last activity: 2026-08-12 — v4.0 ROADMAP.md created (7 phases, 108-114), REQUIREMENTS.md traceability filled in
-Stopped at: Completed 108-03-PLAN.md
+Stopped at: Completed 108-04-PLAN.md
 Resume file: None

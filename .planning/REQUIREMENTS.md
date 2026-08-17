@@ -54,7 +54,7 @@ Prerequisites. These gate doc authoring and the badge row.
 
 ### Project Record
 
-- [ ] **REC-01**: MILESTONES.md contains the missing v3.11 Appearance-Based ReID entry, reconstructed from ROADMAP.md and `phases/102-107/`
+- [x] **REC-01**: MILESTONES.md contains the missing v3.11 Appearance-Based ReID entry, reconstructed from ROADMAP.md and `phases/102-107/`
 
 ## Open Decisions
 
@@ -129,7 +129,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | README-02 | 114 | Pending |
 | README-03 | 114 | Pending |
 | README-04 | 114 | Pending |
-| REC-01 | 108 | Pending |
+| REC-01 | 108 | Complete |
 
 **Coverage:**
 - v4.0 requirements: 25 total

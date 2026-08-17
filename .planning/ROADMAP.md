@@ -444,7 +444,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 108-04-PLAN.md — Backfill the v3.11 and v2.2 MILESTONES entries (v2.2 sourced from the archive the merge delivered) and re-sort the tail chronologically
+- [x] 108-04-PLAN.md — Backfill the v3.11 and v2.2 MILESTONES entries (v2.2 sourced from the archive the merge delivered) and re-sort the tail chronologically
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
@@ -537,7 +537,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 108. Branch Reconciliation & Repo Hygiene | 3/5 | In Progress|  |
+| 108. Branch Reconciliation & Repo Hygiene | 4/5 | In Progress|  |
 | 109. Correctness — Green Test Suite & Config Consolidation | 0/TBD | Not started | - |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |

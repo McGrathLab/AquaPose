@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Licensing
+
+As of version 1.2.0, AquaPose is licensed
+[AGPL-3.0-or-later](LICENSE). Releases up to and including v1.1.1 were
+published under the MIT License, and that grant is unaffected. See
+[LICENSING.md](LICENSING.md) for why the AGPL applies.
+
 <!-- version list -->
 
 ## v1.1.1 (2026-08-12)

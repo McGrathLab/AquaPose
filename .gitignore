@@ -99,4 +99,3 @@ baseline_tracking_output/
 *.pt
 *.mp4
 runs/
-.planning/

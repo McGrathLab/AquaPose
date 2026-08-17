@@ -108,6 +108,7 @@ class EventBus:
         """Deliver *event* synchronously to all matching observers.
 
         Delivery order:
+
         1. Observers subscribed to the event's *exact* type (in subscription
            order).
         2. Observers subscribed to each *parent* type in MRO order, skipping

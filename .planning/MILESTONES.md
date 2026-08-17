@@ -271,6 +271,29 @@
 
 ---
 
+## v2.2 Backends (Shipped: 2026-03-01)
+
+**Phases completed:** 6 phases (29-33.1), 11 plans, 35 tasks
+**Timeline:** 1 day (2026-02-28)
+**Codebase:** 23,903 LOC source (measured at commit `c3046bd`, the last phase-completion commit before archival)
+**Git range:** 69 commits, 109 files changed (+14,513 / -883)
+
+**Key accomplishments:**
+1. GUIDEBOOK.md audit corrected the Section 4 source layout, Section 10 observer list, and Section 15 milestone history to match the actual shipped v2.1 state, then documented every v2.2-planned backend inline — YOLO-OBB, keypoint midline, confidence-weighted reconstruction, training CLI (Phase 29)
+2. `Detection`/`Midline2D` dataclasses extended with `angle`/`obb_points`/`point_confidence` optional fields; `_filter_fields()` strict-reject universalized across all 8 config types; `device`/`n_sample_points`/`stop_frame`/`project_dir` promoted to `PipelineConfig`; `init-config` rewritten with project-directory scaffolding and path resolution (Phase 30)
+3. `aquapose train` CLI group built from scratch (`unet`, `yolo-obb`, `pose` subcommands) with shared `EarlyStopping`/`MetricsLogger`/`make_loader` utilities, replacing disconnected training scripts; superseded segmentation files deleted (Phase 31)
+4. `YOLOOBBBackend` detection backend added — reads `result.obb`, converts Ultralytics' clockwise angle to standard CCW math convention — with invertible affine-crop utilities (<1px round-trip error) and OBB-aware visualization in both the overlay and tracklet-trail observers (Phase 32)
+5. `DirectPoseBackend` keypoint midline backend implemented (6 anatomical keypoints, spline fit restricted to the observed arc-length range, NaN + confidence=0 for extrapolated points), alongside confidence-weighted DLT triangulation and chamfer-distance curve optimization using `sqrt(point_confidence)` weighting (Phase 33)
+6. Keypoint training data augmentation added — torchvision v2 geometric/color transforms with out-of-bounds-keypoint retry logic and masked MSE loss, doubling effective epoch size via `ConcatDataset` of clean+augmented subsets (Phase 33.1)
+
+**Delivered:** Two new selectable pipeline backends — YOLO-OBB detection and keypoint-regression midline estimation — replacing the legacy segmentation-based detection and midline pipeline, backed by a unified `aquapose train` CLI, extended dataclasses/config plumbing, confidence-weighted reconstruction, and augmented keypoint training data. Guidebook brought current with the shipped architecture.
+
+**Known gaps (accepted as tech debt):**
+- Phase 31: ROADMAP.md Success Criterion #1 lists a fourth "yolo-bbox" training subcommand that was never planned or implemented — verification concluded this is a ROADMAP documentation error, not a missing feature. REQUIREMENTS.md's TRAIN-02 text still describes a `--resume` flag that was intentionally dropped by design (per 31-CONTEXT.md) but the requirement text was never updated to match.
+- Phase 33.1: verification found requirements AUG-01 through AUG-04 (declared in the phase's PLAN frontmatter) have no corresponding entries in REQUIREMENTS.md — implementation is complete and tested, but the requirement IDs were never registered at the project level.
+
+---
+
 ## v1.0 MVP (Shipped: 2026-02-25)
 
 **Phases completed:** 12 phases, 28 plans

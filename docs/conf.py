@@ -1,21 +1,44 @@
 """Sphinx configuration for project documentation."""
 
 import sys
+import tomllib
 from datetime import datetime
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _package_version
 from pathlib import Path
 
+_ROOT = Path(__file__).parent.parent
+
 # Add project source to path for autodoc
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(_ROOT / "src"))
+
+
+def _resolve_release() -> str:
+    """Return the project version, preferring installed metadata.
+
+    The docs environment is detached (see pyproject.toml), so aquapose is
+    usually not installed; fall back to reading pyproject.toml directly.
+    """
+    try:
+        return _package_version("aquapose")
+    except PackageNotFoundError:
+        pass
+    try:
+        with (_ROOT / "pyproject.toml").open("rb") as fh:
+            return tomllib.load(fh)["project"]["version"]
+    except (OSError, KeyError, tomllib.TOMLDecodeError):
+        return "0.0.0"
+
 
 # Project information
 project = "Aquapose"
 copyright = f"{datetime.now().year}, Tucker Lancaster"
 author = "Tucker Lancaster"
-try:
-    release = version("aquapose")
-except PackageNotFoundError:
-    release = "0.1.0"
+release = _resolve_release()
+# `version` must be a string: Sphinx reads module-level names in conf.py as
+# config values, so leaving the imported function bound here breaks the
+# inventory dump.
+version = ".".join(release.split(".")[:2])
 
 # Extensions
 extensions = [
@@ -65,7 +88,33 @@ myst_enable_extensions = [
 # Napoleon configuration
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
+# Render "Attributes:" sections as :ivar: fields on the class. Without this,
+# napoleon emits standalone attribute directives that collide with the
+# dataclass fields picked up by :undoc-members:.
+napoleon_use_ivar = True
 
 # Autodoc configuration
 autodoc_member_order = "bysource"
 autodoc_typehints = "description"
+# Heavy runtime dependencies are not installed in the docs environment; autodoc
+# only needs to import the modules, not execute them.
+autodoc_mock_imports = [
+    "aquacal",
+    "boxmot",
+    "click",
+    "cv2",
+    "h5py",
+    "igraph",
+    "leidenalg",
+    "loguru",
+    "matplotlib",
+    "plotly",
+    "PIL",
+    "pycocotools",
+    "scipy",
+    "skimage",
+    "torch",
+    "torchvision",
+    "ultralytics",
+    "yaml",
+]

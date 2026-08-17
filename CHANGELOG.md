@@ -2,6 +2,36 @@
 
 <!-- version list -->
 
+## v1.1.1 (2026-08-12)
+
+### Bug Fixes
+
+- **docs**: Repair Sphinx build and gate it on push
+  ([`a66287a`](https://github.com/McGrathLab/AquaPose/commit/a66287add7fd471e45d20fb656a66bb30a18d918))
+
+
+## v1.1.0 (2026-03-06)
+
+### Chores
+
+- **deps**: Bump actions/checkout from 4 to 6
+  ([`4b92bf3`](https://github.com/tlancaster6/AquaPose/commit/4b92bf30ee1ab54777b870cf584e4a21709e686c))
+
+- **deps**: Bump actions/download-artifact from 4 to 7
+  ([`46aeb13`](https://github.com/tlancaster6/AquaPose/commit/46aeb1308f5162f555d21ce4fa5aa8f6ee1b5f42))
+
+- **deps**: Bump actions/setup-python from 5 to 6
+  ([`4c93562`](https://github.com/tlancaster6/AquaPose/commit/4c9356268baac0fc830955a3a771f08772625f90))
+
+- **deps**: Bump actions/upload-artifact from 4 to 6
+  ([`c0943c4`](https://github.com/tlancaster6/AquaPose/commit/c0943c47cc729c17d5e7f2247d2540ef32642bdd))
+
+### Features
+
+- V3.5 Pseudo-Labeling milestone
+  ([`19ea21e`](https://github.com/tlancaster6/AquaPose/commit/19ea21e50e63405288d8c3ba96f428a641b5d11f))
+
+
 ## v1.1.0-dev.7 (2026-03-04)
 
 ### Bug Fixes

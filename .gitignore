@@ -55,6 +55,8 @@ cover/
 
 # Sphinx documentation
 docs/_build/
+# Read the Docs output dir (created by .readthedocs.yaml build commands)
+_readthedocs/
 
 # Jupyter Notebook
 .ipynb_checkpoints

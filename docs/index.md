@@ -19,6 +19,13 @@ Auto-generated documentation for all public modules.
 Development setup, coding standards, and contribution workflow.
 :::
 
+:::{grid-item-card} Reports
+:link: reports/z_uncertainty_report
+:link-type: doc
+
+Analysis of depth reconstruction uncertainty across the camera rig.
+:::
+
 ::::
 
 ```{toctree}
@@ -27,4 +34,5 @@ Development setup, coding standards, and contribution workflow.
 
 api/index
 contributing
+reports/z_uncertainty_report
 ```

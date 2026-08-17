@@ -9,6 +9,71 @@ published under the MIT License, and that grant is unaffected. See
 
 <!-- version list -->
 
+## v1.2.0-dev.1 (2026-08-17)
+
+### Bug Fixes
+
+- **108-01**: Forward-port a66287a docstring repairs dropped by the merge
+  ([`4152c86`](https://github.com/McGrathLab/AquaPose/commit/4152c861cf52b1a5bbb3f830cea0b5010c40c972))
+
+- **108-05**: Re-derive autodoc mock imports against dev's import surface
+  ([`6be5ef2`](https://github.com/McGrathLab/AquaPose/commit/6be5ef215097c4db786b8268857e625720207d69))
+
+### Chores
+
+- **108-03**: Remove dead tests/integration/segmentation package
+  ([`6adf69f`](https://github.com/McGrathLab/AquaPose/commit/6adf69fa3c23bd29c6c1110567c70056494b7748))
+
+- **108-03**: Un-ignore .planning/ and track the remaining project record
+  ([`852fcd8`](https://github.com/McGrathLab/AquaPose/commit/852fcd81b2e535149d2f29aea97114450757ef8d))
+
+### Documentation
+
+- **108-01**: Add plan 01 execution summary
+  ([`2aa732c`](https://github.com/McGrathLab/AquaPose/commit/2aa732c1758127544c07afeaf1abaa11779d005c))
+
+- **108-01**: Complete branch reconciliation plan
+  ([`3fbefe3`](https://github.com/McGrathLab/AquaPose/commit/3fbefe31fba5fdd481134aa0fcc17ee714e5b2ab))
+
+- **108-02**: Add LICENSING.md rationale and update README license section
+  ([`32f0c20`](https://github.com/McGrathLab/AquaPose/commit/32f0c202c6babd34ebe3a8e65fb6e06b23cadfe3))
+
+- **108-02**: Add plan 02 execution summary
+  ([`823424b`](https://github.com/McGrathLab/AquaPose/commit/823424bb4442d9e7100a5efbca886d3b769f3f95))
+
+- **108-02**: Complete AGPL relicense plan
+  ([`2b297bb`](https://github.com/McGrathLab/AquaPose/commit/2b297bb4155735cf13e32bc64718e8fc0209d669))
+
+- **108-02**: Record AGPL license boundary in CHANGELOG
+  ([`e5d50c2`](https://github.com/McGrathLab/AquaPose/commit/e5d50c20f68ba4b2338ece745f85c9f5f5cb9f55))
+
+- **108-03**: Add plan 03 execution summary
+  ([`20b486c`](https://github.com/McGrathLab/AquaPose/commit/20b486c4d094813b7b857b558aa45f4f7dd94aba))
+
+- **108-03**: Complete repo hygiene plan
+  ([`11c5b75`](https://github.com/McGrathLab/AquaPose/commit/11c5b754b993094b853e73fc2c4d62180383f391))
+
+- **108-04**: Add plan 04 execution summary
+  ([`4dd22fb`](https://github.com/McGrathLab/AquaPose/commit/4dd22fb5740647e91deb8d8321ef085efa527694))
+
+- **108-04**: Backfill v2.2 Backends milestone entry
+  ([`2a0f440`](https://github.com/McGrathLab/AquaPose/commit/2a0f440a07f8fad0dffaed75613b8cfe7debc808))
+
+- **108-04**: Backfill v3.11 Appearance-Based ReID milestone entry
+  ([`1d35637`](https://github.com/McGrathLab/AquaPose/commit/1d35637b89463e6ffdd4e4bf555d093019c2c7e7))
+
+- **108-04**: Complete milestone record backfill plan
+  ([`42aeac1`](https://github.com/McGrathLab/AquaPose/commit/42aeac1a154433ef527e5de82241dca4bd0a5e44))
+
+- **108-04**: Re-sort MILESTONES.md into chronological order
+  ([`a87ec03`](https://github.com/McGrathLab/AquaPose/commit/a87ec03e617b2a36de3c991dc3f3cfa53f86e867))
+
+### Features
+
+- **108-02**: Relicense AquaPose under AGPL-3.0-or-later
+  ([`ee68b44`](https://github.com/McGrathLab/AquaPose/commit/ee68b44fce2f05b6d05f9c20312dbd65b14ba59a))
+
+
 ## v1.1.1 (2026-08-12)
 
 ### Bug Fixes

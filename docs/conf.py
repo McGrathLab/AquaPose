@@ -2,7 +2,6 @@
 
 import sys
 import tomllib
-from datetime import datetime
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _package_version
 from pathlib import Path
@@ -32,7 +31,9 @@ def _resolve_release() -> str:
 
 # Project information
 project = "Aquapose"
-copyright = f"{datetime.now().year}, Tucker Lancaster"
+copyright = (
+    "2026, Tucker Lancaster and the McGrath Lab at the Georgia Institute of Technology"
+)
 author = "Tucker Lancaster"
 release = _resolve_release()
 # `version` must be a string: Sphinx reads module-level names in conf.py as

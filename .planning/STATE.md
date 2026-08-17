@@ -4,8 +4,8 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 108 context gathered
-last_updated: "2026-08-17T14:22:47.828Z"
-last_activity: 2026-08-17 -- Phase 108 planning complete
+last_updated: "2026-08-17T14:55:18.817Z"
+last_activity: 2026-08-17 -- Phase 108 execution started
 progress:
   total_phases: 7
   completed_phases: 0
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** v4.0 Publication — roadmap created, ready to plan Phase 108
+**Current focus:** Phase 108 — branch-reconciliation-repo-hygiene
 
 ## Current Position
 
-Phase: 108 (Branch Reconciliation & Repo Hygiene) — not started
-Plan: —
-Status: Ready to execute
-Last activity: 2026-08-17 -- Phase 108 planning complete
+Phase: 108 (branch-reconciliation-repo-hygiene) — EXECUTING
+Plan: 1 of 5
+Status: Executing Phase 108
+Last activity: 2026-08-17 -- Phase 108 execution started
 
 ## Performance Metrics
 

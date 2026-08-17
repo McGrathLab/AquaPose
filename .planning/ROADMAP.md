@@ -280,80 +280,104 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 ### Phase Details
 
 #### Phase 102: Embedding Infrastructure
+
 **Goal**: Users can extract L2-normalized embeddings for every fish detection in a completed run and inspect them
 **Depends on**: Nothing (first phase of milestone)
 **Requirements**: EMBED-01, EMBED-02, EMBED-03
 **Success Criteria** (what must be TRUE):
+
   1. Given a completed run directory, `embed_runner` iterates all (frame, fish_id, camera) tuples from `midlines_stitched.h5` and writes `embeddings.h5` without error
   2. Embeddings are L2-normalized 768-dim vectors (MegaDescriptor-T output) verifiable by checking that each row has unit norm
   3. Crops are extracted using the existing stretch-fill affine warp — same convention as YOLO training — verifiable by visual inspection of saved crops
   4. Zero-shot cosine similarity between two crops of the same fish from different cameras is measurably higher than between two crops of different fish on a sample of 50 frames
+
 **Plans**: 2 plans
+
 - [x] 102-01-PLAN.md — Config + FishEmbedder backbone wrapper (timm, ReidConfig, embedder module)
 - [x] 102-02-PLAN.md — EmbedRunner with crop extraction, NPZ output, and zero-shot eval
 
 #### Phase 103: Training Data Mining
+
 **Goal**: A quality-controlled training crop dataset is available, free of swap contamination and camera bias
 **Depends on**: Phase 102
 **Requirements**: TRAIN-01, TRAIN-02
 **Success Criteria** (what must be TRUE):
+
   1. Training data extractor produces a `reid_crops/<fish_id>/` directory structure covering all 9 fish identities
   2. No crops appear within 150 frames of a detected changepoint or swap event (contamination filter is verifiable by checking frame indices against the swap event list)
   3. Quality filter parameters (min cameras, min duration, max residual) are configurable and documented; filtering logs show how many segments were accepted vs rejected
   4. The dataset contains at least one valid segment per fish identity, or the run exits with a clear diagnostic message
+
 **Plans**: 2 plans
+
 - [x] 103-01-PLAN.md — TrainingDataMiner core logic with quality gates, temporal windowing, sampling, and unit tests
 - [x] 103-02-PLAN.md — mine-reid-crops CLI command wiring
 
 #### Phase 104: Backbone Fine-Tuning
+
 **Goal**: A fine-tuned backbone produces embeddings that discriminate female cichlids well enough to gate swap repair
 **Depends on**: Phase 103
 **Requirements**: TRAIN-03
 **Success Criteria** (what must be TRUE):
+
   1. Fine-tuning loop runs to completion and saves `best_reid_model.pt` with training loss curves visible in logs
   2. Female-female pair AUC on the temporal holdout set is measured and reported; a value >= 0.75 is required to proceed to Phase 105
   3. Re-embedding all detections with the fine-tuned model produces updated `embeddings.h5` with measurably tighter within-identity cosine similarity compared to zero-shot baseline
+
 **Plans**: 2 plans
+
 - [x] 104-01-PLAN.md — ReID training module (ProjectionHead, feature caching, SubcenterArcFace training loop, AUC evaluation, unit tests)
 - [x] 104-02-PLAN.md — Standalone driver script (end-to-end workflow with AUC gate and conditional re-embedding)
 
 #### Phase 105: Swap Detection and Repair
+
 **Goal**: Known identity swap events are detected and repaired, producing corrected output with no increase in reprojection error
 **Depends on**: Phase 104
 **Requirements**: SWAP-01, SWAP-02
 **Success Criteria** (what must be TRUE):
+
   1. Swap detector identifies both known swap events (male-female and female-female) from the persisted `/swap_events/` in `midlines_stitched.h5`
   2. Repair is applied only at detected occlusion events with cosine margin > 0.15 — stable segments are not modified
   3. `midlines_reid.h5` is written as a corrected copy; mean reprojection error in repaired segments does not increase versus the pre-repair baseline
   4. False positive rate on confirmed-clean segments is below 5% (measurable by running repair on segments with no known swaps)
+
 **Plans**: 2 plans
+
 - [x] 105-01-PLAN.md — Core swap detector module (SwapDetector class, ReidEvent, cross-pattern confirmation, seeded + scan modes, repair, unit tests)
 - [x] 105-02-PLAN.md — Standalone validation script (driver on YH data, validates known swaps, FP rate, produces midlines_reid.h5)
 
 #### Phase 106: CLI Integration
+
 **Goal**: All ReID capabilities are accessible via `aquapose reid` subcommands following existing CLI patterns
 **Depends on**: Phase 105
 **Requirements**: CLI-01
 **Success Criteria** (what must be TRUE):
+
   1. `aquapose -p YH reid embed` runs the batch embed runner on a completed run and writes `embeddings.npz` with progress output
   2. `aquapose -p YH reid repair` runs swap detection and repair, writing `midlines_reid.h5` with a summary of events detected and repaired
   3. `aquapose -p YH reid mine-crops` extracts and filters training crops, reporting accept/reject counts per fish identity
   4. All subcommands follow existing CLI patterns (top-level `-p` project flag, run resolution, consistent error messaging) — smoke test passes without errors
+
 **Plans**: 2 plans
+
 - [x] 106-01-PLAN.md — Create reid_group Click group with embed, repair, mine-crops, fine-tune subcommands + add frame_stride to EmbedRunner
 - [x] 106-02-PLAN.md — Wire reid_group into main CLI, remove old mine-reid-crops, delete standalone script, smoke test
 
 #### Phase 107: Unfrozen Backbone Fine-Tuning
+
 **Goal:** Support partial backbone unfreezing in ReID training so the model can learn fish-specific features beyond what frozen MegaDescriptor-T provides. Changes: (1) training runs crops through backbone end-to-end instead of using cached features, (2) re-embedding uses the fine-tuned backbone not a projection head on stale features. Configurable unfreeze depth (last N transformer blocks).
 **Requirements**: UNFREEZE-01, UNFREEZE-02, UNFREEZE-03
 **Depends on:** Phase 106
 **Success Criteria** (what must be TRUE):
+
   1. `reid fine-tune --unfreeze-blocks 2` trains end-to-end through last 2 Swin blocks with differential LR (backbone 10x lower than head)
   2. Training saves combined checkpoint with `backbone_state_dict` + `head_state_dict` + config metadata
   3. Re-embedding runs crops through fine-tuned backbone+head (not stale zero-shot features), producing `embeddings_finetuned.npz`
   4. `reid fine-tune` with default (unfreeze_blocks=0) still uses cached features path unchanged
   5. SwapDetector reads `embeddings_finetuned.npz` without code changes (same NPZ schema)
+
 **Plans**: 2 plans
+
 - [x] 107-01-PLAN.md — Training module: unfreeze_last_n_blocks, ImageCropDataset, train_reid_end_to_end + unit tests
 - [x] 107-02-PLAN.md — CLI integration: --unfreeze-blocks flag, backbone-aware re-embedding in fine_tune_cmd
 
@@ -389,10 +413,12 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 ## Phase Details
 
 ### Phase 108: Branch Reconciliation & Repo Hygiene
+
 **Goal**: `dev` is the single source of truth — clean, correctly licensed, with a buildable docs foundation ready for doc authoring
 **Depends on**: Nothing (first phase of milestone)
 **Requirements**: FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05, REC-01
 **Success Criteria** (what must be TRUE):
+
   1. `sphinx-build -W --keep-going` exits clean on `dev` (the `a66287a` Sphinx repair is forward-ported: mock imports, detached docs env, `napoleon_use_ivar`, `.rst` files matching the actual module tree)
   2. The docs CI workflow runs and passes on a push to `dev`, not only `main`
   3. `main` and `dev` are reconciled — `main` is release-only and the `1.1.0-dev.7` vs `1.1.1` version conflict is resolved
@@ -400,76 +426,106 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
      - *Scouted correction (see `108-CONTEXT.md` `<scout_findings>`): `git ls-files` already tracks none of these and `.gitignore` already covers `tmp/`, `*.pt`, `runs/`, so the "fresh clone" half is already satisfied. The `reconstruction`/`segmentation`/`tracking` entries refer to untracked `__pycache__`-only leftovers at the **top level** of `src/aquapose/`, not the live `src/aquapose/core/` packages of the same names. Verify against the plans' `must_haves`, not this line.*
   5. `LICENSE`, `pyproject.toml` (license field + OSI classifier) declare AGPL-3.0
   6. MILESTONES.md contains the missing v3.11 Appearance-Based ReID entry
+
 **Plans**: 5 plans
 
 Plans:
+**Wave 1**
+
 - [ ] 108-01-PLAN.md — Merge `main` into `dev` (D-01), resolve `pyproject.toml` to `1.2.0-dev.0`, verify the `a66287a` Sphinx repair and docs push trigger landed
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 108-02-PLAN.md — Relicense to AGPL-3.0-or-later across LICENSE/pyproject/README/conf.py, add `LICENSING.md`, record the MIT boundary in CHANGELOG
 - [ ] 108-03-PLAN.md — Un-ignore `.planning/`, delete the two dead artifacts, clear the working tree (SAM2 weights quarantined behind a user gate)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 108-04-PLAN.md — Backfill the v3.11 and v2.2 MILESTONES entries and re-sort the tail chronologically
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
 - [ ] 108-05-PLAN.md — Drive `hatch run docs:build` to exit 0, then push `dev` and confirm the Documentation workflow is green
 
 ### Phase 109: Correctness — Green Test Suite & Config Consolidation
+
 **Goal**: The test suite is fully green and config paths follow one convention, so subsequent doc and publication work builds on a trustworthy baseline
 **Depends on**: Phase 108
 **Requirements**: QA-01, QA-02, QA-03, QA-04
 **Success Criteria** (what must be TRUE):
+
   1. `hatch run test-all` passes with zero failures, including `test_luts.py::test_forward_lut_cast_ray_matches_model`
   2. The 7 tier-two failures in `training/` and `evaluation/` pass, making the coverage badge honest
   3. `keypoint_weights_path` and `detection.model_path` resolve using the same convention relative to `project_dir`
   4. The tutorial config uses only relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
+
 **Plans**: TBD
 
 ### Phase 110: API Reference & Docs Tiering
+
 **Goal**: The rendered docs distinguish the tier-one production pipeline from tier-two research utilities and cover every public module
 **Depends on**: Phase 109
 **Requirements**: DOCS-01, DOCS-02
 **Success Criteria** (what must be TRUE):
+
   1. The API reference visibly separates tier-one core pipeline modules (detection, tracking, association, pose/midline, reconstruction, calibration, engine) from tier-two research utilities (`training/`, `evaluation/`, `core/reid/`, pseudo-labeling), with honest status labels on tier two
   2. Every public module appears in the rendered API reference — including `core/association/*`, `core/tracking/*`, `core/types/*`, all `backends/` packages, `cli.py`, `io/video.py`, and `visualization/*`
   3. `sphinx-build -W --keep-going` still exits clean with the expanded module tree
+
 **Plans**: TBD
 
 ### Phase 111: Example Dataset & Reference Outputs
+
 **Goal**: A researcher can download a citable, correctly licensed tutorial dataset with verifiable reference outputs
 **Depends on**: Phase 109
 **Requirements**: DATA-01, DATA-02, DATA-03
 **Success Criteria** (what must be TRUE):
+
   1. A reproducible script trims and re-encodes all 12 camera videos (temporal trim + bitrate reduction only, no spatial downscale), assembles the deposit tree, and emits checksums
   2. `outputs.h5`, the 3D animation, the overlay mosaic, and timing data are regenerated on `dev` with current production models
   3. The dataset is live on Zenodo with a citable DOI; videos and calibration are CC-BY-4.0; bundled model weights are labeled separately as AGPL-derived artifacts
+
 **Plans**: TBD
 
 ### Phase 112: Config & CLI Reference
+
 **Goal**: A user can look up any CLI command or config field and understand its purpose, arguments, and effect without reading source
 **Depends on**: Phase 110
 **Requirements**: DOCS-05, DOCS-06
 **Success Criteria** (what must be TRUE):
+
   1. Every CLI command group is documented with purpose, arguments, and a worked example
   2. All 71 config fields across the 9 dataclasses are documented with type, default, and effect
   3. The config reference is tiered so a tutorial user is not confronted with all 71 fields at once
+
 **Plans**: TBD
 
 ### Phase 113: Concepts & Tutorial
+
 **Goal**: A new user can install AquaPose, understand what the pipeline computes, and run it end-to-end on real data with confidence in the results
 **Depends on**: Phase 111, Phase 112
 **Requirements**: DOCS-03, DOCS-04, DOCS-07
 **Success Criteria** (what must be TRUE):
+
   1. A user can install AquaPose from written instructions, including the GPU/CUDA caveat, without reading source
   2. The concepts page explains refractive projection, the `{p, ψ, κ, s}` state vector, and the five pipeline stages well enough that a reader understands what the pipeline computes before running it
   3. The tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step matching the regenerated reference outputs
+
 **Plans**: TBD
 
 ### Phase 114: Publication — README, Badges, Live Docs
+
 **Goal**: An outside researcher landing on the repo understands what AquaPose is, trusts it, and can install, run, and cite it
 **Depends on**: Phase 111, Phase 113
 **Requirements**: README-01, README-02, README-03, README-04, DOCS-08
 **Success Criteria** (what must be TRUE):
+
   1. The README opens with what problem AquaPose solves, what a user gets out (3D midlines and kinematics), and who it is for — legible to a researcher who has never heard of it
   2. A badge row shows tests, docs, coverage, supported Python versions, PyPI version, license, and the Zenodo DOI, all green
   3. Hero media shows a 3D reconstruction rendering inline on GitHub
   4. Install, quick start against the Zenodo dataset, docs link, and a citation block with the DOI are all present and correct
   5. Documentation builds green on Read the Docs from `dev` and is reachable at the URL declared in `pyproject.toml`
+
 **Plans**: TBD
 
 ## Progress

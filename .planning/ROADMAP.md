@@ -440,7 +440,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 108-03-PLAN.md — Un-ignore `.planning/`, delete the dead `tests/integration/segmentation` package, clear the working tree (SAM2 weights quarantined behind a user gate)
+- [x] 108-03-PLAN.md — Un-ignore `.planning/`, delete the dead `tests/integration/segmentation` package, clear the working tree (SAM2 weights quarantined behind a user gate)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
@@ -537,7 +537,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 108. Branch Reconciliation & Repo Hygiene | 2/5 | In Progress|  |
+| 108. Branch Reconciliation & Repo Hygiene | 3/5 | In Progress|  |
 | 109. Correctness — Green Test Suite & Config Consolidation | 0/TBD | Not started | - |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |

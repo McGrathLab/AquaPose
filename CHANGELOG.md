@@ -9,6 +9,31 @@ published under the MIT License, and that grant is unaffected. See
 
 <!-- version list -->
 
+## v1.2.0-dev.2 (2026-08-17)
+
+### Bug Fixes
+
+- **108**: Drop License trove classifier conflicting with PEP 639 SPDX expression
+  ([`59e5445`](https://github.com/McGrathLab/AquaPose/commit/59e5445d4f5e26267c961099bc355419699270f8))
+
+### Documentation
+
+- **108**: Add code review report
+  ([`7b48211`](https://github.com/McGrathLab/AquaPose/commit/7b48211f914a3240aa6983b472810322e898fe85))
+
+- **108**: Add phase verification report
+  ([`2d19f07`](https://github.com/McGrathLab/AquaPose/commit/2d19f07ba0ec056abc8f35bcda8ab413d1708b74))
+
+- **108**: Correct false PyPI yank claim in LICENSING.md
+  ([`5901960`](https://github.com/McGrathLab/AquaPose/commit/5901960df152ceca8b665bfd058f962c1d74888b))
+
+- **108-05**: Add plan 05 execution summary
+  ([`72ea28e`](https://github.com/McGrathLab/AquaPose/commit/72ea28ef7d108063f83a3b412bfabb1bfa5e72b3))
+
+- **108-05**: Complete Sphinx repair, push, and release plan
+  ([`89c5b85`](https://github.com/McGrathLab/AquaPose/commit/89c5b854e0ee2da9153b58aa04befa6b7e761ca0))
+
+
 ## v1.2.0-dev.1 (2026-08-17)
 
 ### Bug Fixes

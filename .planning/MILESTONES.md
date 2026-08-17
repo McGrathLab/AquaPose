@@ -1,5 +1,29 @@
 # Milestones
 
+## v3.11 Appearance-Based ReID (Shipped: 2026-03-26)
+
+**Phases completed:** 6 phases (102-107); 4 `*-PLAN.md` files survive on disk (102-01, 102-02, 105-01, 105-02) totaling 12 tasks — phases 103, 104, 106, and 107 have SUMMARYs but no surviving PLAN files, so this count understates true plan volume (see Known gaps)
+**Timeline:** 1 day (2026-03-25), measured from `git log` on `.planning/phases/10[2-7]-*`
+**Codebase:** 37,308 LOC source (measured at commit `19f612b`)
+**Git range:** 55 commits, 42 files changed (+9,136 / -0)
+
+**Key accomplishments:**
+1. `FishEmbedder` (MegaDescriptor-T via timm, L2-normalized 768-dim output) and `EmbedRunner` extract embeddings for every detection in a completed run and write `reid/embeddings.npz`, with zero-shot within/between-identity retrieval metrics (Phase 102)
+2. `TrainingDataMiner` mines quality-gated, temporally-windowed (300-frame), camera-aware-sampled training crops per fish identity from pipeline output, replacing swap-event buffering as the contamination control (Phase 103)
+3. `ProjectionHead` + `SubCenterArcFace` metric-learning training loop with per-pair female-female AUC evaluation identified a frozen-backbone discrimination ceiling (fish 2v4 at 0.495 AUC, overall female AUC 0.64) against the >=0.75 gate (Phase 104)
+4. `SwapDetector` with cross-pattern cosine-margin confirmation across two modes (body-length seeded + independent embedding scan) validated on YH data, catching both the known MF swap (fish 0<->5, frame ~2665) and the previously-undetected FF swap (fish 2<->4, frame ~600), writing corrected trajectories with full provenance to `midlines_reid.h5` (Phase 105)
+5. `aquapose reid` CLI command group (`embed`, `mine-crops`, `fine-tune`, `repair`) replaced the standalone `mine-reid-crops` command and `scripts/train_reid_head.py`, which were deleted with no backward-compatibility shim (Phase 106)
+6. Selective Swin-block backbone unfreezing (`unfreeze_last_n_blocks`) with differential learning rates and combined backbone+head checkpoints, enabling `reid fine-tune --unfreeze-blocks N` to train end-to-end and re-embed through the fine-tuned backbone (Phase 107)
+
+**Delivered:** A post-hoc appearance-based re-identification system operating on completed pipeline output — extracts MegaDescriptor-T embeddings for every detection, mines contamination-filtered training crops, fine-tunes a projection head (optionally unfreezing backbone blocks) via ArcFace metric learning to discriminate individual fish including female cichlids that geometry-based tracking cannot distinguish, detects identity swaps via cross-pattern cosine-margin confirmation, and writes corrected trajectories to `midlines_reid.h5` with full event provenance. Delivered as a new `aquapose reid` CLI command group.
+
+**Known gaps (accepted as tech debt):**
+- Phase 104's frozen-backbone female-female AUC gate (>=0.75) was not met on real data (fish 2v4 stuck at 0.495 AUC, overall female AUC 0.64), motivating Phase 107's backbone-unfreezing work — whether unfreezing achieved the gate is not recorded in any phase artifact
+- Phase 105 (Swap Detection and Repair) has no `SUMMARY.md` for either plan on disk, despite both plans' commits landing (`be7cb8c`, `122bd84`, `a417dd4`, `3694343`) — accomplishments above are reconstructed from `105-01-PLAN.md`/`105-02-PLAN.md` must-haves and commit messages, not a completion summary
+- Phases 103, 104, 106, and 107 have `SUMMARY.md` files but no surviving `*-PLAN.md` files on disk — the plan/task counts in this entry are measured only over the 4 PLAN.md files that do exist (102, 105) per T-108-18's omit-rather-than-fabricate rule
+
+---
+
 ## v3.10 Publication Metrics (Shipped: 2026-03-15)
 
 **Phases completed:** 5 phases (97-101), 5 plans, 10 tasks

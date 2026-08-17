@@ -19,7 +19,7 @@ Prerequisites. These gate doc authoring and the badge row.
 - [x] **FOUND-02**: Documentation CI runs on pushes to `dev`, so docs breakage is caught at push rather than at release
 - [x] **FOUND-03**: `dev` and `main` are reconciled with `main` as a release-only branch, and the `1.1.0-dev.7` vs `1.1.1` version conflict is resolved
 - [ ] **FOUND-04**: The repository contains no stray artifacts — the vendored SAM2 clone, `11.0` pip log, top-level `yolo26n*.pt` weights, `runs/`, `tmp/`, and the dead `reconstruction/`, `segmentation/`, `tracking/` directories are gone and `.gitignore` prevents their return
-- [ ] **FOUND-05**: AquaPose is licensed AGPL-3.0 consistently across `LICENSE`, `pyproject.toml` (license field and OSI classifier), README, docs, and the citation block
+- [x] **FOUND-05**: AquaPose is licensed AGPL-3.0 consistently across `LICENSE`, `pyproject.toml` (license field and OSI classifier), README, docs, and the citation block
 
 ### Correctness
 
@@ -109,7 +109,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-02 | 108 | Complete |
 | FOUND-03 | 108 | Complete |
 | FOUND-04 | 108 | Pending |
-| FOUND-05 | 108 | Pending |
+| FOUND-05 | 108 | Complete |
 | QA-01 | 109 | Pending |
 | QA-02 | 109 | Pending |
 | QA-03 | 109 | Pending |

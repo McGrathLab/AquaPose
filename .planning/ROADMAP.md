@@ -436,7 +436,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 108-02-PLAN.md — Relicense to AGPL-3.0-or-later across LICENSE/pyproject/README/conf.py, add `LICENSING.md`, record the MIT boundary in CHANGELOG
+- [x] 108-02-PLAN.md — Relicense to AGPL-3.0-or-later across LICENSE/pyproject/README/conf.py, add `LICENSING.md`, record the MIT boundary in CHANGELOG
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -537,7 +537,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 108. Branch Reconciliation & Repo Hygiene | 1/5 | In Progress|  |
+| 108. Branch Reconciliation & Repo Hygiene | 2/5 | In Progress|  |
 | 109. Correctness — Green Test Suite & Config Consolidation | 0/TBD | Not started | - |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |

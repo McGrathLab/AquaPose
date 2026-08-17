@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Completed 108-01-PLAN.md
-last_updated: "2026-08-17T16:39:22.671Z"
+stopped_at: Completed 108-02-PLAN.md
+last_updated: "2026-08-17T16:51:19.019Z"
 last_activity: 2026-08-17
 progress:
   total_phases: 7
   completed_phases: 0
   total_plans: 5
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 108 (branch-reconciliation-repo-hygiene) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-08-17
 
@@ -58,6 +58,7 @@ Recent decisions affecting current work:
 - [Phase 106-01]: Use SimpleNamespace for embed config to avoid forbidden engine/ import in core/ module (import boundary rule)
 - [Phase 106-01]: Remove top-level mine-reid-crops command; delete scripts/train_reid_head.py — both superseded by reid group subcommands
 - [Phase 108]: Merged main into dev via real --no-ff merge (113 conflicts resolved by stated path-scoped policy, 29 silently-resurrected hazard-2 paths purged) — Establishes true ancestry (D-01) so every future main-to-dev sync is conflict-free (FOUND-03)
+- [Phase 108-02]: Relicensed AquaPose MIT to AGPL-3.0-or-later (PEP 639 SPDX string form accepted by hatchling on first attempt) — LICENSING.md names Ultralytics (AGPL-3.0) and python-igraph/leidenalg (GPL-2.0+) as the forcing dependencies; v1.1.1 MIT grant stands, AGPL applies from 1.2.0
 
 ### Pending Todos
 
@@ -79,5 +80,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last activity: 2026-08-12 — v4.0 ROADMAP.md created (7 phases, 108-114), REQUIREMENTS.md traceability filled in
-Stopped at: Completed 108-01-PLAN.md
+Stopped at: Completed 108-02-PLAN.md
 Resume file: None

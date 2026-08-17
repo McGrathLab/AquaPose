@@ -397,9 +397,17 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
   2. The docs CI workflow runs and passes on a push to `dev`, not only `main`
   3. `main` and `dev` are reconciled — `main` is release-only and the `1.1.0-dev.7` vs `1.1.1` version conflict is resolved
   4. A fresh clone of `dev` contains no stray artifacts (vendored SAM2 clone, `11.0` pip log, top-level `yolo26n*.pt` weights, `runs/`, `tmp/`, dead `reconstruction/`/`segmentation/`/`tracking/` dirs) and `.gitignore` prevents their return
+     - *Scouted correction (see `108-CONTEXT.md` `<scout_findings>`): `git ls-files` already tracks none of these and `.gitignore` already covers `tmp/`, `*.pt`, `runs/`, so the "fresh clone" half is already satisfied. The `reconstruction`/`segmentation`/`tracking` entries refer to untracked `__pycache__`-only leftovers at the **top level** of `src/aquapose/`, not the live `src/aquapose/core/` packages of the same names. Verify against the plans' `must_haves`, not this line.*
   5. `LICENSE`, `pyproject.toml` (license field + OSI classifier) declare AGPL-3.0
   6. MILESTONES.md contains the missing v3.11 Appearance-Based ReID entry
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 108-01-PLAN.md — Merge `main` into `dev` (D-01), resolve `pyproject.toml` to `1.2.0-dev.0`, verify the `a66287a` Sphinx repair and docs push trigger landed
+- [ ] 108-02-PLAN.md — Relicense to AGPL-3.0-or-later across LICENSE/pyproject/README/conf.py, add `LICENSING.md`, record the MIT boundary in CHANGELOG
+- [ ] 108-03-PLAN.md — Un-ignore `.planning/`, delete the two dead artifacts, clear the working tree (SAM2 weights quarantined behind a user gate)
+- [ ] 108-04-PLAN.md — Backfill the v3.11 and v2.2 MILESTONES entries and re-sort the tail chronologically
+- [ ] 108-05-PLAN.md — Drive `hatch run docs:build` to exit 0, then push `dev` and confirm the Documentation workflow is green
 
 ### Phase 109: Correctness — Green Test Suite & Config Consolidation
 **Goal**: The test suite is fully green and config paths follow one convention, so subsequent doc and publication work builds on a trustworthy baseline

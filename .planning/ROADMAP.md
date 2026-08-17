@@ -427,25 +427,28 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
   5. `LICENSE`, `pyproject.toml` (license field + OSI classifier) declare AGPL-3.0
   6. MILESTONES.md contains the missing v3.11 Appearance-Based ReID entry
 
-**Plans**: 5 plans
+**Plans**: 5 plans (replanned 2026-08-17 — see `108-01-BLOCKER.md`; executed sequentially on the main working tree, no worktree isolation)
 
 Plans:
 **Wave 1**
 
-- [ ] 108-01-PLAN.md — Merge `main` into `dev` (D-01), resolve `pyproject.toml` to `1.2.0-dev.0`, verify the `a66287a` Sphinx repair and docs push trigger landed
+- [ ] 108-01-PLAN.md — Merge `main` into `dev` (D-01) resolving all 113 conflicts by a path-scoped policy, purge the 29 silently-resurrected files, keep main's `.planning/` archive, resolve `pyproject.toml` to `1.2.0-dev.0`, and re-apply `a66287a`'s four dropped docstring hunks
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [ ] 108-02-PLAN.md — Relicense to AGPL-3.0-or-later across LICENSE/pyproject/README/conf.py, add `LICENSING.md`, record the MIT boundary in CHANGELOG
-- [ ] 108-03-PLAN.md — Un-ignore `.planning/`, delete the two dead artifacts, clear the working tree (SAM2 weights quarantined behind a user gate)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 108-04-PLAN.md — Backfill the v3.11 and v2.2 MILESTONES entries and re-sort the tail chronologically
+- [ ] 108-03-PLAN.md — Un-ignore `.planning/`, delete the dead `tests/integration/segmentation` package, clear the working tree (SAM2 weights quarantined behind a user gate)
 
 **Wave 4** *(blocked on Wave 3 completion)*
 
-- [ ] 108-05-PLAN.md — Drive `hatch run docs:build` to exit 0, then push `dev` and confirm the Documentation workflow is green
+- [ ] 108-04-PLAN.md — Backfill the v3.11 and v2.2 MILESTONES entries (v2.2 sourced from the archive the merge delivered) and re-sort the tail chronologically
+
+**Wave 5** *(blocked on Wave 4 completion)*
+
+- [ ] 108-05-PLAN.md — Drive `hatch run docs:build` to exit 0, then push `dev` once and confirm the Documentation workflow is green
 
 ### Phase 109: Correctness — Green Test Suite & Config Consolidation
 

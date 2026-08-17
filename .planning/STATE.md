@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-status: executing
-stopped_at: Completed 108-04-PLAN.md
-last_updated: "2026-08-17T17:20:44.300Z"
+status: verifying
+stopped_at: Completed 108-05-PLAN.md (phase 108 fully executed)
+last_updated: "2026-08-17T17:48:39.656Z"
 last_activity: 2026-08-17
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 5
-  completed_plans: 4
-  percent: 0
+  completed_plans: 5
+  percent: 14
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 
 Phase: 108 (branch-reconciliation-repo-hygiene) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-08-17
 
 ## Performance Metrics
@@ -61,6 +61,7 @@ Recent decisions affecting current work:
 - [Phase 108-02]: Relicensed AquaPose MIT to AGPL-3.0-or-later (PEP 639 SPDX string form accepted by hatchling on first attempt) — LICENSING.md names Ultralytics (AGPL-3.0) and python-igraph/leidenalg (GPL-2.0+) as the forcing dependencies; v1.1.1 MIT grant stands, AGPL applies from 1.2.0
 - [Phase 108]: [Phase 108-03]: un-ignored .planning/ (D-18), removed dead tests/integration/segmentation and 4 stale top-level src/aquapose/ residue dirs (D-20), quarantined then permanently deleted the untracked SAM2 source clone after correcting the plan's model-weights premise and getting explicit user confirmation (OI-02) — Satisfies FOUND-04; pyproject.toml was not touched, confirming 108-02's ownership claim held with no conflict
 - [Phase 108]: [Phase 108-04]: Backfilled v3.11 Appearance-Based ReID and v2.2 Backends milestone entries into MILESTONES.md and re-sorted the tail into chronological order (REC-01) - all numeric fields measured from git, never estimated; two orphaned/unreachable commits discovered in dev's history and routed around during derivation
+- [Phase 108]: [Phase 108-05]: Re-derived autodoc_mock_imports empirically (timm, pytorch_metric_learning, shapely, sklearn) which alone drove sphinx-build -W to exit 0 with zero warnings; pushed dev to origin (transferred mid-session to McGrathLab/AquaPose, independently re-verified before push) - Documentation workflow succeeded (FOUND-02), release.yml cut v1.2.0-dev.1 against the AGPL-declared tree
 
 ### Pending Todos
 
@@ -72,6 +73,7 @@ Recent decisions affecting current work:
 - 8 failing tests on `dev` — `test_luts.py::test_forward_lut_cast_ray_matches_model` is a tier-one blocker; the other 7 are stale CLI-help assertions and fixtures in `training/` and `evaluation/`. Addressed by Phase 109.
 - ~~`.planning/` is gitignored on `dev`~~ — **resolved by 108-03**: the `.gitignore:100` rule was removed; `.planning/` is tracked normally.
 - ~~v3.11 has no MILESTONES.md entry~~ — **resolved by 108-04**: `v3.11 Appearance-Based ReID` and `v2.2 Backends` entries backfilled, tail re-sorted into chronological order (REC-01 satisfied).
+- Repo transferred mid-108-05 from tlancaster6/AquaPose to McGrathLab/AquaPose (verified: same object history). Stale tlancaster6 URLs remain in pyproject.toml (3: Homepage/Repository/Issues, ships in PyPI metadata), CODE_OF_CONDUCT.md (1), docs/contributing.md (1), and ~829 historical links in CHANGELOG.md. pyproject.toml is closed per 108-02; out of Phase 108 scope. Follow-up for Phase 109 or 114.
 
 ### Environment Notes
 
@@ -82,5 +84,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last activity: 2026-08-12 — v4.0 ROADMAP.md created (7 phases, 108-114), REQUIREMENTS.md traceability filled in
-Stopped at: Completed 108-04-PLAN.md
+Stopped at: Completed 108-05-PLAN.md (phase 108 fully executed)
 Resume file: None

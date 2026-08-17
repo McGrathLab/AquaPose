@@ -402,7 +402,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 
 #### Phases
 
-- [ ] **Phase 108: Branch Reconciliation & Repo Hygiene** - Forward-port the Sphinx repair, reconcile `dev`/`main`, relicense to AGPL-3.0, remove stray artifacts, backfill the v3.11 milestone record
+- [x] **Phase 108: Branch Reconciliation & Repo Hygiene** - Forward-port the Sphinx repair, reconcile `dev`/`main`, relicense to AGPL-3.0, remove stray artifacts, backfill the v3.11 milestone record (completed 2026-08-17)
 - [ ] **Phase 109: Correctness — Green Test Suite & Config Consolidation** - Fix the 8 failing tests, consolidate weights-path config, make the tutorial config platform-neutral
 - [ ] **Phase 110: API Reference & Docs Tiering** - Two-tier documentation IA distinguishing the core pipeline from research utilities; full API coverage for the 52 missing modules
 - [ ] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs
@@ -448,7 +448,7 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4 completion)*
 
-- [ ] 108-05-PLAN.md — Drive `hatch run docs:build` to exit 0, then push `dev` once and confirm the Documentation workflow is green
+- [x] 108-05-PLAN.md — Drive `hatch run docs:build` to exit 0, then push `dev` once and confirm the Documentation workflow is green
 
 ### Phase 109: Correctness — Green Test Suite & Config Consolidation
 
@@ -537,7 +537,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 108. Branch Reconciliation & Repo Hygiene | 4/5 | In Progress|  |
+| 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
 | 109. Correctness — Green Test Suite & Config Consolidation | 0/TBD | Not started | - |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |

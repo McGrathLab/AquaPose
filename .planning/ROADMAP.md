@@ -462,12 +462,18 @@ Plans:
   3. `keypoint_weights_path` and `detection.model_path` resolve using the same convention relative to `project_dir`
   4. The tutorial config uses only relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
 
-**Plans**: 4 plans
+**Plans**: 5 plans (replanned 2026-09-01 — prior 4 plans deleted; rebuilt against the real 23-failure baseline, not the stale "8 failures / failing LUT" premise)
 
-- [ ] 109-01-PLAN.md — QA-01: diagnose and resolve the tier-one LUT cast_ray parity test (no skip/xfail)
-- [ ] 109-02-PLAN.md — QA-02: fix the 7 tier-two training/engine failures and run the terminal test-all green gate
-- [ ] 109-03-PLAN.md — QA-03: unify weights-path resolution relative to project_dir and remove the model_path alias
-- [ ] 109-04-PLAN.md — QA-04/D-06: make the init tutorial config platform-neutral and fix the 3 stale pyproject URLs
+**Wave 1** *(disjoint files_modified — run in parallel)*
+
+- [ ] 109-01-PLAN.md — QA-03/D-04/D-07: unify weights_path resolution relative to project_dir, remove the model_path alias, forward-slash-normalize run_manager writes
+- [ ] 109-02-PLAN.md — QA-04/QA-02/D-09: store.assemble symlink→hardlink→copy fallback (14 failures + WinError 1314 hot-path), update test_symlinks_are_relative semantics, fix list_models ordering flake
+- [ ] 109-03-PLAN.md — QA-04/QA-02/D-05/D-08/D-11/D-06: fix the 3 stale --val-split help assertions, cp1252 encoding read, platform-neutral utf-8 tutorial config, and the 3 pyproject URLs
+- [ ] 109-04-PLAN.md — QA-02/D-10: fix the 2 @slow re-ID Swin input-size failures (32px vs 224 backbone)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 109-05-PLAN.md — QA-01/QA-02/D-01: confirm the LUT parity test is reliably green (resolved, tolerances intact) + document the STATE-108 discrepancy, then the terminal `hatch run test` / `test-all` honest-green gate
 
 ### Phase 110: API Reference & Docs Tiering
 
@@ -543,7 +549,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
-| 109. Correctness — Green Test Suite & Config Consolidation | 0/TBD | Not started | - |
+| 109. Correctness — Green Test Suite & Config Consolidation | 0/5 | Not started | - |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |

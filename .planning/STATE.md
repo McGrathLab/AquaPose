@@ -4,13 +4,13 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 110 context gathered
-last_updated: "2026-09-01T21:07:22.718Z"
+last_updated: "2026-09-01T21:11:35.980Z"
 last_activity: 2026-09-01
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
   percent: 29
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 110 (api-reference-docs-tiering) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-09-01
 

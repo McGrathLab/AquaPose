@@ -463,6 +463,7 @@ Plans:
   4. The tutorial config uses only relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
 
 **Plans**: 4 plans
+
 - [ ] 109-01-PLAN.md — QA-01: diagnose and resolve the tier-one LUT cast_ray parity test (no skip/xfail)
 - [ ] 109-02-PLAN.md — QA-02: fix the 7 tier-two training/engine failures and run the terminal test-all green gate
 - [ ] 109-03-PLAN.md — QA-03: unify weights-path resolution relative to project_dir and remove the model_path alias

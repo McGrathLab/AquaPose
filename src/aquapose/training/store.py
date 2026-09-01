@@ -1,4 +1,8 @@
-"""SampleStore: SQLite-backed training data management with dedup and provenance."""
+"""SampleStore: SQLite-backed training data management with dedup and provenance.
+
+``assemble()`` degrades gracefully without symlink privilege: it tries a relative
+symlink first, then a same-volume hardlink, then a plain copy (cross-volume only).
+"""
 
 from __future__ import annotations
 
@@ -18,6 +22,46 @@ import yaml
 from .store_schema import SCHEMA_SQL, SCHEMA_VERSION, SOURCE_PRIORITY
 
 logger = logging.getLogger(__name__)
+
+
+def _link_or_copy(src_abs: Path, link_path: Path, rel_target: str) -> None:
+    """Create a filesystem entry at *link_path* pointing at *src_abs*.
+
+    Strategy (D-09 — three-tier fallback):
+
+    1. **Relative symlink** — ``link_path.symlink_to(rel_target)``.  This is the
+       preferred form and keeps the dataset relocatable.  Fails on Windows without
+       Developer Mode or the ``SeCreateSymbolicLinkPrivilege`` token (WinError 1314,
+       surfaced as ``OSError``).
+    2. **Hardlink** — ``os.link(src_abs, link_path)``.  No data duplication; works on
+       the same volume even without symlink privilege.  Fails across volumes (``EXDEV``
+       / ``OSError``).
+    3. **Copy** — ``shutil.copy2(src_abs, link_path)``.  Used only when both symlink
+       and hardlink are unavailable (cross-volume paths).
+
+    Trust boundary: *src_abs* is always resolved from ``SampleStore.root``-relative
+    store paths — the same trust boundary as the original ``symlink_to`` call.  No
+    paths outside ``project_dir``/``self.root`` are ever followed.
+
+    Args:
+        src_abs: Absolute path to the existing source file within the store root.
+        link_path: Absolute path where the new entry should be created.
+        rel_target: Relative path string from ``link_path.parent`` to ``src_abs``,
+            pre-computed via ``os.path.relpath``.
+    """
+    try:
+        link_path.symlink_to(rel_target)
+        return
+    except (OSError, NotImplementedError):
+        pass  # No symlink privilege — fall through to hardlink
+
+    try:
+        os.link(src_abs, link_path)
+        return
+    except OSError:
+        pass  # Cross-volume or unsupported — fall through to copy
+
+    shutil.copy2(src_abs, link_path)
 
 
 class SampleStore:
@@ -752,8 +796,8 @@ class SampleStore:
                 img_rel = os.path.relpath(img_src, img_link.parent)
                 lbl_rel = os.path.relpath(lbl_src, lbl_link.parent)
 
-                img_link.symlink_to(img_rel)
-                lbl_link.symlink_to(lbl_rel)
+                _link_or_copy(img_src, img_link, img_rel)
+                _link_or_copy(lbl_src, lbl_link, lbl_rel)
 
         # Write dataset.yaml
         dataset_yaml: dict = {

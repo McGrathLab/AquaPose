@@ -333,7 +333,7 @@ class TestGenerateAnimation:
         out_path = generate_animation(run_dir)
         assert out_path.exists()
         # The animation should contain fish 99 from stitched, not fish 0
-        content = out_path.read_text()
+        content = out_path.read_text(encoding="utf-8")
         assert "Fish 99" in content
 
 

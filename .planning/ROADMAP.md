@@ -508,7 +508,19 @@ Plans:
   2. `outputs.h5`, the 3D animation, the overlay mosaic, and timing data are regenerated on `dev` with current production models
   3. The dataset is live on Zenodo with a citable DOI; videos and calibration are CC-BY-4.0; bundled model weights are labeled separately as AGPL-derived artifacts
 
-**Plans**: TBD
+**Plans**: 3 plans (planned 2026-09-01)
+
+**Wave 1**
+
+- [ ] 111-01-PLAN.md — DATA-01: standalone `scripts/package_tutorial_dataset.py` — ffmpeg trim/re-encode (no spatial downscale), deposit tree assembly, canonical-model + calibration copy, relative-path config.yaml + license-correct README + zenodo-metadata.json
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 111-02-PLAN.md — DATA-02: `--regenerate-outputs` runs the real diagnostic pipeline + viz on the deposited clip with the canonical models on `dev`, producing reference_outputs/{outputs.h5, animation_3d.html, overlay_mosaic.mp4, timing.txt}
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 111-03-PLAN.md — DATA-03: final checksums.sha256 over the complete tree + verify_deposit completeness/licensing gate, then manual Zenodo upload + DOI mint (human step), DOI recorded in README
 
 ### Phase 112: Config & CLI Reference
 

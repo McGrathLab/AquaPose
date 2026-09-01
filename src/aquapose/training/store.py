@@ -918,10 +918,20 @@ class SampleStore:
 
         Returns:
             List of model dicts with parsed JSON metrics, ordered by
-            created_at descending (most recent first).
+            ``created_at`` descending (most recent first), with ``rowid``
+            descending as a stable tiebreaker for models registered within the
+            same second.
+
+        Note (D-02 / D-09 root cause): ordering by ``created_at DESC`` alone
+        is non-deterministic when two models share the same second-resolution
+        timestamp (e.g. rapid sequential registrations in tests or scripts).
+        Adding ``rowid DESC`` as a secondary key sorts by insertion order,
+        ensuring the last-inserted model sorts first consistently.
         """
         conn = self._connect()
-        rows = conn.execute("SELECT * FROM models ORDER BY created_at DESC").fetchall()
+        rows = conn.execute(
+            "SELECT * FROM models ORDER BY created_at DESC, rowid DESC"
+        ).fetchall()
         results = []
         for row in rows:
             d = dict(row)

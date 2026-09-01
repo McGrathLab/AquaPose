@@ -611,9 +611,11 @@ class TestAssemble:
         assert len(train_imgs) + len(val_imgs) == 5
         assert len(val_imgs) == 1  # 20% of 5 = 1
 
-        # All are symlinks
+        # All entries must exist and be readable files (symlink, hardlink, or copy).
+        # On Windows without Developer Mode, symlink_to raises OSError (WinError 1314)
+        # and assemble() falls back to hardlinks then copies — both satisfy is_file().
         for f in train_imgs + val_imgs:
-            assert f.is_symlink()
+            assert f.is_file(), f"Expected a file (symlink/hardlink/copy) at {f}"
 
     def test_assemble_val_split_excludes_pseudo_by_default(
         self,
@@ -711,19 +713,42 @@ class TestAssemble:
         store: SampleStore,
         tmp_path: Path,
     ) -> None:
-        """Verify created symlinks use relative targets, not absolute."""
+        """Verify assemble() creates valid entries pointing at the correct source.
+
+        On a privileged environment (symlink creation succeeds) the entry must be a
+        relative symlink.  On Windows without Developer Mode (WinError 1314 / OSError),
+        assemble() falls back to a hardlink or copy — the test accepts either form as
+        long as the entry exists and its bytes match the source image.
+
+        Root cause (D-09): ``symlink_to`` raises ``OSError`` on Windows without
+        ``SeCreateSymbolicLinkPrivilege``; the three-tier fallback in
+        ``_link_or_copy`` resolves this without data duplication on same-volume paths.
+        """
         img = _make_image(tmp_path, "rel_img", salt=42)
         lbl = _make_label(tmp_path, "rel_lbl")
         store.import_sample(img, lbl, "manual")
+
+        # Capture the source bytes before assembly (the store renames by UUID)
+        img_bytes = img.read_bytes()
 
         ds_path = store.assemble("rel_test", {}, val_fraction=0.0, seed=42)
 
         train_imgs = list((ds_path / "images" / "train").iterdir())
         assert len(train_imgs) == 1
-        target = os.readlink(str(train_imgs[0]))
-        assert not os.path.isabs(target), (
-            f"Symlink target should be relative, got: {target}"
+        entry = train_imgs[0]
+
+        # In all cases the entry must exist and contain the correct bytes
+        assert entry.exists(), f"Assembled entry does not exist: {entry}"
+        assert entry.read_bytes() == img_bytes, (
+            "Assembled entry bytes do not match the source image"
         )
+
+        if entry.is_symlink():
+            # Privileged path: symlink must use a relative target (not absolute)
+            target = os.readlink(str(entry))
+            assert not os.path.isabs(target), (
+                f"Symlink target should be relative, got: {target}"
+            )
 
 
 class TestRegisterModel:

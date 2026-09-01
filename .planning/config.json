@@ -1,6 +1,5 @@
 {
   "mode": "yolo",
-  "depth": "standard",
   "parallelization": true,
   "commit_docs": true,
   "model_profile": "balanced",
@@ -11,5 +10,6 @@
     "auto_advance": false,
     "default_research": true,
     "_auto_chain_active": false
-  }
+  },
+  "granularity": "standard"
 }

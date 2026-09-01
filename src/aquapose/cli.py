@@ -205,7 +205,7 @@ def init_cmd(name: str, synthetic: bool) -> None:
         "pose:",
         "# Run 'aquapose prep calibrate-keypoints' to set keypoint_t_values\npose:",
     )
-    (project_dir / "config.yaml").write_text(header + yaml_content)
+    (project_dir / "config.yaml").write_text(header + yaml_content, encoding="utf-8")
 
     click.echo(f"Project created at {project_dir}")
     click.echo("")

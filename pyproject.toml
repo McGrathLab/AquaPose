@@ -44,10 +44,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/tlancaster6/aquapose"
+Homepage = "https://github.com/McGrathLab/AquaPose"
 Documentation = "https://aquapose.readthedocs.io"
-Repository = "https://github.com/tlancaster6/aquapose"
-Issues = "https://github.com/tlancaster6/aquapose/issues"
+Repository = "https://github.com/McGrathLab/AquaPose"
+Issues = "https://github.com/McGrathLab/AquaPose/issues"
 
 [project.scripts]
 aquapose = "aquapose.cli:main"

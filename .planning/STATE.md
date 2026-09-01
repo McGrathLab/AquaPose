@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Phase 109 Plan 01 complete
-last_updated: "2026-09-01T15:15:00.000Z"
-last_activity: 2026-09-01 -- Phase 109 Plan 01 executed (config alias removal + run_manager forward-slash fix)
+stopped_at: Phase 109 Plan 02 complete
+last_updated: "2026-09-01T16:00:00.000Z"
+last_activity: 2026-09-01 -- Phase 109 Plan 02 executed (store.assemble symlink fallback + list_models ordering fix)
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 10
-  completed_plans: 6
+  completed_plans: 7
   percent: 16
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 109 (correctness-green-test-suite-config-consolidation) — EXECUTING
-Plan: 2 of 5
-Status: Executing Phase 109 (Plan 01 complete)
-Last activity: 2026-09-01 -- Phase 109 Plan 01 executed (config alias removal + run_manager forward-slash fix)
+Plan: 3 of 5
+Status: Executing Phase 109 (Plans 01-02 complete)
+Last activity: 2026-09-01 -- Phase 109 Plan 02 executed (store.assemble symlink fallback + list_models ordering fix)
 
 ## Performance Metrics
 
@@ -63,6 +63,7 @@ Recent decisions affecting current work:
 - [Phase 108]: [Phase 108-04]: Backfilled v3.11 Appearance-Based ReID and v2.2 Backends milestone entries into MILESTONES.md and re-sorted the tail into chronological order (REC-01) - all numeric fields measured from git, never estimated; two orphaned/unreachable commits discovered in dev's history and routed around during derivation
 - [Phase 108]: [Phase 108-05]: Re-derived autodoc_mock_imports empirically (timm, pytorch_metric_learning, shapely, sklearn) which alone drove sphinx-build -W to exit 0 with zero warnings; pushed dev to origin (transferred mid-session to McGrathLab/AquaPose, independently re-verified before push) - Documentation workflow succeeded (FOUND-02), release.yml cut v1.2.0-dev.1 against the AGPL-declared tree
 - [Phase 109-01]: Removed model_path alias from _RENAME_HINTS (D-04 clean break); verified layer 3.5 already handles both det_kwargs/pose_kwargs weights_path resolution (D-03); fixed run_manager.update_config_weights to use as_posix() for platform-neutral YAML writes (D-07), fixing 2 Windows path-separator test failures
+- [Phase 109-02]: Added _link_or_copy() helper in store.py with symlink→hardlink→copy three-tier fallback (D-09) fixing 14 WinError 1314 / symlink-privilege failures; updated test_symlinks_are_relative to accept hardlink/copy while preserving relative-symlink assertion on privileged branch; added rowid DESC tiebreaker to list_models() ORDER BY fixing non-deterministic ordering when created_at timestamps tie (D-02)
 
 ### Pending Todos
 
@@ -84,6 +85,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last activity: 2026-09-01 — Phase 109 Plan 01 complete (config alias removal, run_manager forward-slash fix)
-Stopped at: Phase 109 Plan 01 complete — continuing to Plan 02
-Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-02-PLAN.md
+Last activity: 2026-09-01 — Phase 109 Plan 02 complete (store.assemble symlink fallback + list_models ordering fix)
+Stopped at: Phase 109 Plan 02 complete — continuing to Plan 03
+Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-03-PLAN.md

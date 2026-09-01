@@ -143,6 +143,8 @@ Accurate 3D fish midline reconstruction from multi-view silhouettes via refracti
 - ✓ Association quality: 12.1% singleton rate, 32.9s/chunk wall-time (ASSOC-01, ASSOC-02) — v3.10
 - ✓ Consolidated results document with 11 sections, all stale metrics replaced (DOC-01, DOC-02) — v3.10
 
+- ✓ Tiered API reference: two-section split (Core Pipeline vs Research Utilities) with honest status labels, every public module rendered (98/98), sphinx `-W` clean (DOCS-01, DOCS-02) — v4.0 (Phase 110)
+
 ### Active
 
 ## Current Milestone: v4.0 Publication
@@ -350,4 +352,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-08-12 at start of v4.0 Publication milestone*
+*Last updated: 2026-09-01 — Phase 110 (API Reference & Docs Tiering) complete*

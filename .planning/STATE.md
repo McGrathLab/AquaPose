@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Phase 109 Plan 02 complete
-last_updated: "2026-09-01T16:00:00.000Z"
-last_activity: 2026-09-01 -- Phase 109 Plan 02 executed (store.assemble symlink fallback + list_models ordering fix)
+stopped_at: Phase 109 Plan 03 complete
+last_updated: "2026-09-01T17:00:00.000Z"
+last_activity: 2026-09-01 -- Phase 109 Plan 03 executed (stale --val-split assertions, cp1252 encoding, utf-8 init_cmd config, pyproject URLs)
 progress:
   total_phases: 7
   completed_phases: 1
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 109 (correctness-green-test-suite-config-consolidation) — EXECUTING
-Plan: 3 of 5
-Status: Executing Phase 109 (Plans 01-02 complete)
-Last activity: 2026-09-01 -- Phase 109 Plan 02 executed (store.assemble symlink fallback + list_models ordering fix)
+Plan: 4 of 5
+Status: Executing Phase 109 (Plans 01-03 complete)
+Last activity: 2026-09-01 -- Phase 109 Plan 03 executed (stale --val-split assertions, cp1252 encoding, utf-8 init_cmd config, pyproject URLs)
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ Recent decisions affecting current work:
 - [Phase 108]: [Phase 108-05]: Re-derived autodoc_mock_imports empirically (timm, pytorch_metric_learning, shapely, sklearn) which alone drove sphinx-build -W to exit 0 with zero warnings; pushed dev to origin (transferred mid-session to McGrathLab/AquaPose, independently re-verified before push) - Documentation workflow succeeded (FOUND-02), release.yml cut v1.2.0-dev.1 against the AGPL-declared tree
 - [Phase 109-01]: Removed model_path alias from _RENAME_HINTS (D-04 clean break); verified layer 3.5 already handles both det_kwargs/pose_kwargs weights_path resolution (D-03); fixed run_manager.update_config_weights to use as_posix() for platform-neutral YAML writes (D-07), fixing 2 Windows path-separator test failures
 - [Phase 109-02]: Added _link_or_copy() helper in store.py with symlink→hardlink→copy three-tier fallback (D-09) fixing 14 WinError 1314 / symlink-privilege failures; updated test_symlinks_are_relative to accept hardlink/copy while preserving relative-symlink assertion on privileged branch; added rowid DESC tiebreaker to list_models() ORDER BY fixing non-deterministic ordering when created_at timestamps tie (D-02)
+- [Phase 109-03]: Removed --val-split from train obb/seg/pose expected_flags (D-11 stale assertion; splitting is data assemble's responsibility); fixed test_viz cp1252 read with encoding="utf-8" (D-08); added encoding="utf-8" to init_cmd config.yaml write_text (D-08/QA-04); replaced tlancaster6/aquapose with McGrathLab/AquaPose in pyproject.toml Homepage/Repository/Issues (D-06)
 
 ### Pending Todos
 
@@ -85,6 +86,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last activity: 2026-09-01 — Phase 109 Plan 02 complete (store.assemble symlink fallback + list_models ordering fix)
-Stopped at: Phase 109 Plan 02 complete — continuing to Plan 03
-Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-03-PLAN.md
+Last activity: 2026-09-01 — Phase 109 Plan 03 complete (stale --val-split assertions, cp1252 encoding, utf-8 init_cmd config, pyproject URLs)
+Stopped at: Phase 109 Plan 03 complete — continuing to Plan 04
+Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-04-PLAN.md

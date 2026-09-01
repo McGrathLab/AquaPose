@@ -1,7 +1,13 @@
 Evaluation
 ==========
 
-.. automodule:: aquapose.evaluation
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. note::
+
+   Research utility — not part of the supported pipeline API.
+
+.. toctree::
+   :maxdepth: 2
+
+   evaluation/core
+   evaluation/stages
+   evaluation/viz

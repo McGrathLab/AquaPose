@@ -403,7 +403,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 #### Phases
 
 - [x] **Phase 108: Branch Reconciliation & Repo Hygiene** - Forward-port the Sphinx repair, reconcile `dev`/`main`, relicense to AGPL-3.0, remove stray artifacts, backfill the v3.11 milestone record (completed 2026-08-17)
-- [ ] **Phase 109: Correctness — Green Test Suite & Config Consolidation** - Fix the 8 failing tests, consolidate weights-path config, make the tutorial config platform-neutral
+- [x] **Phase 109: Correctness — Green Test Suite & Config Consolidation** - Fix the 8 failing tests, consolidate weights-path config, make the tutorial config platform-neutral (completed 2026-09-01)
 - [ ] **Phase 110: API Reference & Docs Tiering** - Two-tier documentation IA distinguishing the core pipeline from research utilities; full API coverage for the 52 missing modules
 - [ ] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs
 - [ ] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference
@@ -473,7 +473,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 109-05-PLAN.md — QA-01/QA-02/D-01: confirm the LUT parity test is reliably green (resolved, tolerances intact) + document the STATE-108 discrepancy, then the terminal `hatch run test` / `test-all` honest-green gate
+- [x] 109-05-PLAN.md — QA-01/QA-02/D-01: confirm the LUT parity test is reliably green (resolved, tolerances intact) + document the STATE-108 discrepancy, then the terminal `hatch run test` / `test-all` honest-green gate
 
 ### Phase 110: API Reference & Docs Tiering
 
@@ -549,7 +549,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
-| 109. Correctness — Green Test Suite & Config Consolidation | 4/5 | In Progress|  |
+| 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete   | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |

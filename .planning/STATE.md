@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Phase 109 Plan 03 complete — continuing to Plan 04
+stopped_at: Phase 109 complete (all 5 plans, verified 8/8) — Phase 110 not started
 last_updated: "2026-09-01T19:02:12.397Z"
 last_activity: 2026-09-01
 progress:
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 109 — correctness-green-test-suite-config-consolidation
+**Current focus:** Phase 109 complete — next: Phase 110 (API Reference & Docs Tiering)
 
 ## Current Position
 
 Phase: 110
 Plan: Not started
-Status: Executing Phase 109 (Plans 01-03 complete)
+Status: Phase 109 complete (5/5 plans, verified 8/8 must-haves) — Phase 110 not started
 Last activity: 2026-09-01
 
 ## Performance Metrics
@@ -65,6 +65,8 @@ Recent decisions affecting current work:
 - [Phase 109-01]: Removed model_path alias from _RENAME_HINTS (D-04 clean break); verified layer 3.5 already handles both det_kwargs/pose_kwargs weights_path resolution (D-03); fixed run_manager.update_config_weights to use as_posix() for platform-neutral YAML writes (D-07), fixing 2 Windows path-separator test failures
 - [Phase 109-02]: Added _link_or_copy() helper in store.py with symlink→hardlink→copy three-tier fallback (D-09) fixing 14 WinError 1314 / symlink-privilege failures; updated test_symlinks_are_relative to accept hardlink/copy while preserving relative-symlink assertion on privileged branch; added rowid DESC tiebreaker to list_models() ORDER BY fixing non-deterministic ordering when created_at timestamps tie (D-02)
 - [Phase 109-03]: Removed --val-split from train obb/seg/pose expected_flags (D-11 stale assertion; splitting is data assemble's responsibility); fixed test_viz cp1252 read with encoding="utf-8" (D-08); added encoding="utf-8" to init_cmd config.yaml write_text (D-08/QA-04); replaced tlancaster6/aquapose with McGrathLab/AquaPose in pyproject.toml Homepage/Repository/Issues (D-06)
+- [Phase 109-04]: Corrected the 2 @slow re-ID end-to-end fixtures crop_size 32→224 to match the fixed-224 MegaDescriptor-T Swin contract (D-10, stale fixture not a regression); made the fixtures device-adaptive (cuda if available else cpu) — the hardcoded device="cpu" was the true cause of the ~2h runtime. Both slow tests verified green on GPU (~47m); slow suite green locally rather than deferred to CI
+- [Phase 109-05]: Terminal green gate — QA-01 LUT parity confirmed green (resolved not skipped, 1e-4/0.01 tolerances untouched; STATE-108's "8 failing" was the Linux/CI estimate); QA-02 both suites green locally (fast 1295 passed; slow 15 passed / 2 e2e data-skips); no skip/xfail added anywhere in the phase. Code review WR-01 (store-registration weights_path not as_posix()) fixed post-review for D-07 consistency; phase verified 8/8 must-haves
 
 ### Pending Todos
 
@@ -73,10 +75,10 @@ Recent decisions affecting current work:
 ### Blockers/Concerns
 
 - Docs build is RED on `dev` — 4 dead `automodule` targets (`aquapose.mesh`, `aquapose.optimization`, `aquapose.segmentation`, `aquapose.utils`) fail under `sphinx-build -W`. Read the Docs is connected but cannot build until the `a66287a` repair is forward-ported. Addressed by Phase 108 (108-01 merge delivered the repaired docs tree; verification is 108-05's remaining scope item).
-- 8 failing tests on `dev` — `test_luts.py::test_forward_lut_cast_ray_matches_model` is a tier-one blocker; the other 7 are stale CLI-help assertions and fixtures in `training/` and `evaluation/`. Addressed by Phase 109.
+- ~~8 failing tests on `dev`~~ — **resolved by Phase 109**: the real baseline was 23 local-Windows failures (config paths, symlink privilege, CLI-help, encoding, re-ID Swin size); QA-01 `test_luts.py::test_forward_lut_cast_ray_matches_model` was already green on the local 3.12 env (STATE-108's count was the Linux/CI estimate). Full suite green locally (fast 1295 passed; slow 15 passed / 2 e2e data-skips), no skip/xfail introduced.
 - ~~`.planning/` is gitignored on `dev`~~ — **resolved by 108-03**: the `.gitignore:100` rule was removed; `.planning/` is tracked normally.
 - ~~v3.11 has no MILESTONES.md entry~~ — **resolved by 108-04**: `v3.11 Appearance-Based ReID` and `v2.2 Backends` entries backfilled, tail re-sorted into chronological order (REC-01 satisfied).
-- Repo transferred mid-108-05 from tlancaster6/AquaPose to McGrathLab/AquaPose (verified: same object history). Stale tlancaster6 URLs remain in pyproject.toml (3: Homepage/Repository/Issues, ships in PyPI metadata), CODE_OF_CONDUCT.md (1), docs/contributing.md (1), and ~829 historical links in CHANGELOG.md. pyproject.toml is closed per 108-02; out of Phase 108 scope. Follow-up for Phase 109 or 114.
+- Repo transferred mid-108-05 from tlancaster6/AquaPose to McGrathLab/AquaPose (verified: same object history). **pyproject.toml URLs resolved by 109-03** (Homepage/Repository/Issues → McGrathLab/AquaPose). Stale tlancaster6 references still remain in CODE_OF_CONDUCT.md (1), docs/contributing.md (1), and ~829 historical links in CHANGELOG.md — deferred to Phase 114 (Publication).
 
 ### Environment Notes
 
@@ -86,6 +88,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last activity: 2026-09-01 — Phase 109 Plan 03 complete (stale --val-split assertions, cp1252 encoding, utf-8 init_cmd config, pyproject URLs)
-Stopped at: Phase 109 Plan 03 complete — continuing to Plan 04
-Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-04-PLAN.md
+Last activity: 2026-09-01 — Phase 109 complete: all 5 plans executed, code review (WR-01 fixed), verified 8/8 must-haves, phase marked complete in ROADMAP
+Stopped at: Phase 109 complete — Phase 110 (API Reference & Docs Tiering) not started
+Resume file: none — start Phase 110 (discuss or plan)

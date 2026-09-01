@@ -4,8 +4,8 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 111 context gathered
-last_updated: "2026-09-01T22:17:48.217Z"
-last_activity: 2026-09-01 -- Phase 111 planning complete
+last_updated: "2026-09-01T22:24:00.977Z"
+last_activity: 2026-09-01 -- Phase 111 execution started
 progress:
   total_phases: 7
   completed_phases: 3
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 110 — api-reference-docs-tiering
+**Current focus:** Phase 111 — Example Dataset & Reference Outputs
 
 ## Current Position
 
-Phase: 111
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-09-01 -- Phase 111 planning complete
+Phase: 111 (Example Dataset & Reference Outputs) — EXECUTING
+Plan: 1 of 3
+Status: Executing Phase 111
+Last activity: 2026-09-01 -- Phase 111 execution started
 
 ## Performance Metrics
 

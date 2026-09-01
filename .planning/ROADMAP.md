@@ -512,7 +512,7 @@ Plans:
 
 **Wave 1**
 
-- [ ] 111-01-PLAN.md — DATA-01: standalone `scripts/package_tutorial_dataset.py` — ffmpeg trim/re-encode (no spatial downscale), deposit tree assembly, canonical-model + calibration copy, relative-path config.yaml + license-correct README + zenodo-metadata.json
+- [x] 111-01-PLAN.md — DATA-01: standalone `scripts/package_tutorial_dataset.py` — ffmpeg trim/re-encode (no spatial downscale), deposit tree assembly, canonical-model + calibration copy, relative-path config.yaml + license-correct README + zenodo-metadata.json
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -572,7 +572,7 @@ Plans:
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
-| 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
+| 111. Example Dataset & Reference Outputs | 1/3 | In Progress|  |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

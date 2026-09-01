@@ -483,12 +483,14 @@ class TestTrainReidEndToEnd:
         # has a fixed 224-input contract (timm asserts H==224). The production default
         # is crop_size=224; the sibling ImageCropDataset tests already use 224.
         # Fix: correct the fixture to crop_size=224, matching the backbone contract.
+        # Device-adaptive: 224px end-to-end Swin fine-tuning is minutes on GPU but
+        # ~hours on CPU; use CUDA when available, fall back to CPU on GPU-less runners.
         config = ReidTrainingConfig(
             reid_crops_dir=crops_dir,
             output_dir=output_dir,
             epochs=2,
             patience=0,
-            device="cpu",
+            device="cuda" if torch.cuda.is_available() else "cpu",
             samples_per_class=4,
             unfreeze_blocks=2,
             lr_backbone_factor=0.1,
@@ -517,12 +519,14 @@ class TestTrainReidEndToEnd:
 
         # D-10 root-cause note: same fixture fix as test_smoke_end_to_end_training;
         # crop_size must match MegaDescriptor-T-224 Swin fixed 224-input contract.
+        # Device-adaptive (see test_smoke_end_to_end_training): CUDA when available,
+        # CPU fallback otherwise.
         config = ReidTrainingConfig(
             reid_crops_dir=crops_dir,
             output_dir=output_dir,
             epochs=2,
             patience=0,
-            device="cpu",
+            device="cuda" if torch.cuda.is_available() else "cpu",
             samples_per_class=4,
             unfreeze_blocks=2,
             lr_backbone_factor=0.1,

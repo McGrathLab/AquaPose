@@ -247,14 +247,17 @@ def update_config_weights(
 
     if section not in config:
         config[section] = {}
-    config[section]["weights_path"] = str(weights_path)
+    # Normalize to forward slashes so the YAML value is platform-neutral (D-07).
+    # str(weights_path) yields backslashes on Windows; as_posix() always uses '/'.
+    posix_weights = Path(weights_path).as_posix()
+    config[section]["weights_path"] = posix_weights
 
     with open(config_path, "w") as f:
         yaml.dump(config, f, default_flow_style=False, sort_keys=False)
 
     click.echo(
         click.style(
-            f"Updated {config_path}: {section}.weights_path = {weights_path}",
+            f"Updated {config_path}: {section}.weights_path = {posix_weights}",
             bold=True,
             fg="green",
         )

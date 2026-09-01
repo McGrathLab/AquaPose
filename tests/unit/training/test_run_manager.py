@@ -360,9 +360,9 @@ class TestRegisterTrainedModel:
             assert model is not None
             assert model["weights_path"] == str(best_weights)
 
-        # Verify config was updated
+        # Verify config was updated (D-07: written with forward slashes)
         loaded = yaml.safe_load(config_path.read_text())
-        assert loaded["detection"]["weights_path"] == str(best_weights)
+        assert loaded["detection"]["weights_path"] == best_weights.as_posix()
 
 
 class TestPrintNextSteps:

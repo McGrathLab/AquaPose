@@ -590,11 +590,12 @@ def _build_stage_dict_from_dotted(
 
 #: Maps obsolete/renamed YAML field names to their current equivalents.
 #: Used by _filter_fields() to produce actionable error messages.
+#: Note: ``model_path`` is intentionally absent — it was removed as a pre-1.0
+#: clean break (D-04).  Configs must use ``weights_path`` directly.
 _RENAME_HINTS: dict[str, str] = {
     "expect_fish_count": "n_animals (top-level)",
     "device": "device (top-level)",
     "stop_frame": "max_frames on frame source (set via CLI --set or orchestrator)",
-    "model_path": "weights_path",
     "n_points": "n_sample_points (top-level)",
     "iou_threshold": "removed (OC-SORT only; keypoint_oks does not use IoU matching)",
 }
@@ -652,6 +653,13 @@ def load_config(
     CLI overrides may use dot-notation keys ("detection.detector_kind") or
     nested dicts ({"detection": {"detector_kind": "mog2"}}) — both forms
     work.  YAML files use nested dicts.
+
+    **Path resolution convention (D-03):** Both ``detection.weights_path`` and
+    ``midline.weights_path`` (mapped to ``pose_kwargs``) resolve relative to
+    ``project_dir`` when given as relative paths; absolute paths are honored
+    as-is.  This is enforced in layer 3.5 before the config is frozen.  The
+    legacy ``model_path`` alias was removed in a pre-1.0 clean break (D-04);
+    configs must use ``weights_path`` directly.
 
     Args:
         yaml_path: Optional path to a YAML config file.

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-status: executing
+status: verifying
 stopped_at: Phase 110 context gathered
-last_updated: "2026-09-01T21:11:35.980Z"
+last_updated: "2026-09-01T21:30:04.556Z"
 last_activity: 2026-09-01
 progress:
   total_phases: 7
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 13
-  completed_plans: 12
-  percent: 29
+  completed_plans: 13
+  percent: 43
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 
 Phase: 110 (api-reference-docs-tiering) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-09-01
 
 ## Performance Metrics
@@ -67,6 +67,7 @@ Recent decisions affecting current work:
 - [Phase 109-03]: Removed --val-split from train obb/seg/pose expected_flags (D-11 stale assertion; splitting is data assemble's responsibility); fixed test_viz cp1252 read with encoding="utf-8" (D-08); added encoding="utf-8" to init_cmd config.yaml write_text (D-08/QA-04); replaced tlancaster6/aquapose with McGrathLab/AquaPose in pyproject.toml Homepage/Repository/Issues (D-06)
 - [Phase 109-04]: Corrected the 2 @slow re-ID end-to-end fixtures crop_size 32→224 to match the fixed-224 MegaDescriptor-T Swin contract (D-10, stale fixture not a regression); made the fixtures device-adaptive (cuda if available else cpu) — the hardcoded device="cpu" was the true cause of the ~2h runtime. Both slow tests verified green on GPU (~47m); slow suite green locally rather than deferred to CI
 - [Phase 109-05]: Terminal green gate — QA-01 LUT parity confirmed green (resolved not skipped, 1e-4/0.01 tolerances untouched; STATE-108's "8 failing" was the Linux/CI estimate); QA-02 both suites green locally (fast 1295 passed; slow 15 passed / 2 e2e data-skips); no skip/xfail added anywhere in the phase. Code review WR-01 (store-registration weights_path not as_posix()) fixed post-review for D-07 consistency; phase verified 8/8 must-haves
+- [Phase ?]: suppress_warnings=['ref.python'] in conf.py resolves cross-reference ambiguity from re-exported submodule symbols without relaxing -W
 
 ### Pending Todos
 
@@ -97,3 +98,4 @@ Resume file: None
 | Phase | Plan | Duration | Notes |
 |-------|------|----------|-------|
 | Phase 110 P01 | 10 | 2 tasks | 11 files |
+| Phase 110 P03 | 30m | 2 tasks | 9 files |

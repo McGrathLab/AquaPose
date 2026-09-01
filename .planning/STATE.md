@@ -4,13 +4,13 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 110 context gathered
-last_updated: "2026-09-01T21:00:50.845Z"
-last_activity: 2026-09-01 -- Phase 110 planning complete
+last_updated: "2026-09-01T21:07:22.718Z"
+last_activity: 2026-09-01
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 13
-  completed_plans: 10
+  completed_plans: 11
   percent: 29
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 109 complete — next: Phase 110 (API Reference & Docs Tiering)
+**Current focus:** Phase 110 — api-reference-docs-tiering
 
 ## Current Position
 
-Phase: 110
-Plan: Not started
+Phase: 110 (api-reference-docs-tiering) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-09-01 -- Phase 110 planning complete
+Last activity: 2026-09-01
 
 ## Performance Metrics
 
@@ -90,4 +90,10 @@ Recent decisions affecting current work:
 
 Last activity: 2026-09-01 — Phase 109 complete: all 5 plans executed, code review (WR-01 fixed), verified 8/8 must-haves, phase marked complete in ROADMAP
 Stopped at: Phase 110 context gathered
-Resume file: .planning/phases/110-api-reference-docs-tiering/110-CONTEXT.md
+Resume file: None
+
+## Performance Metrics
+
+| Phase | Plan | Duration | Notes |
+|-------|------|----------|-------|
+| Phase 110 P01 | 10 | 2 tasks | 11 files |

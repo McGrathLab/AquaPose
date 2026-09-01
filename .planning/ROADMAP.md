@@ -490,7 +490,7 @@ Plans:
 
 **Wave 1** *(disjoint files_modified — run in parallel)*
 
-- [ ] 110-01-PLAN.md — DOCS-01/DOCS-02: tier-one "Core Pipeline" per-package automodule pages (core/types, detection, tracking, association, pose, reconstruction, runtime; expand calibration/engine/io; new cli page) in D-06 stage order
+- [x] 110-01-PLAN.md — DOCS-01/DOCS-02: tier-one "Core Pipeline" per-package automodule pages (core/types, detection, tracking, association, pose, reconstruction, runtime; expand calibration/engine/io; new cli page) in D-06 stage order
 - [ ] 110-02-PLAN.md — DOCS-01/DOCS-02: tier-two "Research Utilities" pages with the verbatim D-05 status note (evaluation + stages + viz, training, synthetic, core/reid)
 
 **Wave 2** *(blocked on Wave 1)*
@@ -559,7 +559,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
-| 110. API Reference & Docs Tiering | 0/3 | Not started | - |
+| 110. API Reference & Docs Tiering | 1/3 | In Progress|  |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |

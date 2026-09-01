@@ -94,7 +94,8 @@ dmypy.json
 
 # Project-specific
 tmp/
-scripts/
+# scripts/ — intentional Python scripts are tracked (detect_swaps.py, package_tutorial_dataset.py)
+# Only ignore generated/output content inside scripts/ if needed
 baseline_tracking_output/
 *.pt
 *.mp4

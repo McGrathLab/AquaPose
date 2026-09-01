@@ -97,6 +97,12 @@ napoleon_use_ivar = True
 # Autodoc configuration
 autodoc_member_order = "bysource"
 autodoc_typehints = "description"
+# Suppress cross-reference ambiguity warnings for re-exported symbols.
+# Each public package re-exports its submodule symbols in __init__.py, so
+# Sphinx finds two valid targets for the same class (one from the __init__
+# automodule and one from the submodule automodule). This is the standard
+# Sphinx mechanism for exactly this situation and does not relax -W.
+suppress_warnings = ["ref.python"]
 # Heavy runtime dependencies are not installed in the docs environment; autodoc
 # only needs to import the modules, not execute them.
 autodoc_mock_imports = [

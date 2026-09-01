@@ -251,6 +251,7 @@ class SwapDetector:
     """Detects and repairs fish identity swaps using appearance embeddings.
 
     Supports two detection modes:
+
     - **seeded**: Reads body-length swap events from ``/midlines/swap_events``
       in the stitched H5, confirms or rejects each using cross-pattern cosine
       similarity of temporal embedding windows.

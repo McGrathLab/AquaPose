@@ -5,6 +5,7 @@ Evaluation Core
    :members:
    :undoc-members:
    :show-inheritance:
+   :exclude-members: AssociationMetrics, DetectionMetrics, MidlineMetrics, ReconstructionMetrics, TrackingMetrics
 
 .. automodule:: aquapose.evaluation.compare
    :members:

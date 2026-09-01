@@ -5,6 +5,7 @@ Reconstruction
    :members:
    :undoc-members:
    :show-inheritance:
+   :exclude-members: Midline3D
 
 .. automodule:: aquapose.core.reconstruction.stage
    :members:

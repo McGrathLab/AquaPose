@@ -5,6 +5,7 @@ perform pure computation; observers react to lifecycle events (timing,
 logging, export, visualization) without mutating pipeline state.
 
 Design invariants:
+
 - Delivery is *synchronous* — the pipeline blocks on each ``on_event`` call.
   Determinism is mandatory; if an observer needs non-blocking behaviour it
   manages its own internal queue / worker thread.

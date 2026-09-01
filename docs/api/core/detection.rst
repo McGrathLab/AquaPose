@@ -5,6 +5,7 @@ Detection
    :members:
    :undoc-members:
    :show-inheritance:
+   :exclude-members: Detection
 
 .. automodule:: aquapose.core.detection.stage
    :members:

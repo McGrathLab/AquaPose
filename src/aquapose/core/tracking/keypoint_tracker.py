@@ -238,8 +238,10 @@ def compute_oks_matrix(
 ) -> np.ndarray:
     """Compute (N, M) OKS similarity matrix using vectorized NumPy broadcasting.
 
-    For each (track, detection) pair:
+    For each (track, detection) pair::
+
         OKS = sum(c_k * exp(-d_k^2 / (2 * s^2 * sigma_k^2))) / sum(c_k)
+
     where d_k = Euclidean distance for keypoint k, s = sqrt(detection scale).
 
     Args:

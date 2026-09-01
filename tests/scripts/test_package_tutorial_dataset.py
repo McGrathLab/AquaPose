@@ -418,6 +418,163 @@ class TestCopyModelsAndCalibration:
         assert content == b"fake-pose"
 
 
+class TestRegenerateReferenceOutputs:
+    """Tests for regenerate_reference_outputs() — mocked subprocess, no GPU."""
+
+    def _make_fake_run(self, ref_dir: Path) -> Path:
+        """Create a fake run directory with midlines.h5 under ref_dir."""
+        run_dir = ref_dir / "run_20260901_120000"
+        run_dir.mkdir(parents=True, exist_ok=True)
+        (run_dir / "midlines.h5").write_bytes(b"fake-midlines")
+        return run_dir
+
+    def _fake_subprocess_run(
+        self,
+        ref_dir: Path,
+        calls: list[list[str]],
+        cmd: list[str],
+        *,
+        capture_output: bool = False,
+        text: bool = False,
+        cwd: str | None = None,
+    ) -> object:
+        """Fake subprocess.run: records the call and creates the fake run dir on first call."""
+        calls.append(list(cmd))
+        # On the first call (aquapose run), create the fake run directory + midlines.h5
+        if any(tok == "run" for tok in cmd) and "--mode" in cmd:
+            self._make_fake_run(ref_dir)
+        # On the second call (aquapose viz), create animation + overlay files
+        if "--animation" in cmd:
+            (ref_dir / "animation_3d.html").write_bytes(b"<html>animation</html>")
+            (ref_dir / "overlay_mosaic.mp4").write_bytes(b"fake-mp4")
+
+        class _Result:
+            returncode = 0
+            stdout = ""
+            stderr = ""
+
+        return _Result()
+
+    def test_pipeline_argv_contains_run_config_mode_diagnostic(
+        self, tmp_path: Path
+    ) -> None:
+        """Pipeline subprocess argv must contain 'run', '--mode', 'diagnostic'."""
+        deposit_dir = tmp_path / "deposit"
+        deposit_dir.mkdir()
+        ref_dir = deposit_dir / "reference_outputs"
+        calls: list[list[str]] = []
+
+        with patch(
+            "subprocess.run",
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+        ):
+            pkg.regenerate_reference_outputs(deposit_dir)
+
+        assert calls, "subprocess.run was never called"
+        pipeline_call = calls[0]
+        assert "run" in pipeline_call, f"'run' not in pipeline argv: {pipeline_call}"
+        assert "--mode" in pipeline_call, f"'--mode' not in pipeline argv: {pipeline_call}"
+        assert "diagnostic" in pipeline_call, (
+            f"'diagnostic' not in pipeline argv: {pipeline_call}"
+        )
+
+    def test_pipeline_argv_contains_output_dir_override(
+        self, tmp_path: Path
+    ) -> None:
+        """Pipeline argv must contain '--set' and an output_dir=...reference_outputs token."""
+        deposit_dir = tmp_path / "deposit"
+        deposit_dir.mkdir()
+        ref_dir = deposit_dir / "reference_outputs"
+        calls: list[list[str]] = []
+
+        with patch(
+            "subprocess.run",
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+        ):
+            pkg.regenerate_reference_outputs(deposit_dir)
+
+        pipeline_call = calls[0]
+        assert "--set" in pipeline_call, f"'--set' not in pipeline argv: {pipeline_call}"
+        # One of the tokens after --set must reference reference_outputs
+        joined = " ".join(str(t) for t in pipeline_call)
+        assert "reference_outputs" in joined, (
+            f"output_dir override not in pipeline argv: {pipeline_call}"
+        )
+
+    def test_viz_argv_contains_animation_and_overlay(
+        self, tmp_path: Path
+    ) -> None:
+        """Viz subprocess argv must contain 'viz', '--animation', '--overlay'."""
+        deposit_dir = tmp_path / "deposit"
+        deposit_dir.mkdir()
+        ref_dir = deposit_dir / "reference_outputs"
+        calls: list[list[str]] = []
+
+        with patch(
+            "subprocess.run",
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+        ):
+            pkg.regenerate_reference_outputs(deposit_dir)
+
+        assert len(calls) >= 2, f"Expected at least 2 subprocess calls, got {len(calls)}"
+        viz_call = calls[1]
+        assert "viz" in viz_call, f"'viz' not in viz argv: {viz_call}"
+        assert "--animation" in viz_call, f"'--animation' not in viz argv: {viz_call}"
+        assert "--overlay" in viz_call, f"'--overlay' not in viz argv: {viz_call}"
+
+    def test_timing_txt_is_written(self, tmp_path: Path) -> None:
+        """timing.txt must be written into reference_outputs/."""
+        deposit_dir = tmp_path / "deposit"
+        deposit_dir.mkdir()
+        ref_dir = deposit_dir / "reference_outputs"
+        calls: list[list[str]] = []
+
+        with patch(
+            "subprocess.run",
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+        ):
+            pkg.regenerate_reference_outputs(deposit_dir)
+
+        timing_txt = ref_dir / "timing.txt"
+        assert timing_txt.exists(), "timing.txt was not written to reference_outputs/"
+        content = timing_txt.read_text(encoding="utf-8")
+        assert "pipeline_wall_seconds" in content
+        assert "viz_wall_seconds" in content
+
+    def test_outputs_h5_is_copied(self, tmp_path: Path) -> None:
+        """outputs.h5 must be copied from the run dir's midlines.h5."""
+        deposit_dir = tmp_path / "deposit"
+        deposit_dir.mkdir()
+        ref_dir = deposit_dir / "reference_outputs"
+        calls: list[list[str]] = []
+
+        with patch(
+            "subprocess.run",
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+        ):
+            pkg.regenerate_reference_outputs(deposit_dir)
+
+        outputs_h5 = ref_dir / "outputs.h5"
+        assert outputs_h5.exists(), "outputs.h5 was not written to reference_outputs/"
+        assert outputs_h5.stat().st_size > 0
+
+    def test_raises_on_subprocess_failure(self, tmp_path: Path) -> None:
+        """RuntimeError is raised when the pipeline subprocess returns non-zero."""
+        deposit_dir = tmp_path / "deposit"
+        deposit_dir.mkdir()
+
+        class _FailResult:
+            returncode = 1
+            stdout = ""
+            stderr = "CUDA error: device not found"
+
+        with (
+            patch("subprocess.run", return_value=_FailResult()),
+            pytest.raises(RuntimeError, match="aquapose run failed"),
+        ):
+            pkg.regenerate_reference_outputs(deposit_dir)
+
+
 class TestModuleLevelImports:
     """Verify lazy import discipline (D-09)."""
 

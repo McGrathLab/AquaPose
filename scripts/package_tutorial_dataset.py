@@ -478,29 +478,187 @@ def write_zenodo_metadata(output_dir: Path) -> Path:
 
 
 # ---------------------------------------------------------------------------
-# Reference output regeneration stub (Plan 02 will implement)
+# Console-script discovery
 # ---------------------------------------------------------------------------
 
 
-def regenerate_reference_outputs(output_dir: Path) -> None:
-    """Stub for reference-output regeneration — implemented in Plan 02.
+def _aquapose_invoke() -> list[str]:
+    """Return the argv prefix to invoke the ``aquapose`` console-script.
 
-    Runs ``aquapose run`` (diagnostic mode) then ``aquapose viz`` on the deposited
-    clip and config to produce ``reference_outputs/{outputs.h5, animation_3d.html,
-    overlay_mosaic.mp4, timing.txt}``.
+    Uses the console-script entry-point installed next to ``sys.executable``
+    (``Scripts/aquapose.exe`` on Windows, ``bin/aquapose`` on POSIX).  Falls
+    back to an inline ``python -c`` import when the entry-point is absent (e.g.
+    editable installs in some environments).
 
-    This function is a documented stub. Plan 02 (reference outputs plan) will
-    fill in the subprocess invocations. It prints a notice and returns without
-    doing anything so the rest of the packaging workflow can complete.
+    Returns:
+        List of one or more strings to prepend to an ``aquapose`` subprocess
+        command, e.g. ``["aquapose"]`` or ``[sys.executable, "-c", "..."]``.
+    """
+    aquapose_script = Path(sys.executable).parent / "aquapose"
+    if sys.platform == "win32":
+        aquapose_script = aquapose_script.with_suffix(".exe")
+    if aquapose_script.exists():
+        return [str(aquapose_script)]
+    return [sys.executable, "-c", "from aquapose.cli import main; main()"]
+
+
+def _run_subprocess(cmd: list[str], cwd: Path, label: str) -> None:
+    """Run a subprocess command, raising RuntimeError on failure.
 
     Args:
-        output_dir: Root of the deposit tree (contains config.yaml, videos/, etc.).
+        cmd: Command argv list.
+        cwd: Working directory for the subprocess.
+        label: Human-readable label for error messages.
+
+    Raises:
+        RuntimeError: If the subprocess exits with a non-zero return code.
     """
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=str(cwd))
+    if result.returncode != 0:
+        parts = []
+        if result.stderr and result.stderr.strip():
+            parts.append(result.stderr.strip())
+        if result.stdout and result.stdout.strip():
+            parts.append(result.stdout.strip())
+        error = "\n".join(parts) if parts else f"Exit code {result.returncode}"
+        raise RuntimeError(f"{label} failed:\n{error}")
+
+
+# ---------------------------------------------------------------------------
+# Reference output regeneration (Plan 02)
+# ---------------------------------------------------------------------------
+
+
+def regenerate_reference_outputs(deposit_dir: Path) -> None:
+    """Run the pipeline in diagnostic mode then viz on the deposited tree.
+
+    Produces ``reference_outputs/{outputs.h5, animation_3d.html,
+    overlay_mosaic.mp4, timing.txt}`` by:
+
+    - **Step A**: Running ``aquapose run --set output_dir=reference_outputs
+      --mode diagnostic`` from ``cwd=deposit_dir`` so the relative
+      ``project_dir: .`` in the deposited ``config.yaml`` resolves correctly.
+      The pipeline writes ``midlines.h5`` into the new run directory.
+    - **Step B**: Running ``aquapose viz <run_dir> --animation --overlay
+      --output-dir <deposit_dir>/reference_outputs`` to produce the 3D
+      animation HTML and the overlay mosaic MP4.
+    - **Step C**: Renaming ``midlines.h5`` to the canonical ``outputs.h5``,
+      writing ``timing.txt`` with wall-clock durations, and printing a summary
+      of the four reference-output artifacts.
+
+    The deposit tree must already contain ``config.yaml``, ``videos/``, and
+    ``models/`` before this function is called.
+
+    Args:
+        deposit_dir: Root of the assembled deposit tree (absolute path).
+            Must contain ``config.yaml`` with ``project_dir: .``.
+
+    Raises:
+        RuntimeError: If the pipeline or viz subprocess exits non-zero, or if
+            no run directory is found in ``reference_outputs/`` after the
+            pipeline completes.
+    """
+    ref_dir = deposit_dir / "reference_outputs"
+    ref_dir.mkdir(parents=True, exist_ok=True)
+
+    invoke = _aquapose_invoke()
+
     print()
     print("--- Reference Output Regeneration (--regenerate-outputs) ---")
-    print("  NOTE: This step is handled by Plan 02 (111-02-PLAN.md).")
-    print("  Run again after Plan 02 is complete to generate reference outputs.")
-    print("  Skipping for now.")
+
+    # ------------------------------------------------------------------
+    # Step A: Run the pipeline in diagnostic mode
+    # ------------------------------------------------------------------
+    print("  Step A: Running aquapose run (diagnostic mode) ...")
+    pipeline_cmd = [
+        *invoke,
+        "run",
+        "--set", f"output_dir={ref_dir}",
+        "--mode", "diagnostic",
+    ]
+    t0_pipeline = time.perf_counter()
+    _run_subprocess(pipeline_cmd, cwd=deposit_dir, label="aquapose run")
+    pipeline_elapsed = time.perf_counter() - t0_pipeline
+    print(f"  Pipeline done in {pipeline_elapsed:.1f}s")
+
+    # ------------------------------------------------------------------
+    # Locate the run directory produced under reference_outputs/
+    # ------------------------------------------------------------------
+    run_dirs = sorted(
+        [d for d in ref_dir.iterdir() if d.is_dir() and d.name.startswith("run_")],
+        key=lambda p: p.name,
+    )
+    if not run_dirs:
+        raise RuntimeError(
+            f"No run_* directory found in {ref_dir} after pipeline completed. "
+            "Check that the pipeline wrote its output to the expected location."
+        )
+    run_dir = run_dirs[-1]
+    print(f"  Run directory: {run_dir.name}")
+
+    # ------------------------------------------------------------------
+    # Step B: Generate 3D animation + overlay mosaic via aquapose viz
+    # ------------------------------------------------------------------
+    print("  Step B: Running aquapose viz (--animation --overlay) ...")
+    viz_cmd = [
+        *invoke,
+        "viz",
+        str(run_dir),
+        "--animation",
+        "--overlay",
+        "--output-dir", str(ref_dir),
+    ]
+    t0_viz = time.perf_counter()
+    _run_subprocess(viz_cmd, cwd=deposit_dir, label="aquapose viz")
+    viz_elapsed = time.perf_counter() - t0_viz
+    print(f"  Viz done in {viz_elapsed:.1f}s")
+
+    # ------------------------------------------------------------------
+    # Step C: Normalize filenames + write timing.txt
+    # ------------------------------------------------------------------
+    print("  Step C: Normalizing artifacts ...")
+
+    # Rename midlines.h5 (or midlines_stitched.h5) to outputs.h5 in ref_dir
+    midlines_h5 = run_dir / "midlines_stitched.h5"
+    if not midlines_h5.exists():
+        midlines_h5 = run_dir / "midlines.h5"
+    if not midlines_h5.exists():
+        raise RuntimeError(
+            f"Expected midlines.h5 or midlines_stitched.h5 in {run_dir} "
+            "but neither was found."
+        )
+    outputs_h5 = ref_dir / "outputs.h5"
+    shutil.copy2(midlines_h5, outputs_h5)
+
+    # animation_3d.html and overlay_mosaic.mp4 are already at canonical names
+    # in ref_dir (written by viz --output-dir)
+    animation_html = ref_dir / "animation_3d.html"
+    overlay_mp4 = ref_dir / "overlay_mosaic.mp4"
+
+    # Write timing.txt
+    timing_txt = ref_dir / "timing.txt"
+    timing_txt.write_text(
+        f"pipeline_wall_seconds: {pipeline_elapsed:.2f}\n"
+        f"viz_wall_seconds: {viz_elapsed:.2f}\n"
+        f"total_wall_seconds: {pipeline_elapsed + viz_elapsed:.2f}\n",
+        encoding="utf-8",
+    )
+
+    # ------------------------------------------------------------------
+    # Summary
+    # ------------------------------------------------------------------
+    artifacts = [
+        ("outputs.h5", outputs_h5),
+        ("animation_3d.html", animation_html),
+        ("overlay_mosaic.mp4", overlay_mp4),
+        ("timing.txt", timing_txt),
+    ]
+    print()
+    print("  Reference outputs:")
+    for name, path in artifacts:
+        size_kb = path.stat().st_size / 1024 if path.exists() else 0.0
+        status = f"{size_kb:,.1f} KB" if path.exists() else "MISSING"
+        print(f"    {name}: {status}")
     print()
 
 
@@ -657,9 +815,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  Written: {meta_path}")
         print()
 
-        # Step 6: Optionally regenerate reference outputs (Plan 02 stub)
+        # Step 6: Optionally regenerate reference outputs (Plan 02)
         if args.regenerate_outputs:
-            regenerate_reference_outputs(output_dir=output_dir)
+            regenerate_reference_outputs(deposit_dir=output_dir)
 
         # Step 7: Write checksums over the assembled tree (partial — full manifest in Plan 03)
         print("--- Step 7: Write checksums.sha256 ---")

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 status: executing
-stopped_at: Phase 109 context gathered
-last_updated: "2026-09-01T14:45:21.720Z"
-last_activity: 2026-09-01 -- Phase 109 planning complete
+stopped_at: Phase 109 Plan 01 complete
+last_updated: "2026-09-01T15:15:00.000Z"
+last_activity: 2026-09-01 -- Phase 109 Plan 01 executed (config alias removal + run_manager forward-slash fix)
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 10
-  completed_plans: 5
-  percent: 14
+  completed_plans: 6
+  percent: 16
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 108 — branch-reconciliation-repo-hygiene
+**Current focus:** Phase 109 — correctness-green-test-suite-config-consolidation
 
 ## Current Position
 
-Phase: 108 (branch-reconciliation-repo-hygiene) — EXECUTING
-Plan: 5 of 5
-Status: Ready to execute
-Last activity: 2026-09-01 -- Phase 109 planning complete
+Phase: 109 (correctness-green-test-suite-config-consolidation) — EXECUTING
+Plan: 2 of 5
+Status: Executing Phase 109 (Plan 01 complete)
+Last activity: 2026-09-01 -- Phase 109 Plan 01 executed (config alias removal + run_manager forward-slash fix)
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Recent decisions affecting current work:
 - [Phase 108]: [Phase 108-03]: un-ignored .planning/ (D-18), removed dead tests/integration/segmentation and 4 stale top-level src/aquapose/ residue dirs (D-20), quarantined then permanently deleted the untracked SAM2 source clone after correcting the plan's model-weights premise and getting explicit user confirmation (OI-02) — Satisfies FOUND-04; pyproject.toml was not touched, confirming 108-02's ownership claim held with no conflict
 - [Phase 108]: [Phase 108-04]: Backfilled v3.11 Appearance-Based ReID and v2.2 Backends milestone entries into MILESTONES.md and re-sorted the tail into chronological order (REC-01) - all numeric fields measured from git, never estimated; two orphaned/unreachable commits discovered in dev's history and routed around during derivation
 - [Phase 108]: [Phase 108-05]: Re-derived autodoc_mock_imports empirically (timm, pytorch_metric_learning, shapely, sklearn) which alone drove sphinx-build -W to exit 0 with zero warnings; pushed dev to origin (transferred mid-session to McGrathLab/AquaPose, independently re-verified before push) - Documentation workflow succeeded (FOUND-02), release.yml cut v1.2.0-dev.1 against the AGPL-declared tree
+- [Phase 109-01]: Removed model_path alias from _RENAME_HINTS (D-04 clean break); verified layer 3.5 already handles both det_kwargs/pose_kwargs weights_path resolution (D-03); fixed run_manager.update_config_weights to use as_posix() for platform-neutral YAML writes (D-07), fixing 2 Windows path-separator test failures
 
 ### Pending Todos
 
@@ -83,6 +84,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last activity: 2026-08-12 — v4.0 ROADMAP.md created (7 phases, 108-114), REQUIREMENTS.md traceability filled in
-Stopped at: Phase 109 context gathered
-Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-CONTEXT.md
+Last activity: 2026-09-01 — Phase 109 Plan 01 complete (config alias removal, run_manager forward-slash fix)
+Stopped at: Phase 109 Plan 01 complete — continuing to Plan 02
+Resume file: .planning/phases/109-correctness-green-test-suite-config-consolidation/109-02-PLAN.md

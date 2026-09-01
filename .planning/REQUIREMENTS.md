@@ -112,7 +112,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-05 | 108 | Complete |
 | QA-01 | 109 | Pending |
 | QA-02 | 109 | Pending |
-| QA-03 | 109 | Pending |
+| QA-03 | 109 | In progress (Plan 01 done) |
 | QA-04 | 109 | Pending |
 | DOCS-01 | 110 | Pending |
 | DOCS-02 | 110 | Pending |

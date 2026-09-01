@@ -462,7 +462,11 @@ Plans:
   3. `keypoint_weights_path` and `detection.model_path` resolve using the same convention relative to `project_dir`
   4. The tutorial config uses only relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
 
-**Plans**: TBD
+**Plans**: 4 plans
+- [ ] 109-01-PLAN.md — QA-01: diagnose and resolve the tier-one LUT cast_ray parity test (no skip/xfail)
+- [ ] 109-02-PLAN.md — QA-02: fix the 7 tier-two training/engine failures and run the terminal test-all green gate
+- [ ] 109-03-PLAN.md — QA-03: unify weights-path resolution relative to project_dir and remove the model_path alias
+- [ ] 109-04-PLAN.md — QA-04/D-06: make the init tutorial config platform-neutral and fix the 3 stale pyproject URLs
 
 ### Phase 110: API Reference & Docs Tiering
 

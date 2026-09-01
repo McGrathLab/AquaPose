@@ -98,26 +98,26 @@ runnable locally regardless of the code fix (independent of D-09).
   109 to 111).
 
 ### Platform correctness (added 2026-09-01 from Baseline Diagnosis)
-- **D-07 (QA-03 + portability):** In `run_manager` weights-path writing, normalize the
+- **D-07:** (QA-03 + portability) In `run_manager` weights-path writing, normalize the
   written `weights_path` to **forward slashes** so `detection.weights_path` /
   `midline.weights_path` are platform-neutral (fixes the `\new\best.pt` failure). Fold
   into the QA-03 config-unification work — same surface as D-03/D-04.
-- **D-08 (QA-04 portability):** The `read_text()` behind
+- **D-08:** (QA-04 portability) The `read_text()` behind
   `test_viz.py::test_prefers_stitched_h5` must pass **`encoding="utf-8"`** (never rely on
   the OS default / cp1252). Audit sibling `read_text`/`write_text` on user-facing paths
   for the same latent bug while in the file.
-- **D-09 (QA-04 hot-path robustness — Option A, user-confirmed 2026-09-01):** Make
+- **D-09:** (QA-04 hot-path robustness — Option A, user-confirmed 2026-09-01) Make
   `store.assemble()` resilient to missing symlink privilege: try `symlink_to` → on
   privilege `OSError` fall back to **hardlink** (`os.link`, same-volume, no data
   duplication) → fall back to **copy** (`shutil.copy2`) only if cross-volume. Fixes the
   14 failures AND unblocks real Windows `data assemble` usage (store.py:755-756 is the
   only symlink site in `src/`). Update `test_symlinks_are_relative` semantics to "symlink
   when privileged, else a valid hardlink/copy" rather than asserting a hard symlink.
-- **D-10 (QA-02 timm, slow):** Resolve the re-ID Swin input-size mismatch (32px vs 224).
+- **D-10:** (QA-02 timm, slow) Resolve the re-ID Swin input-size mismatch (32px vs 224).
   Per D-02, first classify: is the fixture's 32px input wrong (should be 224), does the
   backbone need `dynamic_img_size`, or is it a timm-version behavior change? Fix the real
   cause. Gates slow-tests green.
-- **D-11 (QA-02 CLI flag):** For the 3 `--val-split` help-assertion failures, determine
+- **D-11:** (QA-02 CLI flag) For the 3 `--val-split` help-assertion failures, determine
   whether the flag was renamed/removed (→ update the stale assertions to the real CLI) or
   genuinely dropped (→ restore it). One-line root-cause note per test (D-02 discipline).
 

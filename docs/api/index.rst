@@ -1,13 +1,31 @@
 API Reference
 =============
 
+Core Pipeline
+-------------
+
 .. toctree::
    :maxdepth: 2
 
    calibration
-   core
+   core/types
+   core/detection
+   core/tracking
+   core/association
+   core/pose
+   core/reconstruction
+   core/runtime
    engine
-   evaluation
    io
-   synthetic
+   cli
+
+Research Utilities
+------------------
+
+.. toctree::
+   :maxdepth: 2
+
+   evaluation
    training
+   synthetic
+   core/reid

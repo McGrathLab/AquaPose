@@ -1,17 +1,17 @@
-IO
-==
+CLI
+===
 
-.. automodule:: aquapose.io
+.. automodule:: aquapose.cli
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: aquapose.io.discovery
+.. automodule:: aquapose.cli_utils
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: aquapose.io.midline_writer
+.. automodule:: aquapose.logging
    :members:
    :undoc-members:
    :show-inheritance:

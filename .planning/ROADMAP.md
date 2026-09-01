@@ -483,10 +483,19 @@ Plans:
 **Success Criteria** (what must be TRUE):
 
   1. The API reference visibly separates tier-one core pipeline modules (detection, tracking, association, pose/midline, reconstruction, calibration, engine) from tier-two research utilities (`training/`, `evaluation/`, `core/reid/`, pseudo-labeling), with honest status labels on tier two
-  2. Every public module appears in the rendered API reference — including `core/association/*`, `core/tracking/*`, `core/types/*`, all `backends/` packages, `cli.py`, `io/video.py`, and `visualization/*`
+  2. Every public module appears in the rendered API reference — including `core/association/*`, `core/tracking/*`, `core/types/*`, all `backends/` packages, `cli.py`, `core/types/frame_source.py` (the real video/frame source; SC#2's `io/video.py` name does not exist), and `evaluation/viz/*` (the real visualization; SC#2's `visualization/*` name does not exist)
   3. `sphinx-build -W --keep-going` still exits clean with the expanded module tree
 
-**Plans**: TBD
+**Plans**: 3 plans (planned 2026-09-01)
+
+**Wave 1** *(disjoint files_modified — run in parallel)*
+
+- [ ] 110-01-PLAN.md — DOCS-01/DOCS-02: tier-one "Core Pipeline" per-package automodule pages (core/types, detection, tracking, association, pose, reconstruction, runtime; expand calibration/engine/io; new cli page) in D-06 stage order
+- [ ] 110-02-PLAN.md — DOCS-01/DOCS-02: tier-two "Research Utilities" pages with the verbatim D-05 status note (evaluation + stages + viz, training, synthetic, core/reid)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 110-03-PLAN.md — DOCS-01/DOCS-02: curated two-section index (D-04/D-06), retire the old flat core.rst stub, coverage cross-check vs the 98-module inventory, and the hard `hatch run docs:build` (-W --keep-going) green gate
 
 ### Phase 111: Example Dataset & Reference Outputs
 
@@ -550,7 +559,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
-| 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
+| 110. API Reference & Docs Tiering | 0/3 | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |

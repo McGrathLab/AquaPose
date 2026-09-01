@@ -358,7 +358,8 @@ class TestRegisterTrainedModel:
         with SampleStore(store_path) as store:
             model = store.get_model("run_20260306_100000")
             assert model is not None
-            assert model["weights_path"] == str(best_weights)
+            # D-07: store record uses forward slashes, matching the config value
+            assert model["weights_path"] == best_weights.as_posix()
 
         # Verify config was updated (D-07: written with forward slashes)
         loaded = yaml.safe_load(config_path.read_text())

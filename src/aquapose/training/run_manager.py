@@ -309,7 +309,9 @@ def register_trained_model(
     with SampleStore(store_path) as store:
         store.register_model(
             run_id=run_dir.name,
-            weights_path=str(best_weights),
+            # Forward slashes so the store record matches the config value (D-07);
+            # str() would yield backslashes on Windows for the same physical file.
+            weights_path=Path(best_weights).as_posix(),
             model_type=model_type,
             metrics=metrics,
             dataset_name=dataset_name,

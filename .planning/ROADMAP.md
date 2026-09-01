@@ -469,7 +469,7 @@ Plans:
 - [x] 109-01-PLAN.md — QA-03/D-04/D-07: unify weights_path resolution relative to project_dir, remove the model_path alias, forward-slash-normalize run_manager writes
 - [x] 109-02-PLAN.md — QA-04/QA-02/D-09: store.assemble symlink→hardlink→copy fallback (14 failures + WinError 1314 hot-path), update test_symlinks_are_relative semantics, fix list_models ordering flake
 - [x] 109-03-PLAN.md — QA-04/QA-02/D-05/D-08/D-11/D-06: fix the 3 stale --val-split help assertions, cp1252 encoding read, platform-neutral utf-8 tutorial config, and the 3 pyproject URLs
-- [ ] 109-04-PLAN.md — QA-02/D-10: fix the 2 @slow re-ID Swin input-size failures (32px vs 224 backbone)
+- [x] 109-04-PLAN.md — QA-02/D-10: fix the 2 @slow re-ID Swin input-size failures (32px vs 224 backbone)
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -549,7 +549,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
-| 109. Correctness — Green Test Suite & Config Consolidation | 3/5 | In progress | 2026-09-01 |
+| 109. Correctness — Green Test Suite & Config Consolidation | 4/5 | In Progress|  |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |

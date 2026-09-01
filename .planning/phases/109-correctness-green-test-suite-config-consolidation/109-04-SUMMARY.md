@@ -16,9 +16,10 @@ key_files:
 decisions:
   - "D-10 root cause: the 2 @slow TestTrainReidEndToEnd fixtures passed crop_size=32 into the 224-input MegaDescriptor-T Swin backbone, tripping timm _assert(H==img_size). Classified per D-02 as a stale TEST fixture error, not a production regression — the production default (crop_size=224) and the sibling ImageCropDataset unit tests already use 224."
   - "Fix corrects the fixture input (crop_size 32->224) in both end-to-end tests; no @pytest.mark.skip/xfail, no backbone weakening, no img_size/dynamic_img_size override added to timm.create_model — the fixed-224 contract is intended and end-to-end training exercises the real input size."
-  - "Local slow-suite verification deferred to CI: on this CPU-torch machine an end-to-end re-ID run at 224px takes ~2 hours (a prior local attempt ran ~2h before aborting). The @slow marker exists precisely so these run on slow-tests.yml CI, not per-push/locally. Confirmed authorized by user to defer slow verification to CI."
+  - "Follow-up (device-adaptive): the two end-to-end fixtures also hardcoded device='cpu', so 224px Swin fine-tuning ran on CPU (~2h, the runtime a prior local attempt hit) even on a CUDA box. Changed to device='cuda' if torch.cuda.is_available() else 'cpu' so GPU is used locally and CPU-only CI runners still fall back. Committed separately from the crop_size fix."
+  - "Slow-suite verified LOCALLY on GPU (not deferred to CI): both @slow end-to-end tests pass (2 passed in 47m on CUDA). The other 13 runnable slow tests pass (78s); the 2 e2e real-data smoke tests skip (no local real data, expected)."
 metrics:
-  duration: "recovered after agent internal-error mid-run"
+  duration: "recovered after agent internal-error mid-run; slow tests re-run on GPU (~47m)"
   completed: "2026-09-01"
   tasks_completed: 1
   tasks_total: 1
@@ -36,6 +37,7 @@ resized crops match the backbone contract. No skip/xfail, no production regressi
 | # | Task | Commit | Files |
 |---|------|--------|-------|
 | 1 | Classify and fix the re-ID Swin input-size mismatch (D-10) | `58e3091` | test_reid_training.py |
+| 1b | Make end-to-end fixtures device-adaptive (CUDA when available) | `4be6a35` | test_reid_training.py |
 
 ## What Was Built
 
@@ -64,22 +66,22 @@ the backbone's fixed-224 contract is intentional and is exercised at its real in
   the already-correct, uncommitted edit and authoring this SUMMARY. No duplicate/conflicting
   edits — `git diff` confirmed the edit was solely the two `crop_size` changes plus comments,
   with no skip/xfail.
-- **Slow-suite verification delegated to CI (user-authorized):** `hatch run test-all
-  tests/unit/training/test_reid_training.py` is impractical locally (~2 h on CPU torch). Per
-  user decision, the slow re-ID end-to-end confirmation is delegated to `slow-tests.yml` CI.
-  The fix is correct by analysis (matches the production default and the passing sibling
-  224px dataset tests) and adds no skip/xfail.
+- **Device-adaptive follow-up (enabled real local verification):** the fixtures hardcoded
+  `device="cpu"`, so the 224px Swin fine-tuning ran on CPU (~2 h) even though the machine
+  has a CUDA GPU — this was the true cause of the ~2 h runtime the first agent hit. Changed
+  to `device="cuda" if torch.cuda.is_available() else "cpu"` (commit `4be6a35`). With GPU in
+  use, both slow tests complete in ~47 min and were confirmed green locally — no CI deferral
+  needed. CPU-only CI runners still fall back gracefully.
 
 ## Verification Results
 
-- `hatch run test tests/unit/training/test_reid_training.py -q` (fast subset) — **1295 passed,
-  3 skipped, 17 deselected (@slow), 0 failures**. Confirms the file collects/imports cleanly
-  and the edit introduced no syntax/regression in the non-slow tests.
-- `git diff` audit — only the two `crop_size` values changed (+ root-cause comments); no
-  `@pytest.mark.skip`/`xfail` added.
-- **Deferred to CI:** the 2 `@slow` end-to-end tests
-  (`test_smoke_end_to_end_training`, `test_checkpoint_has_backbone_state`) — to be confirmed
-  green by `slow-tests.yml`.
+- **Both `@slow` end-to-end tests PASS on GPU** — `2 passed in 2847.03s (0:47:27)` for
+  `test_smoke_end_to_end_training` + `test_checkpoint_has_backbone_state`.
+- Remaining slow suite — `13 passed, 2 skipped in 78.29s`; the 2 skips are the e2e real-data
+  smoke tests (`tests/e2e/test_smoke.py`), correctly skipped without local real data.
+- `hatch run test` (fast/not-slow) — **1295 passed, 3 skipped, 0 failures**.
+- `git diff` audit — only the two `crop_size` values changed + the device-adaptive line
+  (+ root-cause comments); no `@pytest.mark.skip`/`xfail` added.
 
 ## Known Stubs
 
@@ -90,9 +92,10 @@ None.
 None — internal test-correctness work; no new network endpoints, auth paths, or
 trust-boundary changes.
 
-## Self-Check: PASSED (local scope) — slow-suite CONFIRMATION PENDING (CI)
+## Self-Check: PASSED
 
-- Fixture edit committed (`crop_size=224` in both end-to-end tests)
+- Fixture edit committed (`crop_size=224` in both end-to-end tests) — `58e3091`
+- Device-adaptive fixture edit committed — `4be6a35`
 - `tests/unit/training/test_reid_training.py` modified; no skip/xfail added
-- Fast subset green (1295 passed, 0 failures)
-- Slow end-to-end verification delegated to `slow-tests.yml` CI per user decision
+- Both `@slow` end-to-end tests confirmed green locally on GPU (47m)
+- Fast suite green (1295 passed, 0 failures); remaining slow tests green (13 passed, 2 e2e skipped)

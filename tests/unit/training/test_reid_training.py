@@ -479,6 +479,10 @@ class TestTrainReidEndToEnd:
         crops_dir = self._make_crops_dir(tmp_path, n_groups=3, n_fish=3, n_per=8)
         output_dir = tmp_path / "output"
 
+        # D-10 root-cause note: crop_size=32 was stale; MegaDescriptor-T-224 Swin
+        # has a fixed 224-input contract (timm asserts H==224). The production default
+        # is crop_size=224; the sibling ImageCropDataset tests already use 224.
+        # Fix: correct the fixture to crop_size=224, matching the backbone contract.
         config = ReidTrainingConfig(
             reid_crops_dir=crops_dir,
             output_dir=output_dir,
@@ -488,7 +492,7 @@ class TestTrainReidEndToEnd:
             samples_per_class=4,
             unfreeze_blocks=2,
             lr_backbone_factor=0.1,
-            crop_size=32,
+            crop_size=224,
             batch_size=16,
         )
 
@@ -511,6 +515,8 @@ class TestTrainReidEndToEnd:
         crops_dir = self._make_crops_dir(tmp_path, n_groups=3, n_fish=3, n_per=8)
         output_dir = tmp_path / "output"
 
+        # D-10 root-cause note: same fixture fix as test_smoke_end_to_end_training;
+        # crop_size must match MegaDescriptor-T-224 Swin fixed 224-input contract.
         config = ReidTrainingConfig(
             reid_crops_dir=crops_dir,
             output_dir=output_dir,
@@ -520,7 +526,7 @@ class TestTrainReidEndToEnd:
             samples_per_class=4,
             unfreeze_blocks=2,
             lr_backbone_factor=0.1,
-            crop_size=32,
+            crop_size=224,
             batch_size=16,
         )
 

@@ -20,8 +20,50 @@ Delivers requirements QA-01 through QA-04:
 authoring (Phases 110–113), and the example-dataset path convention (Phase 111).
 </domain>
 
+<baseline_diagnosis>
+## ⚠ Baseline Diagnosis (2026-09-01) — SUPERSEDES the "8 failures / failing LUT" premise
+
+The suite was run for real on a fresh Python-3.12 hatch env (torch 2.5.1+cu121,
+numpy 2.5.2, pytest 9.1.1, ultralytics 8.4.137, GPU: GTX 1660 SUPER). Actual
+`hatch run test-all`: **23 failed, 1287 passed, 5 skipped** (the 5 skips are
+`tests/e2e/test_smoke.py`, correctly marker-skipped). This differs sharply from
+STATE-108's estimate of 8 — that was the **Linux/CI** baseline; the extra failures
+are **Windows-specific**.
+
+**QA-01 is already GREEN.** `test_luts.py::test_forward_lut_cast_ray_matches_model`
+PASSES on this env (not failed, not skipped) — no LUT/tolerance drift reproduces.
+QA-01 becomes **confirm reliably green + record why STATE-108 believed it failed**
+(env/precision, or already fixed in Phase 108), NOT diagnose-and-fix. Still honors
+"resolved, not skipped" because it genuinely passes.
+
+**The 23 failures cluster into 6 root causes (not "7 stale fixtures"):**
+
+| Cluster | # | Root cause | CI impact |
+|---|---|---|---|
+| Symlink privilege (WinError 1314 / OSError 22) | 14 | `store.assemble()` `symlink_to()` (store.py:755-756); Windows lacks SeCreateSymbolicLinkPrivilege | Real Windows **hot-path** break — `data assemble` CLI dies. GitHub runner may hold the privilege (CI may pass) but real Windows-no-DevMode users break. |
+| Path separator `\` vs `/` | 2 | `run_manager` writes `weights_path` as `\new\best.pt`; expected `/new/best.pt` | Fails Windows CI cell. On QA-03 surface. |
+| cp1252 encoding | 1 | `test_viz` `out_path.read_text()` uses Windows default cp1252 on UTF-8/binary content | Fails Windows CI cell. QA-04-aligned. |
+| Ordering | 1 | `test_store.py::test_list_models_returns_all` expects `run_b`, got `run_a` | Possibly both cells — classify stale vs real. |
+| timm Swin input size | 2 | re-ID backbone: 32px fed to a 224 model → timm `_assert(H==img_size)` | `@pytest.mark.slow` → only slow-tests (any OS). |
+| CLI `--val-split` help | 3 | `train obb/seg/pose --help` no longer contains `--val-split` | Fails **both** CI cells (platform-independent). STATE-108's "stale CLI-help". |
+
+**CI reality:** `test.yml` matrix = {ubuntu, windows} × {3.11, 3.12, 3.13}, runs
+`hatch run test` (NOT slow). `slow-tests.yml` runs `test-all` (manual, default ubuntu).
+The 3 CLI-flag failures are platform-independent + not-slow → they fail every per-push
+cell now (dev CI is red). Path-sep/encoding fail the Windows cells. The timm failures
+only appear in slow-tests. **"Honest green" target = all CI cells green.**
+
+**Local:** Windows Developer Mode is OFF on the dev machine → enable it so the suite is
+runnable locally regardless of the code fix (independent of D-09).
+</baseline_diagnosis>
+
 <decisions>
 ## Implementation Decisions
+
+> **NOTE (2026-09-01):** D-01 and D-02 below are **superseded by the Baseline
+> Diagnosis above**. QA-01 is already green (confirm, don't diagnose-fix). QA-02 is
+> 23 failures across 6 clusters — see the new decisions **D-07…D-11**, not "7 stale
+> fixtures." Original D-01/D-02 text retained for provenance.
 
 ### Tier-one LUT test (QA-01)
 - **D-01:** No prior on root cause. The planner/executor must **diagnose first**
@@ -54,6 +96,30 @@ authoring (Phases 110–113), and the example-dataset path convention (Phase 111
   Defining the path convention the Phase 111 example dataset will inherit is
   **out of scope** for 109 (keeps this phase correctness-scoped, avoids coupling
   109 to 111).
+
+### Platform correctness (added 2026-09-01 from Baseline Diagnosis)
+- **D-07 (QA-03 + portability):** In `run_manager` weights-path writing, normalize the
+  written `weights_path` to **forward slashes** so `detection.weights_path` /
+  `midline.weights_path` are platform-neutral (fixes the `\new\best.pt` failure). Fold
+  into the QA-03 config-unification work — same surface as D-03/D-04.
+- **D-08 (QA-04 portability):** The `read_text()` behind
+  `test_viz.py::test_prefers_stitched_h5` must pass **`encoding="utf-8"`** (never rely on
+  the OS default / cp1252). Audit sibling `read_text`/`write_text` on user-facing paths
+  for the same latent bug while in the file.
+- **D-09 (QA-04 hot-path robustness — Option A, user-confirmed 2026-09-01):** Make
+  `store.assemble()` resilient to missing symlink privilege: try `symlink_to` → on
+  privilege `OSError` fall back to **hardlink** (`os.link`, same-volume, no data
+  duplication) → fall back to **copy** (`shutil.copy2`) only if cross-volume. Fixes the
+  14 failures AND unblocks real Windows `data assemble` usage (store.py:755-756 is the
+  only symlink site in `src/`). Update `test_symlinks_are_relative` semantics to "symlink
+  when privileged, else a valid hardlink/copy" rather than asserting a hard symlink.
+- **D-10 (QA-02 timm, slow):** Resolve the re-ID Swin input-size mismatch (32px vs 224).
+  Per D-02, first classify: is the fixture's 32px input wrong (should be 224), does the
+  backbone need `dynamic_img_size`, or is it a timm-version behavior change? Fix the real
+  cause. Gates slow-tests green.
+- **D-11 (QA-02 CLI flag):** For the 3 `--val-split` help-assertion failures, determine
+  whether the flag was renamed/removed (→ update the stale assertions to the real CLI) or
+  genuinely dropped (→ restore it). One-line root-cause note per test (D-02 discipline).
 
 ### Repo hygiene — stale URLs (opportunistic, beyond QA scope)
 - **D-06:** Fix the **3 `tlancaster6/AquaPose` URLs in `pyproject.toml`** in this

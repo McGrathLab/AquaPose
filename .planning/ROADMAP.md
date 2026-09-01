@@ -549,7 +549,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
-| 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete   | 2026-09-01 |
+| 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 0/TBD | Not started | - |
 | 111. Example Dataset & Reference Outputs | 0/TBD | Not started | - |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |

@@ -23,10 +23,10 @@ Prerequisites. These gate doc authoring and the badge row.
 
 ### Correctness
 
-- [ ] **QA-01**: `test_luts.py::test_forward_lut_cast_ray_matches_model` passes — the tier-one calibration failure is resolved, not skipped
-- [ ] **QA-02**: The 7 tier-two failures in `training/` and `evaluation/` pass, so the full suite is green and the coverage badge is honest
-- [ ] **QA-03**: Model weights-path config fields resolve consistently — `keypoint_weights_path` and `detection.model_path` use one convention relative to `project_dir`
-- [ ] **QA-04**: The tutorial config uses relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
+- [x] **QA-01**: `test_luts.py::test_forward_lut_cast_ray_matches_model` passes — the tier-one calibration failure is resolved, not skipped
+- [x] **QA-02**: The 7 tier-two failures in `training/` and `evaluation/` pass, so the full suite is green and the coverage badge is honest
+- [x] **QA-03**: Model weights-path config fields resolve consistently — `keypoint_weights_path` and `detection.model_path` use one convention relative to `project_dir`
+- [x] **QA-04**: The tutorial config uses relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
 
 ### Documentation
 
@@ -110,10 +110,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-03 | 108 | Complete |
 | FOUND-04 | 108 | Complete |
 | FOUND-05 | 108 | Complete |
-| QA-01 | 109 | Pending |
-| QA-02 | 109 | Pending |
+| QA-01 | 109 | Complete |
+| QA-02 | 109 | Complete |
 | QA-03 | 109 | In progress (Plan 01 done) |
-| QA-04 | 109 | Pending |
+| QA-04 | 109 | Complete |
 | DOCS-01 | 110 | Pending |
 | DOCS-02 | 110 | Pending |
 | DOCS-03 | 113 | Pending |
@@ -132,6 +132,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REC-01 | 108 | Complete |
 
 **Coverage:**
+
 - v4.0 requirements: 25 total
 - Mapped to phases: 25 (Phases 108-114)
 - Unmapped: 0

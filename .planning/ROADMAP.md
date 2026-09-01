@@ -457,10 +457,10 @@ Plans:
 **Requirements**: QA-01, QA-02, QA-03, QA-04
 **Success Criteria** (what must be TRUE):
 
-  1. `hatch run test-all` passes with zero failures, including `test_luts.py::test_forward_lut_cast_ray_matches_model`
-  2. The 7 tier-two failures in `training/` and `evaluation/` pass, making the coverage badge honest
-  3. `keypoint_weights_path` and `detection.model_path` resolve using the same convention relative to `project_dir`
-  4. The tutorial config uses only relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
+  1. `hatch run test` (per-push CI: {ubuntu,windows}×{3.11,3.12,3.13}) and `hatch run test-all` pass with zero failures — including `test_luts.py::test_forward_lut_cast_ray_matches_model` passing **resolved, not skipped/xfail**, and with no skip/xfail added anywhere to reach green
+  2. The real `training/` + `evaluation/` failures are resolved at root cause (stale `--val-split` CLI-help assertions, the `@slow` re-ID timm fixture, `list_models` ordering non-determinism, cp1252 encoding, and the `store.assemble` symlink hot-path) — making the coverage badge honest
+  3. `detection.weights_path` and `pose.weights_path` (midline/keypoint) resolve via one convention relative to `project_dir` (absolute honored as-is), the `model_path`→`weights_path` alias is removed, and written paths are forward-slash / platform-neutral
+  4. The tutorial/init config uses only relative, platform-neutral paths, and dataset assembly (`store.assemble`) runs unmodified on Linux, macOS, and Windows (symlink→hardlink→copy fallback) — no Developer Mode / admin required
 
 **Plans**: 5 plans (replanned 2026-09-01 — prior 4 plans deleted; rebuilt against the real 23-failure baseline, not the stale "8 failures / failing LUT" premise)
 

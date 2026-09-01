@@ -100,3 +100,5 @@ baseline_tracking_output/
 *.pt
 *.mp4
 runs/
+# Zenodo deposit tree — assembled by scripts/package_tutorial_dataset.py, uploaded manually (not version-controlled)
+aquapose-tutorial-data/

@@ -602,13 +602,13 @@ Plans:
 
 **Explicitly out of scope**: the Zenodo upload/DOI todo — it stays as the deferred plan `113-06-PLAN.md`, not folded in here.
 
-**Plans:** 1/6 plans executed (wave 1: 01-04 in parallel; wave 2: 06; wave 3: 05)
+**Plans:** 2/6 plans executed (wave 1: 01-04 in parallel; wave 2: 06; wave 3: 05)
 
 Plans:
 **Wave 1**
 
 - [x] 113.1-01-PLAN.md — `calibrate-keypoints`: canonical `pose:` key + pixel-space arc length, both terminal gates
-- [ ] 113.1-02-PLAN.md — `init` int `n_animals` sentinel, type-safe `load_config` guard, four-step guidance
+- [x] 113.1-02-PLAN.md — `init` int `n_animals` sentinel, type-safe `load_config` guard, four-step guidance
 - [ ] 113.1-03-PLAN.md — GUIDEBOOK §6 corrected against `build_stages` + drift guard test + stale todos filed
 - [ ] 113.1-04-PLAN.md — `core/` import boundary closed (discovery relocated to Layer 1) + AST guard test
 

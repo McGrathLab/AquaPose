@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113.1
 current_phase_name: Pre-Release Bug Fixes
 status: planned
-stopped_at: Completed 113.1-01-PLAN.md
-last_updated: "2026-09-02T20:35:22.030Z"
+stopped_at: Completed 113.1-02-PLAN.md
+last_updated: "2026-09-02T20:42:43.103Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 33
-  completed_plans: 27
+  completed_plans: 28
   percent: 56
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113.1 (Pre-Release Bug Fixes) — PLANNED
-Plan: 1 of 6
+Plan: 2 of 6
 Status: Ready to execute — 6 plans in 3 waves
 Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 
@@ -52,6 +52,7 @@ Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 | Phase 113 P05 | ~46min | 2 tasks | 4 files |
 | Phase 113 P07 | ~14min | 2 tasks | 3 files |
 | Phase 113.1 P01 | 25min | 3 tasks | 2 files |
+| Phase 113.1 P02 | 15min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -95,6 +96,8 @@ Recent decisions affecting current work:
 - [Phase ?]: calibrate-keypoints writer now targets pose.keypoint_t_values (was midline.keypoint_t_values); stale legacy key removed with a notice (D-06)
 - [Phase ?]: YOLO arc-length now measured in pixel space via new _resolve_sibling_image sibling-image resolution, matching the COCO path (D-08)
 - [Phase ?]: Terminal-gate fixture uses a zigzag (both-axes) path rather than a straight diagonal, since a straight evenly-pixel-spaced line is invariant to the arc-length bug under any linear per-axis scaling
+- [Phase ?]: D-12: init_cmd writes int sentinel 0 with YAML comment; load_config guard type-checks (isinstance int, not bool) before comparing
+- [Phase ?]: D-13: init post-scaffold guidance leads with n_animals edit as step 1, renumbering prior three steps to 2-4
 
 ### Pending Todos
 
@@ -121,10 +124,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T20:35:22.019Z
+**Last session:** 2026-09-02T20:42:43.091Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.1-01-PLAN.md
+Stopped at: Completed 113.1-02-PLAN.md
 Resume file: None
 
 ## Performance Metrics

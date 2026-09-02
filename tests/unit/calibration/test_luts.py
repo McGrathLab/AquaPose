@@ -148,8 +148,11 @@ def test_forward_lut_cast_ray_matches_model() -> None:
         f"Max origin distance {float(origin_dists.max()):.2e} m exceeds 1e-4 m threshold"
     )
 
-    dot = (lut_dirs * model_dirs).sum(dim=-1).clamp(-1.0, 1.0)
-    angular_errors = torch.acos(dot).abs() * (180.0 / torch.pi)
+    cross_norm = torch.linalg.cross(
+        lut_dirs.double(), model_dirs.double(), dim=-1
+    ).norm(dim=-1)
+    dot = (lut_dirs.double() * model_dirs.double()).sum(dim=-1)
+    angular_errors = torch.atan2(cross_norm, dot).abs() * (180.0 / torch.pi)
     assert float(angular_errors.max()) < 0.01, (
         f"Max angular error {float(angular_errors.max()):.4f}° exceeds 0.01° threshold"
     )
@@ -185,8 +188,11 @@ def test_forward_lut_interpolation_accuracy() -> None:
         f"Max origin distance {float(origin_dists.max()):.2e} m exceeds 1e-3 m threshold"
     )
 
-    dot = (lut_dirs * model_dirs).sum(dim=-1).clamp(-1.0, 1.0)
-    angular_errors = torch.acos(dot).abs() * (180.0 / torch.pi)
+    cross_norm = torch.linalg.cross(
+        lut_dirs.double(), model_dirs.double(), dim=-1
+    ).norm(dim=-1)
+    dot = (lut_dirs.double() * model_dirs.double()).sum(dim=-1)
+    angular_errors = torch.atan2(cross_norm, dot).abs() * (180.0 / torch.pi)
     assert float(angular_errors.max()) < 0.1, (
         f"Max angular error {float(angular_errors.max()):.4f}° exceeds 0.1° threshold"
     )

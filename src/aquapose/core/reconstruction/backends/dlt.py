@@ -484,7 +484,7 @@ class DltBackend:
             proj_np = proj_px.detach().cpu().numpy()
             valid_np = valid.detach().cpu().numpy()
             obs_pts = cam_midlines[cid].points  # (n_body_points, 2)
-            cam_errs: list[float] = []
+            cam_errs = []
             for j in range(n_body_points):
                 if (
                     valid_np[j]

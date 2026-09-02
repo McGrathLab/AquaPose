@@ -53,6 +53,7 @@ extensions = [
     "sphinx_design",
     "nbsphinx",
     "sphinxcontrib.mermaid",
+    "sphinx_click.ext",
 ]
 
 # Templates and static files

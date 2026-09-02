@@ -92,6 +92,7 @@ dependencies = [
     "sphinx-design",
     "nbsphinx>=0.9.8",
     "sphinxcontrib-mermaid",
+    "sphinx-click",
     "numpy",
 ]
 

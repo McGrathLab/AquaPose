@@ -7,6 +7,33 @@ As of version 1.2.0, AquaPose is licensed
 published under the MIT License, and that grant is unaffected. See
 [LICENSING.md](LICENSING.md) for why the AGPL applies.
 
+## Migration Notes
+
+Hand-maintained. Entries below the version list are generated from commit
+messages by python-semantic-release; this section is not.
+
+### Unreleased — `aquapose.io.discovery` submodule removed
+
+`discover_camera_videos` moved to `aquapose.core.types.video_discovery` so that
+`aquapose/core/` no longer imports the I/O layer at module level (Phase 113.1).
+
+The supported import is unchanged and keeps working:
+
+```python
+from aquapose.io import discover_camera_videos
+```
+
+The submodule path no longer resolves:
+
+```python
+from aquapose.io.discovery import discover_camera_videos  # ModuleNotFoundError
+```
+
+`discover_camera_videos` has always been exported in `aquapose.io.__all__`, so
+only code reaching past the package into the submodule is affected. The function
+itself is unchanged — it moved byte-identical. `aquapose.core.types.discover_camera_videos`
+resolves to the same object.
+
 <!-- version list -->
 
 ## v1.2.0-dev.3 (2026-09-02)

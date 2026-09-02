@@ -276,7 +276,7 @@ def main() -> None:
                 break
 
     # --- Discover available video cameras ---
-    from aquapose.io.discovery import discover_camera_videos
+    from aquapose.io import discover_camera_videos
 
     video_paths = discover_camera_videos(video_dir)
     available_cams = set(video_paths.keys())

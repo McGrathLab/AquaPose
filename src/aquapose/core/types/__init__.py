@@ -9,6 +9,7 @@ from aquapose.core.types.frame_source import (
 )
 from aquapose.core.types.midline import Midline2D
 from aquapose.core.types.reconstruction import Midline3D, MidlineSet
+from aquapose.core.types.video_discovery import discover_camera_videos
 
 __all__ = [
     "AffineCrop",
@@ -20,4 +21,5 @@ __all__ = [
     "Midline3D",
     "MidlineSet",
     "VideoFrameSource",
+    "discover_camera_videos",
 ]

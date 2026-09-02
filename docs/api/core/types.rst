@@ -30,3 +30,8 @@ Types
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: aquapose.core.types.video_discovery
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -2,6 +2,11 @@
 
 Provides a single canonical implementation of camera-video discovery used
 by both DetectionStage and PoseStage to avoid duplicated glob logic.
+
+Lives in ``core/`` because this is pure ``pathlib`` logic with no
+I/O-layer dependency of its own -- GUIDEBOOK section 3 places this kind
+of work in Layer 1. ``aquapose.io`` re-exports ``discover_camera_videos``
+from here for backward compatibility with existing callers.
 """
 
 from __future__ import annotations

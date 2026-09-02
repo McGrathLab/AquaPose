@@ -22,7 +22,7 @@ from aquapose.calibration.loader import (
     load_calibration_data,
     undistort_image,
 )
-from aquapose.io.discovery import discover_camera_videos
+from aquapose.core.types.video_discovery import discover_camera_videos
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

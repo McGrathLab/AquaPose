@@ -6,11 +6,6 @@ IO
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: aquapose.io.discovery
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 .. automodule:: aquapose.io.midline_writer
    :members:
    :undoc-members:

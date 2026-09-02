@@ -99,3 +99,15 @@ Found while auditing which of the YH `training_data` archives to feed
 `2026-09-02-calibrate-keypoints-yolo-path-measures-arc-length-in-normalized-space.md`
 -- same command, independent defects. Fix this one first, or the corrected
 t-values from that one may never reach the pipeline.
+
+## Fixed
+
+**Date:** 2026-09-02
+**Fixed by:** Phase 113.1, Plan 01 (`113.1-01-PLAN.md`, D-06).
+**Evidence:** The config writer in `src/aquapose/training/prep.py` now targets
+`config_data["pose"]["keypoint_t_values"]` and deletes a stale
+`midline.keypoint_t_values` if present, printing a removal notice. Proven
+through `load_config(...).pose.keypoint_t_values` (not just the raw written
+YAML) by
+`tests/unit/test_calibrate_keypoints.py::TestCalibrateKeypointsConfig::test_writes_to_pose_key_and_overrides_existing_pose_value`
+and `test_removes_stale_legacy_midline_keypoint_t_values`. Commit `421d327`.

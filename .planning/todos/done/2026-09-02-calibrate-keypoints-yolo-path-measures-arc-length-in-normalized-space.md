@@ -125,3 +125,29 @@ all `source=manual`, verified against `store.db`) plus
 flat `pose/labels/` root and any `*-aug` / `production_retrain*` dataset --
 those mix in pseudo-labels (circular) and elastic-deformed duplicates that
 outnumber originals 4:1.
+
+## Fixed
+
+**Date:** 2026-09-02
+**Fixed by:** Phase 113.1, Plan 01 (`113.1-01-PLAN.md`, D-08), code fix.
+Recalibration on real data run separately, Phase 113.1, Plan 05
+(`113.1-05-PLAN.md`, D-10/D-11).
+**Evidence (code fix):** `_resolve_sibling_image` and a reworked
+`_parse_keypoints_yolo` in `src/aquapose/training/prep.py` now scale
+normalized YOLO keypoints to absolute pixel coordinates using the sibling
+image's `(width, height)` before computing arc length, matching the
+already-correct COCO path. Proven through `load_config` and proven
+non-vacuous by reverting the fix to red (see `113.1-01-SUMMARY.md`). Commit
+`421d327`.
+**Evidence (real-data recalibration, NOT the same as archive application):**
+`113.1-05` ran the fixed command over all 322 manual, non-augmented labels
+(`pose_ablation_a_manual/labels/train` + `round1-curated/labels/val`) and
+recomputed `[0.0, 0.149, 0.3269, 0.5187, 0.7403, 1.0]`, matching this todo's
+own predicted pixel-space vector to 4 decimal places. **The production YH
+archive config still carries the biased vector** — the archive was searched
+and found unreachable from this machine (see
+`.planning/todos/pending/2026-09-02-apply-corrected-keypoint-t-values-to-yh-archive-config.md`
+for the reachability check and the corrected vector). This todo closes
+because the code defect it reported is fixed and proven; applying the
+corrected numbers to the production config is tracked separately and remains
+open.

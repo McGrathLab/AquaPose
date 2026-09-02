@@ -110,3 +110,17 @@ init-generated config. Assert the `n_animals` guidance line is present in the
 Found while spot-checking a freshly generated config during Phase 113 execution;
 deliberately **not** folded into Phase 113, which is a documentation phase whose
 only sanctioned behavior change is the D-08 install-path fix.
+
+## Fixed
+
+**Date:** 2026-09-02
+**Fixed by:** Phase 113.1, Plan 02 (`113.1-02-PLAN.md`, D-12, D-13).
+**Evidence:** `init_cmd` in `src/aquapose/cli.py` now writes the int sentinel
+`n_animals: 0` (commit `1e652f9`) with the human hint preserved as a YAML
+comment; the post-scaffold guidance leads with the `n_animals` edit as the new
+step 1 (commit `c216a77`); and the `load_config` guard in
+`src/aquapose/engine/config.py` was made type-safe (rejects non-int and bool
+values before the numeric comparison) via TDD — RED `f897803`, GREEN
+`1b290f0`. Terminal gate (`aquapose init probe` followed by a pipeline run
+fails with `ValueError: n_animals is required and must be > 0`, not
+`TypeError`) verified in `113.1-02-SUMMARY.md`.

@@ -20,3 +20,15 @@ Options (pick one):
 3. **Move `discover_camera_videos` into core/**: If the function is pure logic with no I/O-layer dependencies itself, it may belong in core/
 
 Option 1 is cleanest — frame source construction is already done in engine/orchestrator, so passing resolved paths there is natural.
+
+## Fixed
+
+**Date:** 2026-09-02
+**Fixed by:** Phase 113.1, Plan 04 (`113.1-04-PLAN.md`, D-02).
+**Evidence:** `discover_camera_videos` and the runtime import it required
+were relocated out of `core/types/frame_source.py` into
+`src/aquapose/core/types/video_discovery.py`, closing the `core/` ->
+`aquapose.io` import boundary violation end to end. Commit `9383120`. The
+boundary is now guarded for the whole `core/` tree by an AST-based test with
+an annotated allowlist (commit `eb74f4f`) so new violations fail CI instead of
+accumulating silently.

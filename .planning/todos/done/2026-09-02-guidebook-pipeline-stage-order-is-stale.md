@@ -80,3 +80,15 @@ future planning agents, not about correcting anything a user reads.
 Related: the same phase corrected `CLAUDE.md`'s stale `{p, psi, kappa, s}`
 "Domain Conventions" line (D-01), which was a sibling instance of internal
 agent-facing docs drifting from the codebase.
+
+## Fixed
+
+**Date:** 2026-09-02
+**Fixed by:** Phase 113.1, Plan 03 (`113.1-03-PLAN.md`, D-14, D-15).
+**Evidence:** GUIDEBOOK.md section 6's stage-flow line and per-stage
+subsections were corrected against `build_stages` in
+`src/aquapose/engine/pipeline.py` (real order: Detection -> Pose -> Tracking
+-> Association -> Reconstruction), and the previously-undocumented 4-stage
+synthetic-mode variant was added. Commits `04496a7`, `ce1b54a`. A guard test
+now asserts the GUIDEBOOK-documented stage-name sequence matches
+`build_stages` so this cannot silently drift again.

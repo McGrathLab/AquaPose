@@ -472,7 +472,12 @@ def train_reid_head(
         out_dim=config.embedding_dim,
     ).to(device)
 
-    loss_func = losses.MultiSimilarityLoss(alpha=2.0, beta=50.0, base=0.5)
+    # pytorch_metric_learning's MultiSimilarityLoss.__init__ has no type
+    # annotations at all; basedpyright infers `int` for alpha/beta purely
+    # from the integer default values (alpha=2, beta=50), even though the
+    # library documents them as float hyperparameters. This is a third-party
+    # inference artifact, not a defect on our side.
+    loss_func = losses.MultiSimilarityLoss(alpha=2.0, beta=50.0, base=0.5)  # pyright: ignore[reportArgumentType]
     miner_func = miners.MultiSimilarityMiner(epsilon=0.1)
 
     # Single optimizer — MultiSimilarityLoss has no learnable parameters.
@@ -808,7 +813,12 @@ def train_reid_end_to_end(
     ).to(device)
 
     # Loss and miner.
-    loss_func = losses.MultiSimilarityLoss(alpha=2.0, beta=50.0, base=0.5)
+    # pytorch_metric_learning's MultiSimilarityLoss.__init__ has no type
+    # annotations at all; basedpyright infers `int` for alpha/beta purely
+    # from the integer default values (alpha=2, beta=50), even though the
+    # library documents them as float hyperparameters. This is a third-party
+    # inference artifact, not a defect on our side.
+    loss_func = losses.MultiSimilarityLoss(alpha=2.0, beta=50.0, base=0.5)  # pyright: ignore[reportArgumentType]
     miner_func = miners.MultiSimilarityMiner(epsilon=0.1)
 
     # Differential LR optimizer.

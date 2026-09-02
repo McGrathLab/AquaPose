@@ -32,7 +32,7 @@ Prerequisites. These gate doc authoring and the badge row.
 
 - [x] **DOCS-01**: Documentation distinguishes the tier-one production pipeline (detection → tracking → association → pose → reconstruction, plus calibration and engine) from tier-two research utilities (`training/`, `evaluation/`, `core/reid/`, pseudo-labeling), with honest status labels on tier two
 - [x] **DOCS-02**: Every public module appears in the rendered API reference — including `core/association/*`, `core/tracking/*`, `core/types/*`, all `backends/` packages, `cli.py`, `io/video.py`, and `visualization/`
-- [ ] **DOCS-03**: A user can install AquaPose from written instructions, including the GPU/CUDA caveat, without reading source
+- [x] **DOCS-03**: A user can install AquaPose from written instructions, including the GPU/CUDA caveat, without reading source
 - [ ] **DOCS-04**: A concepts page explains refractive projection, the `{p, ψ, κ, s}` state vector, and the five pipeline stages well enough that a reader understands what the pipeline computes before running it
 - [x] **DOCS-05**: Every CLI command group is documented with purpose, arguments, and a worked example
 - [x] **DOCS-06**: Every config field across the 9 dataclasses is documented with type, default, and effect, tiered so a tutorial user is not confronted with all 71 at once
@@ -116,7 +116,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QA-04 | 109 | Complete |
 | DOCS-01 | 110 | Complete |
 | DOCS-02 | 110 | Complete |
-| DOCS-03 | 113 | Pending |
+| DOCS-03 | 113 | Complete |
 | DOCS-04 | 113 | Pending |
 | DOCS-05 | 112 | Complete |
 | DOCS-06 | 112 | Complete |

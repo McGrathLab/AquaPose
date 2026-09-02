@@ -3,16 +3,17 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
 current_phase: 113
+current_phase_name: Concepts & Tutorial
 status: executing
-stopped_at: Phase 113 context gathered
-last_updated: "2026-09-02T12:26:44.747Z"
+stopped_at: Completed 113-01-PLAN.md
+last_updated: "2026-09-02T12:34:19.991Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113 planning complete
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 27
-  completed_plans: 20
+  completed_plans: 21
   percent: 71
 ---
 
@@ -23,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 112 — config-cli-reference
+**Current focus:** Phase 113 — Concepts & Tutorial
 
 ## Current Position
 
-Phase: 113
-Plan: Not started
+Phase: 113 (Concepts & Tutorial) — EXECUTING
+Plan: 2 of 7
 Status: Ready to execute
-Last activity: 2026-09-02 — Phase 113 planning complete
+Last activity: 2026-09-02 — Phase 113 execution started
 
 ## Performance Metrics
 
@@ -39,6 +40,12 @@ Last activity: 2026-09-02 — Phase 113 planning complete
 - Phases: 5 (97-101)
 - Plans: 5
 - Timeline: 29 days (2026-02-14 → 2026-03-15)
+
+**Per-Plan Metrics:**
+
+| Plan | Duration | Tasks | Files |
+|------|----------|-------|-------|
+| Phase 113 P01 | 4min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -71,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 109-05]: Terminal green gate — QA-01 LUT parity confirmed green (resolved not skipped, 1e-4/0.01 tolerances untouched; STATE-108's "8 failing" was the Linux/CI estimate); QA-02 both suites green locally (fast 1295 passed; slow 15 passed / 2 e2e data-skips); no skip/xfail added anywhere in the phase. Code review WR-01 (store-registration weights_path not as_posix()) fixed post-review for D-07 consistency; phase verified 8/8 must-haves
 - [Phase ?]: suppress_warnings=['ref.python'] in conf.py resolves cross-reference ambiguity from re-exported submodule symbols without relaxing -W
 - [Phase ?]: Reference section landing page wired into docs IA; reference/index placed above api/index (D-10); reciprocal :doc: cross-links added to api/cli.rst and api/engine.rst without modifying automodule blocks (D-13); build-green gate confirmed
+- [Phase ?]: docs/index.md card ordering: Getting Started placed first, before Reference/API Reference/Contributing/Reports (beginner-first flow)
+- [Phase ?]: README nvrtc troubleshooting note carried into installation.md Troubleshooting, reframed for the pytorch.org selector rather than a hardcoded cu124 reinstall
+- [Phase ?]: Torch baseline for D-08: 2.5.1+cu121, CUDA available=True before and after removing the cu121 wheel-index pin (existing env not recreated)
 
 ### Pending Todos
 
@@ -92,11 +102,11 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T11:45:49.976Z
+**Last session:** 2026-09-02T12:34:19.980Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Phase 113 context gathered
-Resume file: .planning/phases/113-concepts-tutorial/113-CONTEXT.md
+Stopped at: Completed 113-01-PLAN.md
+Resume file: None
 
 ## Performance Metrics
 

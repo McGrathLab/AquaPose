@@ -405,7 +405,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 - [x] **Phase 108: Branch Reconciliation & Repo Hygiene** - Forward-port the Sphinx repair, reconcile `dev`/`main`, relicense to AGPL-3.0, remove stray artifacts, backfill the v3.11 milestone record (completed 2026-08-17)
 - [x] **Phase 109: Correctness — Green Test Suite & Config Consolidation** - Fix the 8 failing tests, consolidate weights-path config, make the tutorial config platform-neutral (completed 2026-09-01)
 - [x] **Phase 110: API Reference & Docs Tiering** - Two-tier documentation IA distinguishing the core pipeline from research utilities; full API coverage for the 52 missing modules (completed 2026-09-01)
-- [ ] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs
+- [x] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs (completed 2026-09-02)
 - [ ] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference
 - [ ] **Phase 113: Concepts & Tutorial** - Install guide, concepts page, and end-to-end tutorial against the published dataset
 - [ ] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs
@@ -520,7 +520,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 111-03-PLAN.md — DATA-03: final checksums.sha256 over the complete tree + verify_deposit completeness/licensing gate, then manual Zenodo upload + DOI mint (human step), DOI recorded in README
+- [x] 111-03-PLAN.md — DATA-03: final checksums.sha256 over the complete tree + verify_deposit completeness/licensing gate, then manual Zenodo upload + DOI mint (human step), DOI recorded in README
 
 ### Phase 112: Config & CLI Reference
 
@@ -572,7 +572,7 @@ Plans:
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
-| 111. Example Dataset & Reference Outputs | 2/3 | In Progress|  |
+| 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

@@ -604,7 +604,7 @@ Plans:
 
 **Explicitly out of scope**: the Zenodo upload/DOI todo — it stays as the deferred plan `113-06-PLAN.md`, not folded in here.
 
-**Plans:** 6/7 plans executed (wave 1: 01-04 in parallel; wave 2: 06, 07; wave 3: 05)
+**Plans:** 7/7 plans executed (wave 1: 01-04 in parallel; wave 2: 06, 07; wave 3: 05)
 
 Plans:
 
@@ -622,7 +622,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 113.1-05-PLAN.md — YH t-values recomputed on the 322-crop manual corpus, archive gap recorded, phase close-out against a green suite
+- [x] 113.1-05-PLAN.md — YH t-values recomputed on the 322-crop manual corpus, archive gap recorded, phase close-out against a green suite
 
 ### Phase 113.2: Typecheck Backlog (INSERTED)
 

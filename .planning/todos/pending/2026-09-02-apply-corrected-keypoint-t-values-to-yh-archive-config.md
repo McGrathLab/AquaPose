@@ -53,18 +53,29 @@ deliberately excluded contaminated splits.
 ## Consequence of not applying this
 
 Every YH pipeline run and every pseudo-label generation round continues to use
-the biased arc-length parameterization until this config is edited. The bias
-propagates specifically into `reproject_spline_keypoints`
-(`src/aquapose/training/pseudo_labels.py:50-95`) and evaluation
-(`src/aquapose/evaluation/runner.py:1062-1126`) — both read
-`pose.keypoint_t_values` from the run's `config.yaml`. Live pose inference
-itself is unaffected: `PoseEstimationBackend.__init__`
-(`src/aquapose/core/pose/backends/pose_estimation.py:59`) accepts a
-`keypoint_t_values` constructor parameter but never references it again
-anywhere else in that file — it is a dead parameter, confirmed by a
-single-occurrence grep during `113.1-05`. So the blast radius of the archive
-gap is pseudo-label generation and evaluation scoring, not the fish's live 3D
-pose.
+the biased arc-length parameterization until this config is edited. Confirmed
+downstream consumers of `pose.keypoint_t_values`, verified against source:
+
+- `core/reconstruction/stage.py` (`ReconstructionStage`, lines 179-183 and
+  310) — wired from config via `engine/pipeline.py:344`. This is the live
+  pipeline's 3D reconstruction stage: it genuinely consumes
+  `keypoint_t_values` to parameterize 2D-keypoints-to-midline conversion
+  before triangulation, for **any project whose config sets the value**. YH's
+  config does; the arc-length bias therefore reaches YH's actual 3D
+  reconstruction output, not just pseudo-labels or evaluation scores.
+- `training/pseudo_labels.py` (`reproject_spline_keypoints`) and
+  `training/pseudo_label_cli.py` — pseudo-label generation.
+- `evaluation/tuning.py` and `evaluation/runner.py` — evaluation scoring.
+
+**Correction from an earlier draft of this analysis:** the *pose backend*
+(`core/pose/backends/pose_estimation.py:59`,
+`PoseEstimationBackend.__init__`) does accept a `keypoint_t_values`
+constructor parameter that it never references again — that one component
+genuinely ignores it, confirmed by a single-occurrence grep. But that does
+NOT mean the value is inert for YH: `ReconstructionStage` is a different,
+downstream pipeline stage that does consume it (see above), so the bias
+reaches YH's live 3D pose output via reconstruction, not via the pose
+backend.
 
 ## Reachability (checked 2026-09-02, plan 113.1-05)
 

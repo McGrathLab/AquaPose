@@ -5,16 +5,16 @@ milestone_name: Publication
 current_phase: 113.1
 current_phase_name: Pre-Release Bug Fixes
 status: planned
-stopped_at: Completed 113.1-07-PLAN.md
-last_updated: "2026-09-02T21:17:25.621Z"
+stopped_at: Completed 113.1-05-PLAN.md task 1+2; awaiting Task 3 checkpoint approval
+last_updated: "2026-09-02T21:27:24.685Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
 progress:
   total_phases: 9
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 34
-  completed_plans: 32
-  percent: 56
+  completed_plans: 33
+  percent: 67
 ---
 
 # Project State
@@ -57,6 +57,7 @@ Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 | Phase 113.1 P04 | 15min | 2 tasks | 9 files |
 | Phase 113.1 P06 | 12min | 1 tasks | 1 files |
 | Phase 113.1 P07 | 2min | 2 tasks | 3 files |
+| Phase 113.1 P05 | 8min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -108,6 +109,8 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 113.1-06]: OBB label assertion fixed to per-line splitlines() form pinning the consensus+gap merge; confirmed defect was test-only (src/ untouched), 0.0 class token deliberately left alone (Ultralytics parses class column as np.float32, real corpus already uses 0.0); hatch run test now exits 0 (1400 passed, 3 skipped, 17 deselected)
 - [Phase ?]: pillow>=10.0 declared as explicit pyproject.toml dependency, floor verified above ultralytics/torchvision transitive constraints and code's own API floor
 - [Phase ?]: CLAUDE.md Agent-Specific Instructions section (discuss-phase GUIDEBOOK ingestion hook) removed and replaced with explanatory note; GUIDEBOOK.md content and drift todo deliberately left untouched per 2026-09-02 user decision
+- [Phase ?]: YH keypoint_t_values recomputed on 322 manual labels ([0.0, 0.149, 0.3269, 0.5187, 0.7403, 1.0]) but NOT applied to the production archive config — the cichlidVideo archive path could not be located after a real reachability check; a pending todo carries the corrected vector for whoever can reach it
+- [Phase ?]: Five worked bug todos (calibrate-keypoints legacy key, calibrate-keypoints arc-length, init n_animals sentinel, GUIDEBOOK stage order, core import boundary) filed to done/ with evidence; Zenodo and basedpyright todos remain pending and untouched
 
 ### Pending Todos
 
@@ -134,10 +137,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T21:17:15.907Z
+**Last session:** 2026-09-02T21:27:24.675Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.1-07-PLAN.md
+Stopped at: Completed 113.1-05-PLAN.md task 1+2; awaiting Task 3 checkpoint approval
 Resume file: None
 
 ## Performance Metrics

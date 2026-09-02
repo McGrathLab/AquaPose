@@ -5,6 +5,13 @@
 ::::{grid} 1 2 2 3
 :gutter: 3
 
+:::{grid-item-card} Reference
+:link: reference/index
+:link-type: doc
+
+CLI commands and configuration fields for looking up any command or setting.
+:::
+
 :::{grid-item-card} API Reference
 :link: api/index
 :link-type: doc
@@ -32,6 +39,7 @@ Analysis of depth reconstruction uncertainty across the camera rig.
 :maxdepth: 2
 :hidden:
 
+reference/index
 api/index
 contributing
 reports/z_uncertainty_report

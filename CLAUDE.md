@@ -62,10 +62,11 @@ hatch run aquapose -p YH run -v                # verbose run
 - **Cross-view identity**: RANSAC centroid clustering to associate fish across cameras before reconstruction
 - AquaCal is the calibration dependency; AquaMVS is reference code only (not imported)
 
-## Agent-Specific Instructions
+## Notes on `.planning/GUIDEBOOK.md`
 
-### discuss-phase
-When running `gsd:discuss-phase`, before doing anything else:
-1. Inform the user: "I noticed project instructions to read the guidebook — reading it now."
-2. Read this document and incorporate its content as context for the discussion: .planning/GUIDEBOOK.md
-3. Then proceed with the normal discuss-phase workflow.
+`.planning/GUIDEBOOK.md` is a human-oriented reference, not authoritative
+agent context — no agent should read it as ground truth. Sections 3, 4, 7, 8,
+and 14 are known to have drifted from the code (see
+`.planning/todos/pending/2026-09-02-guidebook-sections-3-4-7-8-14-drift-beyond-section-6.md`);
+agents should ground pipeline and architecture claims in source, not in the
+guidebook.

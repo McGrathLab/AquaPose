@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 import yaml
 from click.testing import CliRunner
+from PIL import Image
 
 from aquapose.cli import cli
 
@@ -245,6 +246,83 @@ class TestCalibrateKeypointsYolo:
         )
         assert result.exit_code == 0, result.output
         assert "Processed 3 annotations" in result.output
+
+    def test_pixel_space_t_values_reach_load_config_through_pose_key(
+        self,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """Both terminal gates in one path, proven through load_config.
+
+        Keypoints trace a zigzag path (alternating pure-x and pure-y 20px
+        segments) on a non-square 128x64 canvas, evenly spaced IN PIXELS.
+        On a 2:1 aspect-ratio image this path is NOT evenly spaced in raw
+        normalized coordinates (x-segments measure 0.15625 raw, y-segments
+        measure 0.3125 raw -- a 2x difference), so a purely horizontal or
+        purely vertical fixture would be invariant to the arc-length bug;
+        this zigzag (varies on both axes) is not. The assertion reads back
+        through load_config(...).pose.keypoint_t_values, not the raw YAML,
+        which is the only way to prove the writer targets the canonical
+        `pose:` key (a config that already carries a *different*
+        pose.keypoint_t_values is used, so a no-op writer would be caught
+        too).
+        """
+        from aquapose.engine.config import load_config
+
+        img_w, img_h = 128, 64
+
+        # Pixel-space keypoints, each consecutive pair exactly 20px apart:
+        # (0,0) -> (20,0) -> (20,20) -> (40,20) -> (40,40) -> (60,40)
+        px_points = [(0, 0), (20, 0), (20, 20), (40, 20), (40, 40), (60, 40)]
+        norm_points = [(x / img_w, y / img_h) for x, y in px_points]
+
+        kps = " ".join(f"{x:.6f} {y:.6f} 2" for x, y in norm_points)
+        line = f"0 0.5 0.5 0.5 0.5 {kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        (labels_dir / "img001.txt").write_text(line + "\n", encoding="utf-8")
+
+        images_dir = tmp_path / "images" / "train"
+        images_dir.mkdir(parents=True)
+        Image.new("RGB", (img_w, img_h)).save(images_dir / "img001.jpg")
+
+        proj = tmp_path / "gate_project"
+        proj.mkdir()
+        # This config ALREADY carries a pose.keypoint_t_values that is
+        # deliberately wrong -- the writer must overwrite it, proving the
+        # legacy-key gate (D-06) and the arc-length gate (D-08) together.
+        config_data = {
+            "project_dir": str(proj),
+            "n_animals": 1,
+            "pose": {"keypoint_t_values": [0.05, 0.1, 0.3, 0.5, 0.7, 0.9]},
+        }
+        (proj / "config.yaml").write_text(
+            yaml.dump(config_data, default_flow_style=False, sort_keys=False)
+        )
+        monkeypatch.setattr(
+            "aquapose.cli_utils.resolve_project",
+            lambda name: proj,
+        )
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code == 0, result.output
+
+        loaded = load_config(proj / "config.yaml")
+        t_values = loaded.pose.keypoint_t_values
+        assert t_values is not None
+        assert t_values == pytest.approx([0.0, 0.2, 0.4, 0.6, 0.8, 1.0], abs=1e-3)
 
     def test_yolo_empty_dir_fails(
         self,

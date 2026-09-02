@@ -10,17 +10,21 @@ configuration values from annotation data. Supports:
 from __future__ import annotations
 
 import json
+import logging
 from pathlib import Path
 
 import click
 import numpy as np
 import yaml
+from PIL import Image, UnidentifiedImageError
 
 from aquapose.cli_utils import get_config_path
 
 from .common import _LutConfigFromDict
 
 __all__ = ["prep_group"]
+
+logger = logging.getLogger(__name__)
 
 
 @click.group("prep")
@@ -59,6 +63,46 @@ def _parse_keypoints_coco(
     return instances
 
 
+def _resolve_sibling_image(txt_path: Path) -> Path | None:
+    """Resolve a YOLO label file to its sibling image.
+
+    Resolution order (deterministic):
+
+    1. Rebuild the path with the RIGHTMOST path component equal to
+       ``"labels"`` replaced by ``"images"``, trying extensions ``.jpg``,
+       ``.jpeg``, ``.png`` in that order. This is what handles the real
+       corpus layout, e.g. ``<root>/labels/train/<stem>.txt`` resolving to
+       ``<root>/images/train/<stem>.jpg``.
+    2. Failing that, try the same three extensions beside the label file
+       itself. This is what handles a flat directory with labels and
+       images mixed together.
+
+    Args:
+        txt_path: Path to a YOLO label ``.txt`` file.
+
+    Returns:
+        Path to the resolved sibling image, or ``None`` if nothing resolves.
+    """
+    parts = list(txt_path.parts)
+    for i in range(len(parts) - 1, -1, -1):
+        if parts[i] == "labels":
+            swapped = parts.copy()
+            swapped[i] = "images"
+            base = Path(*swapped).with_suffix("")
+            for ext in (".jpg", ".jpeg", ".png"):
+                candidate = base.with_suffix(ext)
+                if candidate.exists():
+                    return candidate
+            break
+
+    for ext in (".jpg", ".jpeg", ".png"):
+        candidate = txt_path.with_suffix(ext)
+        if candidate.exists():
+            return candidate
+
+    return None
+
+
 def _parse_keypoints_yolo(
     labels_dir: Path, n_keypoints: int
 ) -> list[list[tuple[float, float]]]:
@@ -67,12 +111,46 @@ def _parse_keypoints_yolo(
     Recurses through subdirectories (e.g. train/, val/) to find all .txt
     files. YOLO pose format per line:
     ``class cx cy w h x1 y1 v1 x2 y2 v2 ...``
-    where coordinates are normalized [0, 1].
+    where coordinates are normalized [0, 1]. Each label file's sibling image
+    is resolved via :func:`_resolve_sibling_image` and its pixel dimensions
+    (read via ``PIL.Image.open(...).size`` without a pixel decode) are used
+    to scale keypoints to absolute pixel coordinates, matching the
+    convention already used by :func:`_parse_keypoints_coco`. A label file
+    with no resolvable sibling image is skipped with a warning.
+
+    Args:
+        labels_dir: Root directory to recurse for ``*.txt`` label files.
+        n_keypoints: Expected number of keypoints per instance.
+
+    Returns:
+        List of keypoint instances, each a list of (x, y) tuples in
+        absolute pixel coordinates, with NaN for invisible keypoints.
+
+    Raises:
+        click.ClickException: If one or more label files were found but
+            none of them resolved a sibling image.
     """
     txt_files = sorted(labels_dir.rglob("*.txt"))
     instances: list[list[tuple[float, float]]] = []
+    n_resolved = 0
     for txt_path in txt_files:
-        for line in txt_path.read_text().splitlines():
+        img_path = _resolve_sibling_image(txt_path)
+        if img_path is None:
+            logger.warning("No sibling image found for label %s, skipping", txt_path)
+            continue
+
+        try:
+            with Image.open(img_path) as im:
+                img_w, img_h = im.size
+        except (OSError, UnidentifiedImageError):
+            logger.warning(
+                "Could not open image %s for label %s, skipping", img_path, txt_path
+            )
+            continue
+
+        n_resolved += 1
+
+        for line in txt_path.read_text(encoding="utf-8").splitlines():
             parts = line.strip().split()
             if len(parts) < 5 + n_keypoints * 3:
                 continue
@@ -87,10 +165,18 @@ def _parse_keypoints_yolo(
                     float(kp_values[base + 2]),
                 )
                 if v > 0:
-                    points.append((x, y))
+                    points.append((x * img_w, y * img_h))
                 else:
                     points.append((float("nan"), float("nan")))
             instances.append(points)
+
+    if txt_files and n_resolved == 0:
+        raise click.ClickException(
+            f"No images resolved for any label file in {labels_dir}. "
+            "Images are expected under a sibling 'images/' directory "
+            "mirroring 'labels/'."
+        )
+
     return instances
 
 
@@ -168,7 +254,8 @@ def calibrate_keypoints(ctx: click.Context, annotations: str, n_keypoints: int) 
     each keypoint's position along the fish body curve (0.0 = nose, 1.0 = tail).
 
     Updates the pipeline config YAML in place, setting
-    ``midline.keypoint_t_values`` to the computed values.
+    ``pose.keypoint_t_values`` to the computed values. If the config carries
+    a stale legacy ``midline.keypoint_t_values``, that key is removed.
 
     Args:
         ctx: Click context for project resolution.
@@ -202,9 +289,19 @@ def calibrate_keypoints(ctx: click.Context, annotations: str, n_keypoints: int) 
     with config_path.open() as fh:
         config_data = yaml.safe_load(fh) or {}
 
-    if "midline" not in config_data:
-        config_data["midline"] = {}
-    config_data["midline"]["keypoint_t_values"] = t_values_list
+    if "pose" not in config_data:
+        config_data["pose"] = {}
+    config_data["pose"]["keypoint_t_values"] = t_values_list
+
+    # Remove a stale legacy value so the config doesn't carry two
+    # contradictory sources of truth (pose: wins the merge either way).
+    legacy_midline = config_data.get("midline")
+    if isinstance(legacy_midline, dict) and "keypoint_t_values" in legacy_midline:
+        del legacy_midline["keypoint_t_values"]
+        click.echo(
+            f"Removed legacy midline.keypoint_t_values from {config_path} "
+            "(superseded by pose.keypoint_t_values)."
+        )
 
     with config_path.open("w") as fh:
         yaml.dump(config_data, fh, default_flow_style=False, sort_keys=False)

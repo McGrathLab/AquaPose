@@ -304,9 +304,12 @@ class SwapDetector:
         npz_path = self._run_dir / "reid" / "embeddings.npz"
         if npz_path.exists():
             npz = np.load(npz_path, allow_pickle=True)
-            self._embeddings = npz["embeddings"].astype(np.float32)
-            self._emb_frames = npz["frame_index"].astype(np.int64)
-            self._emb_fish_ids = npz["fish_id"].astype(np.int32)
+            embeddings_arr: NDArray[np.float32] = npz["embeddings"].astype(np.float32)
+            emb_frames_arr: NDArray[np.int64] = npz["frame_index"].astype(np.int64)
+            emb_fish_ids_arr: NDArray[np.int32] = npz["fish_id"].astype(np.int32)
+            self._embeddings = embeddings_arr
+            self._emb_frames = emb_frames_arr
+            self._emb_fish_ids = emb_fish_ids_arr
             logger.info(
                 "Loaded %d existing embeddings from %s",
                 self._embeddings.shape[0],

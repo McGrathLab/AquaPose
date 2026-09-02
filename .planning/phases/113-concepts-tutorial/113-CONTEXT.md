@@ -315,8 +315,26 @@ for a divergence.
 
 Ordering: in the tutorial, `smooth-z` lands **after** the results check and schema
 walk (new step 8), not in the run→viz sequence. In the deposit README it is
-appended as a final recommended step. Both note that it rewrites the HDF5 in place
-and that `--dry-run` is the safe first move.
+appended as a final recommended step.
+
+**Verified mechanics (corrected — an earlier draft of this decision had the first
+point backwards):**
+
+- `smooth-z` does **not** edit in place. `smooth_z_cmd` `shutil.copy2`s the input
+  to `{stem}_smoothed.h5` and modifies the copy, so the original always survives
+  and a before/after comparison is free. The docstring's "shifts all
+  z-coordinates" phrasing reads like an in-place edit; the code is authoritative.
+- `aquapose viz` picks up the smoothed file **automatically**.
+  `resolve_h5_path` (`src/aquapose/evaluation/viz/_loader.py:151`) prefers
+  `midlines_stitched_smoothed.h5` → `midlines_stitched.h5`, then
+  `midlines_smoothed.h5` → `midlines.h5`. A bare `aquapose viz` after smoothing
+  therefore renders smoothed data with no extra flag — invisible unless documented.
+- Two sharp edges the tutorial must name: `viz` defaults to `{run_dir}/viz/` and
+  will **overwrite** the pre-smoothing renders, so `-o/--output-dir` is required
+  to keep both; and once `midlines_smoothed.h5` exists there is **no flag** that
+  forces `viz` back to the unsmoothed file (`--unstitched` only skips the stitched
+  variants), so the original render must be preserved via `-o` or the smoothed
+  file moved aside.
 
 Alternatives considered and rejected: regenerating reference outputs with
 smoothing applied (breaches the Phase 111 scope fence, invalidates the current

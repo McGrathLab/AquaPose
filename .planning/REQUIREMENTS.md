@@ -27,6 +27,8 @@ Prerequisites. These gate doc authoring and the badge row.
 - [x] **QA-02**: The 7 tier-two failures in `training/` and `evaluation/` pass, so the full suite is green and the coverage badge is honest
 - [x] **QA-03**: Model weights-path config fields resolve consistently — `keypoint_weights_path` and `detection.model_path` use one convention relative to `project_dir`
 - [x] **QA-04**: The tutorial config uses relative, platform-neutral paths and runs unmodified on Linux, macOS, and Windows
+- [x] **QA-05**: The verified pre-release bug backlog is cleared — `prep calibrate-keypoints` writes unbiased t-values to the canonical `pose:` key, `aquapose init` produces a config that fails with the intended `ValueError`, `GUIDEBOOK.md` §6 matches `build_stages`, and `core/` holds its import boundary
+- [ ] **QA-06**: `hatch run typecheck` exits 0 and the CI `typecheck` job passes, so the README-02 badge row can honestly claim green CI
 
 ### Documentation
 
@@ -114,6 +116,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QA-02 | 109 | Complete |
 | QA-03 | 109 | In progress (Plan 01 done) |
 | QA-04 | 109 | Complete |
+| QA-05 | 113.1 | Complete |
+| QA-06 | 113.2 | Pending |
 | DOCS-01 | 110 | Complete |
 | DOCS-02 | 110 | Complete |
 | DOCS-03 | 113 | Complete |

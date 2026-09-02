@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113.1
 current_phase_name: Pre-Release Bug Fixes
 status: planned
-stopped_at: Phase 113 at 6/7 — 113-06 deferred, blocked on Phase 113.1
-last_updated: "2026-09-02T20:20:06.077Z"
+stopped_at: Completed 113.1-01-PLAN.md
+last_updated: "2026-09-02T20:35:22.030Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 33
-  completed_plans: 26
+  completed_plans: 27
   percent: 56
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113.1 (Pre-Release Bug Fixes) — PLANNED
-Plan: 0 of 6
+Plan: 1 of 6
 Status: Ready to execute — 6 plans in 3 waves
 Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 
@@ -51,6 +51,7 @@ Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 | Phase 113 P04 | ~20min | 2 tasks | 4 files |
 | Phase 113 P05 | ~46min | 2 tasks | 4 files |
 | Phase 113 P07 | ~14min | 2 tasks | 3 files |
+| Phase 113.1 P01 | 25min | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,9 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 113-04]: Grounded the concepts page's five-stage pipeline description in current source (engine/pipeline.py::build_stages docstring, stage module docstrings, Phase 110 API titles) rather than GUIDEBOOK.md sec 6's stale pre-v3.7 order (Detection/2D Tracking/Cross-Camera Association/Midline/Reconstruction with a post-association Midline stage); real order is Detection/Pose/Tracking/Association/Reconstruction with midline extraction (Pose) running before tracking. Logged GUIDEBOOK.md and two other stale CLAUDE.md bullets to deferred-items.md
 - [Phase ?]: [Phase 113-05]: End-to-end GPU verification run (RTX 4070 Ti) executed prep generate-luts -> run -> viz against the deposit, exit 0 on all three; measured D-15's second timing point (224s pipeline / 85s viz vs reference's 786.45s / 150.85s) and D-12's statistics independently from midlines.h5 (95.9% reconstructed / 2.82px median residual vs reference's 95.2% / 2.84px, both within tolerance). Corrected a disproven '~2-5 min' LUT-generation timing claim to 'varies by GPU' in both the template and tree (D-06); source-confirmed two alarming per-chunk log lines (clustering count mismatch, more-dropped-than-kept reconstruction) as designed diagnostic behavior, not defects. Deposit restored to a verified 22-file state (verify_deposit() -> [], sha256sum -c -> 22 OK). Flagged the pre-existing 'Mean of empty slice' RuntimeWarning in recovery.py as out-of-scope, queued as a todo.
 - [Phase ?]: [Phase 113-07]: Authored docs/getting-started/tutorial.md end-to-end against the locally verified deposit with an explicit ZENODO-DOI-PENDING placeholder at every archive-reference site (D-21) -- no doi.org link or invented DOI anywhere on the page. Kept the upload todo open rather than closing it (overriding stale plan-file prose to move it to done/), updated to note the tutorial is written and blocked only on the DOI fill-in pass. Completed the three-card Getting Started section.
+- [Phase ?]: calibrate-keypoints writer now targets pose.keypoint_t_values (was midline.keypoint_t_values); stale legacy key removed with a notice (D-06)
+- [Phase ?]: YOLO arc-length now measured in pixel space via new _resolve_sibling_image sibling-image resolution, matching the COCO path (D-08)
+- [Phase ?]: Terminal-gate fixture uses a zigzag (both-axes) path rather than a straight diagonal, since a straight evenly-pixel-spaced line is invariant to the arc-length bug under any linear per-axis scaling
 
 ### Pending Todos
 
@@ -117,10 +121,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T14:04:34.283Z
+**Last session:** 2026-09-02T20:35:22.019Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113-07-PLAN.md
+Stopped at: Completed 113.1-01-PLAN.md
 Resume file: None
 
 ## Performance Metrics

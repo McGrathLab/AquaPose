@@ -347,10 +347,25 @@ class TestGenerateCommand:
         obb_labels = list((pseudo_dir / "obb" / "labels" / "train").glob("*.txt"))
         assert len(obb_labels) > 0
 
-        # Check OBB label content format
+        # Check OBB label content format. The file is expected to hold two
+        # lines: one consensus-fish OBB (from the tracked fish in `context`)
+        # and one gap-fish OBB (injected via
+        # `mock_detect_gaps.return_value = [("cam1", "no-detection")]` and
+        # `mock_gap_result["obb_line"]`). Two objects in one image is one
+        # line each per YOLO OBB format, which is the merge behavior
+        # `test_generates_merged_obb_and_separate_pose` is named for.
         label_content = obb_labels[0].read_text().strip()
-        parts = label_content.split()
-        assert len(parts) == 9  # cls + 4 corners x 2
+        lines = label_content.splitlines()
+        assert len(lines) == 2, (
+            "Expected 2 OBB lines (consensus fish + gap fish), got "
+            f"{len(lines)}: {lines!r}"
+        )
+        for line in lines:
+            parts = line.split()
+            assert len(parts) == 9, (  # cls + 4 corners x 2
+                f"Expected 9 whitespace-separated tokens, got {len(parts)} "
+                f"in line: {line!r}"
+            )
 
         # Check pose files have fish-index suffix pattern (crop-based)
         pose_images = list(

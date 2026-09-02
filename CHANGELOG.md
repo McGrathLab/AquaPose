@@ -9,6 +9,246 @@ published under the MIT License, and that grant is unaffected. See
 
 <!-- version list -->
 
+## v1.2.0-dev.3 (2026-09-02)
+
+### Bug Fixes
+
+- **109**: Normalize store-registration weights_path to forward slashes (WR-01/D-07)
+  ([`1277dc8`](https://github.com/McGrathLab/AquaPose/commit/1277dc8ece3ede913f185a5b1679b63089ecb0fd))
+
+- **109-01**: Normalize weights_path writes to forward slashes in run_manager (D-07)
+  ([`f214301`](https://github.com/McGrathLab/AquaPose/commit/f214301bf0de5fd4839ba36185cc47a07b1762c4))
+
+- **109-02**: Update test_symlinks_are_relative and fix list_models ordering (D-09, D-02)
+  ([`aaef2e6`](https://github.com/McGrathLab/AquaPose/commit/aaef2e654780e0880a4d8b85e5fdb32cef4aeb0b))
+
+- **109-03**: Remove stale --val-split assertions; fix cp1252 encoding read
+  ([`7ed3979`](https://github.com/McGrathLab/AquaPose/commit/7ed3979df38cdf6d10b338ba592ed51e6ae493f2))
+
+- **109-03**: Utf-8 config write in init_cmd; correct pyproject URLs (D-05/D-08/D-06)
+  ([`056f50d`](https://github.com/McGrathLab/AquaPose/commit/056f50d5395f83a9702297bee6ad609a18c46ae6))
+
+- **109-04**: Correct end-to-end re-ID fixtures to crop_size=224 for Swin contract (D-10)
+  ([`58e3091`](https://github.com/McGrathLab/AquaPose/commit/58e30912857bf839370534bfd16d478130472b13))
+
+- **110-03**: Coverage cross-check passes, drive docs build to green -W exit
+  ([`b0a2494`](https://github.com/McGrathLab/AquaPose/commit/b0a2494a4a0bbaf44a342c9feaef7b6afa8de1f1))
+
+- **111-03**: Write checksum manifest with LF newlines for cross-platform sha256sum -c
+  ([`e531009`](https://github.com/McGrathLab/AquaPose/commit/e531009e8253aebab894c4f751136bdbb2554014))
+
+- **112**: Correct CLI worked-example flags and smooth-z description (code review CR-01..05, WR-02)
+  ([`c45877c`](https://github.com/McGrathLab/AquaPose/commit/c45877c27cf0f21cf8861f59a79d350c89fbae11))
+
+### Chores
+
+- **110**: Persist auto-chain flag for execute-phase
+  ([`ab7812c`](https://github.com/McGrathLab/AquaPose/commit/ab7812c41a6014a322a8e23a8aef7fc8a506351a))
+
+- **112-01**: Add sphinx-click to docs env and register extension
+  ([`ac916c9`](https://github.com/McGrathLab/AquaPose/commit/ac916c9240a6480f5d02a693474176e3b88f99d8))
+
+### Documentation
+
+- **109**: Add code review report
+  ([`bb759ab`](https://github.com/McGrathLab/AquaPose/commit/bb759abfb7c701c5cb77e881e53cd136db72d384))
+
+- **109**: Capture phase context
+  ([`c74371c`](https://github.com/McGrathLab/AquaPose/commit/c74371c687b4efcce1b24c69349ae720497bfa57))
+
+- **109**: Clean up superseded plan files and migrate config granularity key
+  ([`f552ea5`](https://github.com/McGrathLab/AquaPose/commit/f552ea53a1cf082890a1e1036ca2935bb004cf84))
+
+- **109**: Create phase plan
+  ([`88b020a`](https://github.com/McGrathLab/AquaPose/commit/88b020ab25280ceec75c532ffafeecd0b0cbdc61))
+
+- **109**: Create phase plan
+  ([`0fea7fd`](https://github.com/McGrathLab/AquaPose/commit/0fea7fd001af1ab971e4d2490ab60da7071088c4))
+
+- **109**: Record real baseline diagnosis, revise decisions (D-07..D-11)
+  ([`d68e022`](https://github.com/McGrathLab/AquaPose/commit/d68e02209c222d1150aeab73ce76c34abf621074))
+
+- **109**: Refresh ROADMAP success criteria to match real baseline taxonomy
+  ([`ecdb0c3`](https://github.com/McGrathLab/AquaPose/commit/ecdb0c3349b427e621917fa469c5344dc5f509fe))
+
+- **109**: Replan against real 23-failure baseline (5 plans, D-07..D-11)
+  ([`d5999ff`](https://github.com/McGrathLab/AquaPose/commit/d5999ff4e31386abcc225bc5313f31faa1f3a2b2))
+
+- **109**: Replan phase against real 23-failure baseline (5 plans)
+  ([`1349b46`](https://github.com/McGrathLab/AquaPose/commit/1349b46a81626903b31cde462cf8facbcef7e4fe))
+
+- **109-01**: Complete plan 01 summary, advance STATE and ROADMAP
+  ([`f9eaf08`](https://github.com/McGrathLab/AquaPose/commit/f9eaf08ee844d75f99b48392ca7a872d3c2334ec))
+
+- **109-02**: Complete store-assemble symlink fallback plan
+  ([`6c59ef4`](https://github.com/McGrathLab/AquaPose/commit/6c59ef40a2071dcd0f38e653c000f94b9f9120cb))
+
+- **109-03**: Complete plan 03 — stale assertions, encoding, URLs
+  ([`9eef9ba`](https://github.com/McGrathLab/AquaPose/commit/9eef9ba3d9098746653fbcdb12d9dd5cf024f2c1))
+
+- **109-04**: Complete plan 04 — re-ID fixture fix, slow verification delegated to CI
+  ([`75d0390`](https://github.com/McGrathLab/AquaPose/commit/75d039072b0802593752ec893dd6a077a69c103a))
+
+- **109-04**: Record local GPU slow-test green + device-adaptive fixture change
+  ([`9ff8bb0`](https://github.com/McGrathLab/AquaPose/commit/9ff8bb054cfefd96b446e44b738c68fb9cb2693a))
+
+- **109-05**: Terminal green gate — honest full-suite green, QA-01/QA-02 confirmed
+  ([`526ea08`](https://github.com/McGrathLab/AquaPose/commit/526ea08558aa9391855d101b8d8e271538e5b3f4))
+
+- **110**: Capture phase context
+  ([`c664b26`](https://github.com/McGrathLab/AquaPose/commit/c664b26ca0c2c44aa65d108571d4992f88292721))
+
+- **110**: Create phase plan
+  ([`e5c7085`](https://github.com/McGrathLab/AquaPose/commit/e5c7085cecec0674f013330450c5b2e17f400c7d))
+
+- **110**: Record planning completion and pattern map
+  ([`e7ce2a4`](https://github.com/McGrathLab/AquaPose/commit/e7ce2a415b5fb00b5043b092b612965842a9a8df))
+
+- **110-01**: Complete tier-one api reference pages plan
+  ([`0c978b1`](https://github.com/McGrathLab/AquaPose/commit/0c978b14449c47476c39b7a09986d5500d431c05))
+
+- **110-01**: Create docs/api/core/ per-package automodule pages
+  ([`52201da`](https://github.com/McGrathLab/AquaPose/commit/52201dab503b8fe3ed8ad9e35c9346068aeedef2))
+
+- **110-01**: Expand calibration/engine/io and add cli automodule pages
+  ([`215762e`](https://github.com/McGrathLab/AquaPose/commit/215762e2905a72cfe6faccccf34fb1e271250212))
+
+- **110-02**: Complete research utilities tier-two pages plan
+  ([`d35d1f4`](https://github.com/McGrathLab/AquaPose/commit/d35d1f4e13556e6240bbcfee0b683649bcfb4289))
+
+- **110-02**: Evaluation tier-two section index and content pages
+  ([`824b4c2`](https://github.com/McGrathLab/AquaPose/commit/824b4c2b1cef1b2b6f74ad8912fc742665dc96de))
+
+- **110-02**: Training section, synthetic, and core/reid tier-two pages
+  ([`4c276f2`](https://github.com/McGrathLab/AquaPose/commit/4c276f2fd83a50fd4925bda17ea33146991705fd))
+
+- **110-03**: Complete tiered index integration and build gate plan
+  ([`ee6e056`](https://github.com/McGrathLab/AquaPose/commit/ee6e056e0f89f42cdc7c2ecbfa24356caee937d9))
+
+- **110-03**: Update STATE.md and ROADMAP.md after plan completion
+  ([`2812f5b`](https://github.com/McGrathLab/AquaPose/commit/2812f5bbe6328c55b71f9a7e6194083244fa8079))
+
+- **111**: Capture phase context
+  ([`64ce7eb`](https://github.com/McGrathLab/AquaPose/commit/64ce7ebd6ca74c84f8d5eeff1b4b76cef9fd77e7))
+
+- **111**: Create phase plan
+  ([`0f8a352`](https://github.com/McGrathLab/AquaPose/commit/0f8a3528b39b4b6a0f86248d90d7b55ee7276fb0))
+
+- **111**: Create phase plan
+  ([`f4da785`](https://github.com/McGrathLab/AquaPose/commit/f4da785b5ff6cbe9a4c7f593b93ee87577065499))
+
+- **111-01**: Complete plan — packaging script + deposit tree verified
+  ([`fb9c8b3`](https://github.com/McGrathLab/AquaPose/commit/fb9c8b381699bbd307e16fe69c15bcbd2f1b0229))
+
+- **111-02**: Complete plan — reference outputs regenerated; correct D-03 (LUT prep)
+  ([`d7f44e2`](https://github.com/McGrathLab/AquaPose/commit/d7f44e2e19672fdbe9f9b460eec4dd8ecdec7aae))
+
+- **111-03**: Finalize deposit (publish-ready); defer Zenodo upload as tracked todo
+  ([`927c5ba`](https://github.com/McGrathLab/AquaPose/commit/927c5baba18db351044b61acb92cf363ebc282a1))
+
+- **112**: Add code review report
+  ([`a5b1206`](https://github.com/McGrathLab/AquaPose/commit/a5b12061b4c5586d2ad79080bae29736556a2df8))
+
+- **112**: Add pattern map for config/CLI reference planning
+  ([`64b1be5`](https://github.com/McGrathLab/AquaPose/commit/64b1be55d8eb039ea2c5d4cf44794e62c6d0c310))
+
+- **112**: Capture phase context
+  ([`30c47c3`](https://github.com/McGrathLab/AquaPose/commit/30c47c3f4ec8ec6b621037fa68639d325ef297fc))
+
+- **112**: Create phase plan
+  ([`0473ef5`](https://github.com/McGrathLab/AquaPose/commit/0473ef5f48d93209223bf38ce9ed60b1a814aa8e))
+
+- **112-01**: Complete sphinx-click foundation plan
+  ([`a5aef38`](https://github.com/McGrathLab/AquaPose/commit/a5aef385e729398bd83fe79c90bf3a69a6ed6d17))
+
+- **112-02**: Complete CLI reference plan
+  ([`f17bf8d`](https://github.com/McGrathLab/AquaPose/commit/f17bf8d04a437da2f0c3c882ba504276e26cc88c))
+
+- **112-02**: Create CLI reference page with sphinx-click directive and worked examples
+  ([`e333b62`](https://github.com/McGrathLab/AquaPose/commit/e333b6203c58cb0ed2def70d55d8b04fcb8da83c))
+
+- **112-03**: Author tiered config reference page
+  ([`ceba729`](https://github.com/McGrathLab/AquaPose/commit/ceba729fac56ba9b073b69dac33a23697595cdf6))
+
+- **112-03**: Complete config reference plan — SUMMARY and state update
+  ([`6df8a92`](https://github.com/McGrathLab/AquaPose/commit/6df8a92a4087cb5fc9e3966ffcdf5c9cf22e9155))
+
+- **112-04**: Complete reference-integration plan
+  ([`dd151a8`](https://github.com/McGrathLab/AquaPose/commit/dd151a85d5e7706330b35f2c6a90b9f0f13802e0))
+
+- **phase-109**: Complete phase execution
+  ([`78502ac`](https://github.com/McGrathLab/AquaPose/commit/78502ac93c562474340e96b6cd9f20d9b8ab0da0))
+
+- **phase-109**: Reconcile STATE.md to reflect phase completion
+  ([`62c1172`](https://github.com/McGrathLab/AquaPose/commit/62c1172ab18ba881b0ec2705aa910e0d8c8d98ed))
+
+- **phase-110**: Complete phase execution
+  ([`5fa966b`](https://github.com/McGrathLab/AquaPose/commit/5fa966b27764c5580ee0e1e9ac33d6dd9471d52d))
+
+- **phase-110**: Evolve PROJECT.md after phase completion
+  ([`110c992`](https://github.com/McGrathLab/AquaPose/commit/110c992e8fd5a9c2a6fb287921baf79cd1199cf1))
+
+- **phase-111**: Update tracking after wave 1
+  ([`d4acfb2`](https://github.com/McGrathLab/AquaPose/commit/d4acfb287be555a56e51ed224bcd10b45941a8f7))
+
+- **phase-111**: Update tracking after wave 2
+  ([`546a41f`](https://github.com/McGrathLab/AquaPose/commit/546a41f6717a8bb37d97c8d25bb3c8048cfb9b0a))
+
+- **phase-111**: Update tracking after wave 3
+  ([`fe307fd`](https://github.com/McGrathLab/AquaPose/commit/fe307fd5d878fa82055ca51a4e030d767c4d8d24))
+
+- **phase-112**: Complete phase execution
+  ([`90b98a3`](https://github.com/McGrathLab/AquaPose/commit/90b98a361759649c7046144560f8ee52a222ef84))
+
+- **state**: Record phase 109 context session
+  ([`e34aebd`](https://github.com/McGrathLab/AquaPose/commit/e34aebdaa1c6b05e2075abd3c448899852854f99))
+
+- **state**: Record phase 110 context session
+  ([`b3845e9`](https://github.com/McGrathLab/AquaPose/commit/b3845e9bfed2f927cd88dc3f22221c96b166ce85))
+
+- **state**: Record phase 111 context session
+  ([`fb1494a`](https://github.com/McGrathLab/AquaPose/commit/fb1494a0b9945e8032054f2faaa7aa06834b472d))
+
+- **state**: Record phase 112 context session
+  ([`bdb67ec`](https://github.com/McGrathLab/AquaPose/commit/bdb67ec213f9fa7f0d9bf13c09480c943f2a6cc4))
+
+### Features
+
+- **109-02**: Add symlink→hardlink→copy fallback in store.assemble() (D-09)
+  ([`f6de5a5`](https://github.com/McGrathLab/AquaPose/commit/f6de5a54f0f05c86a3d55a3e97d32c06c1900d30))
+
+- **110-03**: Author two-section tiered index, retire flat core.rst
+  ([`76bea53`](https://github.com/McGrathLab/AquaPose/commit/76bea535fe29de3d7f9dd68a05bf77ad0f9dabed))
+
+- **111-01**: Add packaging script skeleton and tests (Tasks 1+2)
+  ([`beab1d9`](https://github.com/McGrathLab/AquaPose/commit/beab1d904ae19b72235cd0fd62b06ca88c5e5ccf))
+
+- **111-02**: Implement regenerate_reference_outputs() — diagnostic pipeline + viz + timing
+  ([`7eae426`](https://github.com/McGrathLab/AquaPose/commit/7eae426bc38b2087aac170a9e75b3883709aa957))
+
+- **111-03**: Verify_deposit gate, finalize_deposit cleanup, prep-luts in regen, overlay re-encode
+  ([`9dfa6bf`](https://github.com/McGrathLab/AquaPose/commit/9dfa6bf61ca6495b3c592681bfaa2f6bcbfa80f3))
+
+- **112-04**: Add reciprocal cross-links to API pages and verify build-green gate
+  ([`259c446`](https://github.com/McGrathLab/AquaPose/commit/259c44684af43f6145b48e3ea4016b674a796534))
+
+- **112-04**: Create Reference section landing page and wire into top-level toctree
+  ([`511a2a8`](https://github.com/McGrathLab/AquaPose/commit/511a2a856091482955c232c91ad5d571171d0897))
+
+### Refactoring
+
+- **109-01**: Remove model_path alias; document unified weights_path resolution
+  ([`b4d5838`](https://github.com/McGrathLab/AquaPose/commit/b4d5838bdbeeb1e86c132fbfea9a06835d73e915))
+
+### Testing
+
+- **109-04**: Make re-ID end-to-end fixtures device-adaptive (CUDA when available)
+  ([`4be6a35`](https://github.com/McGrathLab/AquaPose/commit/4be6a35f35f73074dc8a1ac6b2d78a808104643b))
+
+- **110**: Persist human verification items as UAT
+  ([`b1863a2`](https://github.com/McGrathLab/AquaPose/commit/b1863a246d28da4e2079dbb70af7592c49740ec4))
+
+
 ## v1.2.0-dev.2 (2026-08-17)
 
 ### Bug Fixes

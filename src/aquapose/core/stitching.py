@@ -26,6 +26,8 @@ import h5py
 import numpy as np
 from numpy.typing import NDArray
 
+from aquapose.core.h5 import require_dataset, require_group
+
 logger = logging.getLogger(__name__)
 
 # Down-weight Z due to ~2.9x reconstruction anisotropy (see memory: Z/XY Anisotropy)
@@ -553,10 +555,10 @@ def detect_and_repair_swaps(
     """
     h5_path = Path(h5_path)
     with h5py.File(h5_path, "r") as f:
-        grp = f["midlines"]
-        points = grp["points"][:]
-        fish_id = grp["fish_id"][:]
-        frame_index = grp["frame_index"][:]
+        grp = require_group(f, "midlines")
+        points = require_dataset(grp, "points")[:]
+        fish_id = require_dataset(grp, "fish_id")[:]
+        frame_index = require_dataset(grp, "frame_index")[:]
 
     if points is None:
         logger.warning(
@@ -705,7 +707,7 @@ def apply_swap_repairs(h5_path: str | Path, swaps: list[SwapEvent]) -> int:
         grp = cast(h5py.Group, f["midlines"])
         fish_id_ds = cast(h5py.Dataset, grp["fish_id"])
         data = fish_id_ds[()]
-        frame_index = grp["frame_index"][:]
+        frame_index = require_dataset(grp, "frame_index")[:]
 
         for swap in auto_swaps:
             # Find row index where frame >= swap.frame

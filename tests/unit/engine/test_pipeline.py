@@ -311,3 +311,82 @@ def test_build_stages_stop_after_invalid(monkeypatch: pytest.MonkeyPatch) -> Non
     config = load_config(cli_overrides={"n_animals": 3, "stop_after": "nonexistent"})
     with pytest.raises(ValueError, match="Unknown stop_after stage"):
         build_stages(config)
+
+
+# ---------------------------------------------------------------------------
+# GUIDEBOOK.md stage-order drift guard (D-14, D-15)
+# ---------------------------------------------------------------------------
+
+# Maps stage class name to the display name used in GUIDEBOOK.md section 6's
+# arrow-joined flow lines. SyntheticDataStage is unused by the production-only
+# case but belongs in the mapping now so the synthetic-mode case can reuse it.
+_GUIDEBOOK_STAGE_DISPLAY_NAMES: dict[str, str] = {
+    "DetectionStage": "Detection",
+    "PoseStage": "Pose",
+    "TrackingStage": "2D Tracking",
+    "AssociationStage": "Cross-Camera Association",
+    "ReconstructionStage": "Reconstruction",
+    "SyntheticDataStage": "Synthetic Data",
+}
+
+
+def _guidebook_path() -> Path:
+    """Resolve .planning/GUIDEBOOK.md relative to this test file, not cwd."""
+    return Path(__file__).resolve().parents[3] / ".planning" / "GUIDEBOOK.md"
+
+
+def test_build_stages_sequence_matches_guidebook(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """build_stages() production order must appear verbatim in GUIDEBOOK.md section 6.
+
+    The expected arrow-joined sequence is derived from a real build_stages()
+    call, not hardcoded, so a future pipeline reorder that isn't mirrored in
+    GUIDEBOOK.md turns this test red (D-14, D-15).
+    """
+    from aquapose.core import (
+        DetectionStage,
+        PoseStage,
+        ReconstructionStage,
+        SyntheticDataStage,
+    )
+    from aquapose.core.association import AssociationStage
+    from aquapose.core.tracking import TrackingStage
+    from aquapose.core.types.frame_source import VideoFrameSource
+
+    for cls in (
+        DetectionStage,
+        PoseStage,
+        ReconstructionStage,
+        SyntheticDataStage,
+        AssociationStage,
+        TrackingStage,
+        VideoFrameSource,
+    ):
+        monkeypatch.setattr(cls, "__init__", lambda self, *a, **kw: None)
+
+    config = load_config(
+        cli_overrides={
+            "n_animals": 3,
+            "mode": "production",
+            "video_dir": ".",
+            "calibration_path": ".",
+        },
+    )
+    stages = build_stages(config)
+
+    display_names: list[str] = []
+    for stage in stages:
+        cls_name = type(stage).__name__
+        assert cls_name in _GUIDEBOOK_STAGE_DISPLAY_NAMES, (
+            f"Stage class {cls_name!r} has no GUIDEBOOK display-name mapping; "
+            "add it to _GUIDEBOOK_STAGE_DISPLAY_NAMES."
+        )
+        display_names.append(_GUIDEBOOK_STAGE_DISPLAY_NAMES[cls_name])
+
+    expected_sequence = " → ".join(display_names)
+    guidebook_text = _guidebook_path().read_text(encoding="utf-8")
+    assert expected_sequence in guidebook_text, (
+        f"build_stages() production order {expected_sequence!r} not found "
+        "verbatim in GUIDEBOOK.md section 6."
+    )

@@ -105,7 +105,7 @@ The pipeline sees each batch as a complete unit of work. Stages never know batch
 ## 6. Pipeline Stages
 
 ```
-Detection → 2D Tracking → Cross-Camera Association → Midline → Reconstruction
+Detection → Pose → 2D Tracking → Cross-Camera Association → Reconstruction
 ```
 
 ### Stage 1 — Detection

@@ -549,9 +549,19 @@ Plans:
 
   1. A user can install AquaPose from written instructions, including the GPU/CUDA caveat, without reading source
   2. The concepts page explains refractive projection, the `{p, ψ, κ, s}` state vector, and the five pipeline stages well enough that a reader understands what the pipeline computes before running it
+     - ⚠ **Corrected during planning (Phase 113 CONTEXT D-01):** the `{p, ψ, κ, s}` state vector does **not exist** in the production pipeline — it is a leftover from the v1.x differentiable-rendering architecture. The concepts page documents the real representation (arc-length-sampled midline points fitted to a 3D B-spline, as verified against the reference `outputs.h5` schema) and records the discrepancy, rather than inventing a structure to match this wording.
   3. The tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step matching the regenerated reference outputs
 
-**Plans**: TBD
+**Plans**: 7 plans (4 waves)
+
+Plans:
+- [ ] 113-01-PLAN.md — TRACER: Getting Started docs section + end-user install guide + drop the cu121 wheel-index pin (DOCS-03)
+- [ ] 113-02-PLAN.md — CI green-up: stable float64 angular-error metric at all three `acos(dot)` sites (QA-01)
+- [ ] 113-03-PLAN.md — Zenodo deposit factual corrections in template and tree, plus regression tests and re-emitted checksums (DOCS-07, DATA-01)
+- [ ] 113-04-PLAN.md — Concepts page: five pipeline stages, refraction, and the real B-spline midline representation (DOCS-04)
+- [ ] 113-05-PLAN.md — End-to-end tutorial verification run on the deposit: timings, measured statistics, deviation fixes (DOCS-07)
+- [ ] 113-06-PLAN.md — Zenodo DOI mint: one-way-door gate, DOI reservation, deposit finalized against it (DATA-03, DOCS-07)
+- [ ] 113-07-PLAN.md — Publish the deposit and author the end-to-end tutorial against the published DOI (DOCS-07, DATA-03)
 
 ### Phase 114: Publication — README, Badges, Live Docs
 

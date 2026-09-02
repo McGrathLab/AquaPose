@@ -337,6 +337,63 @@ def test_n_animals_required_raises_when_missing(tmp_path: Path) -> None:
         load_config(yaml_path=cfg_file)
 
 
+def test_n_animals_string_raises_value_error(tmp_path: Path) -> None:
+    """A string n_animals (e.g. init's old sentinel) raises ValueError, not TypeError.
+
+    This drives the guard through the cli_overrides entry path into
+    top_kwargs.
+    """
+    with pytest.raises(
+        ValueError, match="n_animals is required and must be > 0"
+    ) as excinfo:
+        load_config(cli_overrides={"n_animals": "SET_ME"})
+    assert not isinstance(excinfo.value, TypeError)
+
+
+def test_n_animals_none_raises_value_error(tmp_path: Path) -> None:
+    """A null n_animals in YAML raises ValueError, not TypeError."""
+    yaml_content = {"n_animals": None}
+    cfg_file = tmp_path / "config.yaml"
+    cfg_file.write_text(yaml.dump(yaml_content))
+
+    with pytest.raises(
+        ValueError, match="n_animals is required and must be > 0"
+    ) as excinfo:
+        load_config(yaml_path=cfg_file)
+    assert not isinstance(excinfo.value, TypeError)
+
+
+def test_n_animals_float_raises_value_error(tmp_path: Path) -> None:
+    """A float n_animals raises ValueError instead of silently propagating."""
+    yaml_content = {"n_animals": 3.7}
+    cfg_file = tmp_path / "config.yaml"
+    cfg_file.write_text(yaml.dump(yaml_content))
+
+    with pytest.raises(
+        ValueError, match="n_animals is required and must be > 0"
+    ) as excinfo:
+        load_config(yaml_path=cfg_file)
+    assert not isinstance(excinfo.value, TypeError)
+
+
+def test_n_animals_bool_raises_value_error(tmp_path: Path) -> None:
+    """A bool n_animals raises ValueError even though bool is an int subclass.
+
+    ``True <= 0`` evaluates cleanly to ``False``, so a naive numeric guard
+    lets a bool slip through and propagate into expected_fish_count /
+    fish_count silently.
+    """
+    yaml_content = {"n_animals": True}
+    cfg_file = tmp_path / "config.yaml"
+    cfg_file.write_text(yaml.dump(yaml_content))
+
+    with pytest.raises(
+        ValueError, match="n_animals is required and must be > 0"
+    ) as excinfo:
+        load_config(yaml_path=cfg_file)
+    assert not isinstance(excinfo.value, TypeError)
+
+
 def test_device_in_detection_raises_with_hint(tmp_path: Path) -> None:
     """device in detection sub-config raises ValueError with 'did you mean' hint."""
     yaml_content = {"n_animals": 3, "detection": {"device": "cpu"}}

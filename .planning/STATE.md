@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113
 current_phase_name: Concepts & Tutorial
 status: executing
-stopped_at: Completed 113-03-PLAN.md
-last_updated: "2026-09-02T12:48:13.817Z"
+stopped_at: Completed 113-04-PLAN.md
+last_updated: "2026-09-02T12:58:39.714Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113 planning complete
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 27
-  completed_plans: 23
+  completed_plans: 24
   percent: 71
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113 (Concepts & Tutorial) — EXECUTING
-Plan: 4 of 7
+Plan: 5 of 7
 Status: Ready to execute
 Last activity: 2026-09-02 — Phase 113 execution started
 
@@ -48,6 +48,7 @@ Last activity: 2026-09-02 — Phase 113 execution started
 | Phase 113 P01 | 4min | 2 tasks | 5 files |
 | Phase 113 P02 | 6min | 2 tasks | 2 files |
 | Phase 113 P03 | 6min | 2 tasks | 5 files |
+| Phase 113 P04 | ~20min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,7 @@ Recent decisions affecting current work:
 - [Phase ?]: Torch baseline for D-08: 2.5.1+cu121, CUDA available=True before and after removing the cu121 wheel-index pin (existing env not recreated)
 - [Phase ?]: [Phase 113-02]: Replaced ill-conditioned torch.acos(dot) angular-error metric with stable float64 atan2(||cross||, dot) at all 3 sites (test_luts.py x2, validate_forward_lut); thresholds (0.01/0.1 deg) unchanged; deliberate perturbation proved assertion is not vacuous (0.5558 deg red vs 2.07e-5 deg green); corrects Phase 109-05's QA-01 record which was a lucky local pass, not genuine verification (D-17, D-18)
 - [Phase ?]: [Phase 113-03]: Fixed D-05 deposit template errors (bare aquapose run, McGrathLab/AquaPose URL) plus two empirically-confirmed additional defects — aquapose viz runs/<run_dir> double-nests under resolve_run (proven via direct invocation), and the README's 'generates outputs.h5' claim was false (real pipeline writes midlines.h5; outputs.h5 is only the packaging script's own rename for reference_outputs/). Template and tree corrected identically (D-06); checksums.sha256 re-emitted, 22/22 OK, verify_deposit() returns [].
+- [Phase ?]: [Phase 113-04]: Grounded the concepts page's five-stage pipeline description in current source (engine/pipeline.py::build_stages docstring, stage module docstrings, Phase 110 API titles) rather than GUIDEBOOK.md sec 6's stale pre-v3.7 order (Detection/2D Tracking/Cross-Camera Association/Midline/Reconstruction with a post-association Midline stage); real order is Detection/Pose/Tracking/Association/Reconstruction with midline extraction (Pose) running before tracking. Logged GUIDEBOOK.md and two other stale CLAUDE.md bullets to deferred-items.md
 
 ### Pending Todos
 
@@ -106,10 +108,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T12:48:13.806Z
+**Last session:** 2026-09-02T12:58:39.704Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113-03-PLAN.md
+Stopped at: Completed 113-04-PLAN.md
 Resume file: None
 
 ## Performance Metrics

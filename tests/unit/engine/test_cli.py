@@ -257,6 +257,48 @@ class TestInitConfig:
         assert keys.index("video_dir") < keys.index("n_animals")
         assert keys.index("n_animals") < keys.index("detection")
 
+    def test_init_writes_int_n_animals_sentinel(
+        self,
+        runner: click.testing.CliRunner,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """Generated config.yaml has an int n_animals sentinel with a hint comment."""
+        home_str = str(tmp_path)
+        monkeypatch.setenv("HOME", home_str)
+        monkeypatch.setenv("USERPROFILE", home_str)
+        runner.invoke(cli, ["init", "test1"])
+        project_dir = tmp_path / "aquapose" / "projects" / "test1"
+        import yaml as _yaml
+
+        content = (project_dir / "config.yaml").read_text()
+        parsed = _yaml.safe_load(content)
+        assert isinstance(parsed["n_animals"], int)
+        assert not isinstance(parsed["n_animals"], bool)
+        assert parsed["n_animals"] == 0
+
+        n_animals_line = next(
+            line for line in content.splitlines() if line.startswith("n_animals:")
+        )
+        assert "#" in n_animals_line
+
+    def test_init_guidance_names_n_animals_step(
+        self,
+        runner: click.testing.CliRunner,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """init stdout's step 1 names n_animals and step 4 names calibrate-keypoints."""
+        home_str = str(tmp_path)
+        monkeypatch.setenv("HOME", home_str)
+        monkeypatch.setenv("USERPROFILE", home_str)
+        result = runner.invoke(cli, ["init", "test1"])
+        assert result.exit_code == 0, result.output
+        assert "1. Edit config.yaml -- set n_animals" in result.output
+        assert "4. Run: aquapose --project test1 prep calibrate-keypoints" in (
+            result.output
+        )
+
     def test_init_config_with_synthetic_flag(
         self,
         runner: click.testing.CliRunner,

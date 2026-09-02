@@ -215,10 +215,13 @@ def init_cmd(name: str, synthetic: bool) -> None:
     click.echo(f"Project created at {project_dir}")
     click.echo("")
     click.echo("Next steps:")
-    click.echo("  1. Place calibration JSON in geometry/calibration.json")
-    click.echo(f"  2. Run: aquapose --project {name} prep generate-luts")
     click.echo(
-        f"  3. Run: aquapose --project {name} prep calibrate-keypoints"
+        "  1. Edit config.yaml -- set n_animals to the number of animals in the scene"
+    )
+    click.echo("  2. Place calibration JSON in geometry/calibration.json")
+    click.echo(f"  3. Run: aquapose --project {name} prep generate-luts")
+    click.echo(
+        f"  4. Run: aquapose --project {name} prep calibrate-keypoints"
         " --annotations <json>"
     )
 

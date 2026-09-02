@@ -4,17 +4,17 @@ milestone: v4.0
 milestone_name: Publication
 current_phase: 113.1
 current_phase_name: Pre-Release Bug Fixes
-status: planned
-stopped_at: Completed 113.1-05-PLAN.md task 1+2; awaiting Task 3 checkpoint approval
+status: complete
+stopped_at: Phase 113.1 complete — verification passed 10/10
 last_updated: "2026-09-02T21:27:24.685Z"
 last_activity: 2026-09-02
-last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
+last_activity_desc: Phase 113.1 complete — 7 plans, verification passed, suite green (1403 passed)
 progress:
   total_phases: 9
   completed_phases: 6
   total_plans: 34
-  completed_plans: 33
-  percent: 67
+  completed_plans: 34
+  percent: 69
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 113.1 — Pre-Release Bug Fixes (Phase 113 blocked at 6/7 on its two `calibrate-keypoints` bugs)
+**Current focus:** Phase 113.2 — Typecheck Backlog. Phase 113.1 is complete; its two `calibrate-keypoints` fixes unblock Phase 113's deferred 113-06 (Zenodo DOI mint).
 
 ## Current Position
 
-Phase: 113.1 (Pre-Release Bug Fixes) — PLANNED
-Plan: 6 of 6
-Status: Ready to execute — 6 plans in 3 waves
-Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
+Phase: 113.1 (Pre-Release Bug Fixes) — COMPLETE
+Plan: 7 of 7
+Status: Complete — verification passed (10/10 must-haves)
+Last activity: 2026-09-02 — Phase 113.1 complete (7 plans, 3 waves, verification passed)
 
 ## Performance Metrics
 

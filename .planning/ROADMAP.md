@@ -408,7 +408,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 - [x] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs (completed 2026-09-02)
 - [x] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference (completed 2026-09-02)
 - [ ] **Phase 113: Concepts & Tutorial** - Install guide, concepts page, and end-to-end tutorial against the published dataset
-- [ ] **Phase 113.1: Pre-Release Bug Fixes** (INSERTED) - Clear the verified bug backlog before the release is cut: both `calibrate-keypoints` defects (which block the DOI mint), the `init` n_animals sentinel, the stale GUIDEBOOK stage order, and the `core/` import boundary violation
+- [x] **Phase 113.1: Pre-Release Bug Fixes** (INSERTED) - Clear the verified bug backlog before the release is cut: both `calibrate-keypoints` defects (which block the DOI mint), the `init` n_animals sentinel, the stale GUIDEBOOK stage order, and the `core/` import boundary violation (completed 2026-09-02)
 - [ ] **Phase 113.2: Typecheck Backlog** (INSERTED) - Bring `hatch run typecheck` from 98 errors to 0 so the CI typecheck job passes and Phase 114's badge row is honest
 - [ ] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs
 

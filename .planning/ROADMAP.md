@@ -578,6 +578,6 @@ Plans:
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
 | 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
-| 112. Config & CLI Reference | 4/4 | Complete   | 2026-09-02 |
+| 112. Config & CLI Reference | 4/4 | Complete    | 2026-09-02 |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

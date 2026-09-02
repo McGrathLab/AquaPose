@@ -434,9 +434,13 @@ def validate_forward_lut(
     model_origins = model_origins.cpu()
     model_dirs = model_dirs.cpu()
 
-    # Angular error (degrees)
-    dot = (lut_dirs * model_dirs).sum(dim=-1).clamp(-1.0, 1.0)
-    angular_errors_deg = torch.acos(dot).abs() * (180.0 / torch.pi)
+    # Angular error (degrees) — computed via atan2(||cross||, dot) in float64
+    # rather than acos(dot), which is ill-conditioned near dot=1 (D-17/D-18).
+    cross_norm = torch.linalg.cross(
+        lut_dirs.double(), model_dirs.double(), dim=-1
+    ).norm(dim=-1)
+    dot = (lut_dirs.double() * model_dirs.double()).sum(dim=-1)
+    angular_errors_deg = torch.atan2(cross_norm, dot).abs() * (180.0 / torch.pi)
 
     # Origin distance (metres)
     origin_errors_m = torch.linalg.norm(lut_origins - model_origins, dim=-1)

@@ -57,7 +57,8 @@ correct — the CLI writer just does not honor it.
 
 ## Solution
 
-Pick one; option 1 is smallest and matches the documented design:
+Three parts. 1 and 2 are the bug fix; 3 is the guidance gap that let a new user
+hit it in the first place.
 
 1. Have `init_cmd` write the int sentinel `0` and keep the human hint in a
    YAML comment (the generator already injects a comment before `pose:`, so the
@@ -69,10 +70,40 @@ Pick one; option 1 is smallest and matches the documented design:
 Doing **both** is defensible: 1 fixes the generated artifact, 2 hardens the
 guard against hand-edited configs that reintroduce a non-int.
 
+3. **Add the missing `n_animals` step to the post-init console guidance.**
+   `init_cmd` currently prints (`src/aquapose/cli.py:210-217`):
+
+   ```
+   Next steps:
+     1. Place calibration JSON in geometry/calibration.json
+     2. Run: aquapose --project <name> prep generate-luts
+     3. Run: aquapose --project <name> prep calibrate-keypoints --annotations <json>
+   ```
+
+   Every listed step is about *external* inputs; none tells the user to edit
+   the config it just generated. Setting `n_animals` is the one edit that is
+   **mandatory before anything runs**, and it is the only required field the
+   scaffold cannot infer -- yet it is the only next step not mentioned. Add it
+   as the new step 1 (it gates every later step, and the user is already
+   looking at the file path that was just printed):
+
+   ```
+   Next steps:
+     1. Edit config.yaml -- set n_animals to the number of animals in the scene
+     2. Place calibration JSON in geometry/calibration.json
+     3. Run: aquapose --project <name> prep generate-luts
+     4. Run: aquapose --project <name> prep calibrate-keypoints --annotations <json>
+   ```
+
+   Keep it consistent with whatever sentinel option 1 lands on -- if the
+   generated line becomes `n_animals: 0`, the guidance should say so, so the
+   printed text and the file agree.
+
 Terminal gate: `aquapose init probe` followed immediately by a pipeline run
 fails with `ValueError: n_animals is required and must be > 0`, not `TypeError`.
 Add a regression test asserting the error type and message for an unedited
-init-generated config.
+init-generated config. Assert the `n_animals` guidance line is present in the
+`init` stdout so the instruction cannot be dropped silently later.
 
 ## Notes
 

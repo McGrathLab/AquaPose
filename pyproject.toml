@@ -68,9 +68,6 @@ dependencies = [
     "basedpyright",
 ]
 
-[tool.hatch.envs.default.env-vars]
-UV_EXTRA_INDEX_URL = "https://download.pytorch.org/whl/cu121"
-
 [tool.hatch.envs.default.scripts]
 test = "pytest tests/ -m \"not slow\" {args}"
 test-all = "pytest tests/ {args}"

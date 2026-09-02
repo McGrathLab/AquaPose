@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, NotRequired, TypedDict
 
 import numpy as np
 import scipy.interpolate
@@ -18,6 +18,25 @@ DEFAULT_GRID: dict[str, list[float]] = {
     "outlier_threshold": [float(t) for t in range(10, 105, 5)],
     "min_cameras": [2.0, 3.0, 4.0],
 }
+
+
+class CameraVisibility(TypedDict):
+    """Per-key shape of the ``camera_visibility`` metrics field.
+
+    Attributes:
+        mean: Mean number of cameras observing each fish.
+        median: Median number of cameras observing each fish.
+        min: Minimum number of cameras observing any fish.
+        max: Maximum number of cameras observing any fish.
+        distribution: Histogram mapping camera count to number of fish
+            observed by that many cameras. Not present when unavailable.
+    """
+
+    mean: float
+    median: float
+    min: int
+    max: int
+    distribution: NotRequired[dict[int, int]]
 
 
 @dataclass(frozen=True)
@@ -56,7 +75,7 @@ class ReconstructionMetrics:
     p90_reprojection_error: float | None = None
     p95_reprojection_error: float | None = None
     p99_reprojection_error: float | None = None
-    camera_visibility: dict[str, float | int] | None = None
+    camera_visibility: CameraVisibility | None = None
     per_point_error: dict[int, dict[str, float]] | None = None
     curvature_stratified: dict[str, dict[str, float | int | str]] | None = None
 
@@ -193,7 +212,7 @@ def evaluate_reconstruction(
         for _frame_idx, midline_dict in frame_results
         for midline3d in midline_dict.values()
     ]
-    camera_visibility: dict[str, float | int] | None = None
+    camera_visibility: CameraVisibility | None = None
     if all_n_cameras:
         cam_arr = np.array(all_n_cameras, dtype=np.int32)
         distribution: dict[int, int] = {}

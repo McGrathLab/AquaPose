@@ -275,6 +275,59 @@ the Documentation workflow is green.
   that index breaks environment creation. This is independent evidence for D-08
   beyond the wasted-bandwidth argument: the pin is an active flakiness source.
 
+### smooth-z post-processing (folded in 2026-09-02, mid-execution)
+
+**D-20.** The tutorial and the deposit's "How to Reproduce" recipe both gain a
+final **`aquapose smooth-z`** step. Reference outputs are **not** regenerated.
+
+Raised by the user after visually inspecting the Plan 05 verification run's
+`animation_3d.html` and observing excessive z jitter. Investigation confirmed:
+
+- `aquapose smooth-z` (`src/aquapose/cli.py` `smooth_z_cmd`) already exists and is
+  already documented in Phase 112's CLI reference (`docs/reference/cli.rst:97`),
+  but appears in **neither** the deposit README recipe nor the Phase 113 tutorial
+  plan — a real gap between shipped capability and the documented happy path.
+- It works on the tutorial data unchanged. `midlines/centroid_z (900, 9)` is
+  present in the verification run's `midlines.h5`, so no `z_denoising` config
+  change is needed.
+- Measured effect on the verification run, via `aquapose smooth-z --dry-run` at
+  the default `--sigma-frames 3`: mean frame-to-frame centroid z jitter
+  **0.500 cm → 0.082 cm** across 13 fish and 7769 fish-frames (~6x reduction).
+
+**Why z jitter exists at all:** depth along the camera ray is the
+weakest-constrained axis in refractive multi-view reconstruction, so per-frame z
+scatters more than x and y. Smoothing is what makes 3D trajectories usable for
+downstream kinematics — squarely inside this phase's "confidence in the results"
+goal.
+
+**Scope boundary, deliberately drawn:** `regenerate_reference_outputs` in
+`scripts/package_tutorial_dataset.py` runs only `aquapose run` then `aquapose viz`
+— **no smoothing pass** — so the deposit's shipped `reference_outputs/` are
+pre-smoothing. They are **not** regenerated here: the Phase Boundary above fences
+"re-encoding or regenerating the deposit videos/models/reference outputs", they
+currently verify clean at 22/22, and reopening a Phase 111 artifact immediately
+before an irreversible DOI mint is not a trade worth making.
+
+The consequence must be stated in **both** documents rather than left implicit:
+the results comparison happens *before* smoothing, so a reader who smooths first
+and then compares against `reference_outputs/` does not mistake the improvement
+for a divergence.
+
+Ordering: in the tutorial, `smooth-z` lands **after** the results check and schema
+walk (new step 8), not in the run→viz sequence. In the deposit README it is
+appended as a final recommended step. Both note that it rewrites the HDF5 in place
+and that `--dry-run` is the safe first move.
+
+Alternatives considered and rejected: regenerating reference outputs with
+smoothing applied (breaches the Phase 111 scope fence, invalidates the current
+22/22 verification, adds a GPU cycle before the mint); tutorial-only (leaves
+standalone deposit users, who reach the data by DOI and read only its README,
+never learning the step exists); deferring entirely (a later docs change cannot
+alter an already-minted deposit README).
+
+Applies to: Plan 113-06 Task 3 (deposit README, template and tree together per
+D-06) and Plan 113-07 Task 2 (tutorial step 8).
+
 ### Claude's Discretion
 
 - Exact page filenames and whether "Getting Started" is a directory

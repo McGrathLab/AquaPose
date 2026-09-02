@@ -1,6 +1,8 @@
 CLI
 ===
 
+For the command-line usage reference, see :doc:`../reference/cli`.
+
 .. automodule:: aquapose.cli
    :members:
    :undoc-members:

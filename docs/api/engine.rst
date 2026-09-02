@@ -1,6 +1,8 @@
 Engine
 ======
 
+For the tiered configuration-field reference, see :doc:`../reference/config`.
+
 .. automodule:: aquapose.engine
    :members:
    :undoc-members:

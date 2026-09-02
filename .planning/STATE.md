@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-current_phase: 113.1
-current_phase_name: Pre-Release Bug Fixes
-status: complete
-stopped_at: Phase 113.1 complete — verification passed 10/10
-last_updated: "2026-09-02T21:27:24.685Z"
+current_phase: 113.2
+current_phase_name: Typecheck Backlog
+status: executing
+stopped_at: Completed 113.2-01-PLAN.md
+last_updated: "2026-09-02T23:03:26.236Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 complete — 7 plans, verification passed, suite green (1403 passed)
 progress:
   total_phases: 9
   completed_phases: 6
-  total_plans: 34
+  total_plans: 40
   completed_plans: 34
-  percent: 69
+  percent: 67
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 113.2 — Typecheck Backlog. Phase 113.1 is complete; its two `calibrate-keypoints` fixes unblock Phase 113's deferred 113-06 (Zenodo DOI mint).
+**Current focus:** Phase 113.2 — Typecheck Backlog
 
 ## Current Position
 
-Phase: 113.1 (Pre-Release Bug Fixes) — COMPLETE
-Plan: 7 of 7
-Status: Complete — verification passed (10/10 must-haves)
-Last activity: 2026-09-02 — Phase 113.1 complete (7 plans, 3 waves, verification passed)
+Phase: 113.2 (Typecheck Backlog) — EXECUTING
+Plan: 2 of 6
+Status: Ready to execute
+Last activity: 2026-09-02 — Phase 113.2 execution started
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Last activity: 2026-09-02 — Phase 113.1 complete (7 plans, 3 waves, verificati
 | Phase 113.1 P06 | 12min | 1 tasks | 1 files |
 | Phase 113.1 P07 | 2min | 2 tasks | 3 files |
 | Phase 113.1 P05 | 8min | 2 tasks | 6 files |
+| Phase 113.2 P01 | 6min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,8 @@ Recent decisions affecting current work:
 - [Phase ?]: CLAUDE.md Agent-Specific Instructions section (discuss-phase GUIDEBOOK ingestion hook) removed and replaced with explanatory note; GUIDEBOOK.md content and drift todo deliberately left untouched per 2026-09-02 user decision
 - [Phase ?]: YH keypoint_t_values recomputed on 322 manual labels ([0.0, 0.149, 0.3269, 0.5187, 0.7403, 1.0]) but NOT applied to the production archive config — the cichlidVideo archive path could not be located after a real reachability check; a pending todo carries the corrected vector for whoever can reach it
 - [Phase ?]: Five worked bug todos (calibrate-keypoints legacy key, calibrate-keypoints arc-length, init n_animals sentinel, GUIDEBOOK stage order, core import boundary) filed to done/ with evidence; Zenodo and basedpyright todos remain pending and untouched
+- [Phase ?]: [Phase 113.2-01]: core/h5.py require_group/require_dataset narrow h5py's Group|Dataset|Datatype union with a real TypeError (not assert, D-03); placed under core/ per D-04 import-boundary constraint. Return types stop at h5py.Dataset/Group, never an array type (h5py ships no py.typed marker).
+- [Phase ?]: [Phase 113.2-01]: evaluation/stages/smoothing.py taken 43 -> 0 typecheck errors (phase total 98 -> 55); reprojection counter .get() sites coerced to int() after confirming _compute_reproj_stats always produces whole-number counts (lossless, not a truncation).
 
 ### Pending Todos
 
@@ -137,10 +140,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T21:27:24.675Z
+**Last session:** 2026-09-02T23:03:26.223Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.1-05-PLAN.md task 1+2; awaiting Task 3 checkpoint approval
+Stopped at: Completed 113.2-01-PLAN.md
 Resume file: None
 
 ## Performance Metrics

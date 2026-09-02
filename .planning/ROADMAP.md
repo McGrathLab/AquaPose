@@ -651,11 +651,11 @@ errors + a 12-error tail** (CONTEXT D-01 estimated 89/9; the extra three are the
 `smoothing.py:414-415` int/float errors and the `cli.py:580` `Literal` error). Suite baseline
 `1403 passed, 3 skipped, 17 deselected`.
 
-**Plans:** 6 plans
+**Plans:** 1/6 plans executed
 
 Plans:
 
-- [ ] 113.2-01-PLAN.md — Tracer: `core/h5.py` narrowing helper + unit test, proven end-to-end through `evaluation/stages/smoothing.py` (43 → 0)
+- [x] 113.2-01-PLAN.md — Tracer: `core/h5.py` narrowing helper + unit test, proven end-to-end through `evaluation/stages/smoothing.py` (43 → 0)
 - [ ] 113.2-02-PLAN.md — `ReidConfigLike` read-only properties + the two reasoned `pytorch_metric_learning` suppressions (`reid_training.py` 5 → 0)
 - [ ] 113.2-03-PLAN.md — Four one-off violations: `--mode` `Literal` narrowing, `cam_errs` redeclaration, `camera_visibility` `TypedDict` (4 → 0)
 - [ ] 113.2-04-PLAN.md — Apply the helper across `core/`: `reid/runner.py` (27 → 0) and `stitching.py` (12 → 0)

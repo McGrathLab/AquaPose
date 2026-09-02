@@ -662,6 +662,18 @@ class TestWriteChecksumsComplete:
         paths = [line.split("  ", 1)[1] for line in lines]
         assert paths == sorted(paths), "Manifest lines are not in sorted order"
 
+    def test_manifest_uses_lf_newlines(self, deposit_dir: Path) -> None:
+        """Manifest must use LF (no CR) so `sha256sum -c` works cross-platform.
+
+        On Windows the default text-mode write would emit CRLF, leaving a trailing
+        \\r on each filename and breaking verification everywhere.
+        """
+        (deposit_dir / "a.txt").write_bytes(b"x")
+        (deposit_dir / "b.txt").write_bytes(b"y")
+        pkg.write_checksums(deposit_dir)
+        raw = (deposit_dir / "checksums.sha256").read_bytes()
+        assert b"\r" not in raw, "checksums.sha256 contains CR bytes (should be LF-only)"
+
 
 def _make_complete_deposit(tmp_path: Path) -> Path:
     """Create a minimal but complete fake deposit tree for verify_deposit tests."""

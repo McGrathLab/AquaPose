@@ -238,7 +238,10 @@ def write_checksums(deposit_dir: Path) -> Path:
         if p.is_file() and p != manifest_path:
             rel = p.relative_to(deposit_dir).as_posix()
             lines.append(f"{_sha256(p)}  {rel}")
-    manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    # Force LF newlines (newline="") so `sha256sum -c` works cross-platform — on
+    # Windows the default text-mode translation would emit CRLF, leaving a trailing
+    # \r on every filename and breaking verification everywhere.
+    manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="")
     return manifest_path
 
 

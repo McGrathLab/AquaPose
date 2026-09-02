@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113.2
 current_phase_name: Typecheck Backlog
 status: executing
-stopped_at: Completed 113.2-01-PLAN.md
-last_updated: "2026-09-02T23:03:26.236Z"
+stopped_at: Completed 113.2-02-PLAN.md
+last_updated: "2026-09-02T23:07:52.458Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 complete — 7 plans, verification passed, suite green (1403 passed)
 progress:
   total_phases: 9
   completed_phases: 6
   total_plans: 40
-  completed_plans: 34
+  completed_plans: 35
   percent: 67
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113.2 (Typecheck Backlog) — EXECUTING
-Plan: 2 of 6
+Plan: 3 of 6
 Status: Ready to execute
 Last activity: 2026-09-02 — Phase 113.2 execution started
 
@@ -59,6 +59,7 @@ Last activity: 2026-09-02 — Phase 113.2 execution started
 | Phase 113.1 P07 | 2min | 2 tasks | 3 files |
 | Phase 113.1 P05 | 8min | 2 tasks | 6 files |
 | Phase 113.2 P01 | 6min | 3 tasks | 3 files |
+| Phase 113.2 P02 | 10min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -114,6 +115,8 @@ Recent decisions affecting current work:
 - [Phase ?]: Five worked bug todos (calibrate-keypoints legacy key, calibrate-keypoints arc-length, init n_animals sentinel, GUIDEBOOK stage order, core import boundary) filed to done/ with evidence; Zenodo and basedpyright todos remain pending and untouched
 - [Phase ?]: [Phase 113.2-01]: core/h5.py require_group/require_dataset narrow h5py's Group|Dataset|Datatype union with a real TypeError (not assert, D-03); placed under core/ per D-04 import-boundary constraint. Return types stop at h5py.Dataset/Group, never an array type (h5py ships no py.typed marker).
 - [Phase ?]: [Phase 113.2-01]: evaluation/stages/smoothing.py taken 43 -> 0 typecheck errors (phase total 98 -> 55); reprojection counter .get() sites coerced to int() after confirming _compute_reproj_stats always produces whole-number counts (lossless, not a truncation).
+- [Phase ?]: ReidConfigLike converted to read-only properties (Plan 02) so frozen implementers satisfy the structural protocol without widening write access.
+- [Phase ?]: Phase's entire suppression budget (2 directives) spent in reid_training.py on the pytorch_metric_learning untyped-constructor defect (Plan 02).
 
 ### Pending Todos
 
@@ -140,10 +143,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T23:03:26.223Z
+**Last session:** 2026-09-02T23:07:52.446Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.2-01-PLAN.md
+Stopped at: Completed 113.2-02-PLAN.md
 Resume file: None
 
 ## Performance Metrics

@@ -15,6 +15,25 @@ task's changes).
   re-running the single test in isolation: identical failure before and
   after. Out of scope for a documentation phase; not fixed here.
 
+  **RESOLVED by Phase 113.1 (plan `113.1-06`, commit `742a068`) — and the
+  diagnosis above was wrong.** It was neither a format mismatch in
+  `training/pseudo_label_cli.py` nor a bad fixture. The defect was in the
+  test's own assertion: it called `.split()` on the *whole file*, which splits
+  on newlines too, so a legitimate 2-line YOLO OBB label file yielded 18
+  tokens instead of 9. The two lines are a real consensus-fish OBB plus the
+  test's own mocked gap-fish `obb_line` — the consensus+gap merge that the
+  test's name (`merged_obb`) claims to cover. Both the CLI and the fixture
+  were correct throughout; no `src/` change was needed. The assertion now
+  splits with `splitlines()`, asserts 9 tokens per line, and additionally
+  pins `len(lines) == 2` so the merge itself is covered — which the original
+  assertion could not have detected losing.
+
+  A related red herring was investigated and dismissed: the consensus line's
+  class token is the float `0.0` while the mocked gap line's is `0`, and
+  `int("0.0")` raises `ValueError`. This is not a defect — Ultralytics 8.4.28
+  parses the class column as `np.float32`, and every human-labelled file in
+  the real training corpus already uses `0.0`.
+
 ## Plan 04, Task 1/2
 
 - **`GUIDEBOOK.md` §6 "Pipeline Stages" describes a stale pipeline order/shape.**

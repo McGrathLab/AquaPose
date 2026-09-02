@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113.1
 current_phase_name: Pre-Release Bug Fixes
 status: planned
-stopped_at: Completed 113.1-04-PLAN.md
-last_updated: "2026-09-02T21:08:50.773Z"
+stopped_at: Completed 113.1-06-PLAN.md
+last_updated: "2026-09-02T21:13:52.961Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 34
-  completed_plans: 30
+  completed_plans: 31
   percent: 56
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113.1 (Pre-Release Bug Fixes) — PLANNED
-Plan: 4 of 6
+Plan: 5 of 6
 Status: Ready to execute — 6 plans in 3 waves
 Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 
@@ -55,6 +55,7 @@ Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 | Phase 113.1 P02 | 15min | 3 tasks | 4 files |
 | Phase 113.1 P03 | ~25min | 3 tasks | 8 files |
 | Phase 113.1 P04 | 15min | 2 tasks | 9 files |
+| Phase 113.1 P06 | 12min | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,7 @@ Recent decisions affecting current work:
 - [Phase ?]: GUIDEBOOK section 6 corrected against build_stages()/_STAGE_OUTPUT_FIELDS directly (D-14); spline/t-range content relocated from the old Midline description to Stage 5 Reconstruction where _keypoints_to_midline actually implements it, not to Stage 2 Pose as the plan's action text suggested
 - [Phase ?]: Bounded GUIDEBOOK drift scan (sections 3,4,7,8,14) found 4 of 5 drifted -- filed one follow-up todo rather than fixing, per phase scope fence (D-03 discretion clause)
 - [Phase ?]: Took Option 3 (relocate discover_camera_videos into core/) over Option 1 after re-verifying the 10-site/3-in-core VideoFrameSource claim against source
+- [Phase ?]: [Phase 113.1-06]: OBB label assertion fixed to per-line splitlines() form pinning the consensus+gap merge; confirmed defect was test-only (src/ untouched), 0.0 class token deliberately left alone (Ultralytics parses class column as np.float32, real corpus already uses 0.0); hatch run test now exits 0 (1400 passed, 3 skipped, 17 deselected)
 
 ### Pending Todos
 
@@ -129,10 +131,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T21:08:50.758Z
+**Last session:** 2026-09-02T21:13:52.950Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.1-04-PLAN.md
+Stopped at: Completed 113.1-06-PLAN.md
 Resume file: None
 
 ## Performance Metrics

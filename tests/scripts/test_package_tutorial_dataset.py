@@ -355,6 +355,55 @@ class TestWriteDepositReadme:
         assert result.name == "README.md"
 
 
+class TestDepositDocCorrections:
+    """Regression tests for the D-05/D-06 deposit factual corrections.
+
+    Locks two confirmed factual errors (config header's ``--config`` flag and
+    the README's wrong GitHub org) plus two errors discovered empirically
+    during Phase 113 Plan 03: the README's ``aquapose viz runs/<run_dir>``
+    form (double-nests under ``resolve_run``) and its claim that ``aquapose
+    run`` generates ``outputs.h5`` (the real pipeline writes ``midlines.h5``;
+    ``outputs.h5`` is only produced by this script's own reference-output
+    rename step).
+    """
+
+    def test_config_header_has_bare_run_no_config_flag(self, deposit_dir: Path) -> None:
+        """D-05.1: header must show a bare `aquapose run`, no --config flag."""
+        pkg.write_deposit_config(deposit_dir)
+        raw = (deposit_dir / "config.yaml").read_text(encoding="utf-8")
+        assert "cd aquapose-tutorial-data" in raw
+        assert "aquapose run\n" in raw
+        assert "run --config" not in raw
+
+    def test_readme_links_mcgrathlab_not_tucklancaster(self, deposit_dir: Path) -> None:
+        """D-05.2: README must link McGrathLab/AquaPose, never tucklancaster."""
+        pkg.write_deposit_readme(deposit_dir)
+        content = (deposit_dir / "README.md").read_text(encoding="utf-8")
+        assert "McGrathLab/AquaPose" in content
+        assert "tucklancaster" not in content
+
+    def test_readme_viz_command_does_not_double_nest(self, deposit_dir: Path) -> None:
+        """Third defect (confirmed): `aquapose viz runs/<run_dir>` double-nests
+        under `resolve_run` (project_dir/runs/runs/<run_dir>). The corrected
+        form relies on CWD-based project resolution and defaults to the most
+        recent run, matching the rest of the "How to Reproduce" block.
+        """
+        pkg.write_deposit_readme(deposit_dir)
+        content = (deposit_dir / "README.md").read_text(encoding="utf-8")
+        assert "aquapose viz\n" in content
+        assert "aquapose viz runs/<run_dir>" not in content
+
+    def test_readme_run_step_names_real_output_file(self, deposit_dir: Path) -> None:
+        """Fourth defect (confirmed): `aquapose run` writes `midlines.h5`, not
+        `outputs.h5` — `outputs.h5` is only produced by this script's own
+        `regenerate_reference_outputs` rename step, never by a user's own run.
+        """
+        pkg.write_deposit_readme(deposit_dir)
+        content = (deposit_dir / "README.md").read_text(encoding="utf-8")
+        assert "generates midlines.h5" in content
+        assert "generates outputs.h5" not in content
+
+
 class TestWriteZenodoMetadata:
     """Tests for write_zenodo_metadata()."""
 

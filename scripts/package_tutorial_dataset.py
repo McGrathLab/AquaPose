@@ -534,7 +534,7 @@ def write_deposit_config(output_dir: Path) -> Path:
         "# AquaPose tutorial dataset config (CC-BY-4.0 data, AGPL-3.0 models)\n"
         "# Run from the aquapose-tutorial-data/ directory:\n"
         "#   cd aquapose-tutorial-data\n"
-        "#   aquapose run --config config.yaml\n\n"
+        "#   aquapose run\n\n"
     )
     config_path = output_dir / "config.yaml"
     config_path.write_text(
@@ -563,7 +563,7 @@ def write_deposit_readme(output_dir: Path) -> Path:
     content = """\
 # AquaPose YH Tutorial Dataset
 
-A 30-second, 12-camera tutorial clip for [AquaPose](https://github.com/tucklancaster/AquaPose) —
+A 30-second, 12-camera tutorial clip for [AquaPose](https://github.com/McGrathLab/AquaPose) —
 3D fish pose estimation via refractive multi-view triangulation.
 
 ## Rig and Subjects
@@ -600,11 +600,11 @@ cd aquapose-tutorial-data
 # The pipeline will fail-fast with an error if you skip this step.
 aquapose prep generate-luts
 
-# Run the pipeline (generates outputs.h5 + per-chunk diagnostic cache)
+# Run the pipeline (generates midlines.h5 + per-chunk diagnostic cache)
 aquapose run
 
-# Produce the 3D animation and overlay mosaic
-aquapose viz runs/<run_dir>
+# Produce the 3D animation and overlay mosaic (uses the most recent run)
+aquapose viz
 ```
 
 ## Note on Re-encoding Your Own Footage

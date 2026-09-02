@@ -527,6 +527,48 @@ class TestCalibrateKeypointsYolo:
         assert result.exit_code == 0, result.output
         assert "Processed 2 annotations" in result.output
 
+    def test_corrupt_sibling_image_is_skipped_with_warning(
+        self,
+        tmp_path: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """A resolvable but unreadable sibling image is skipped, not fatal.
+
+        Mirrors test_label_without_sibling_image_is_skipped_with_warning,
+        but here the sibling path resolves (correct extension, correct
+        directory) and the file at that path is not valid image data. This
+        exercises the (OSError, UnidentifiedImageError) branch in
+        _parse_keypoints_yolo, which previously had zero test coverage.
+        """
+        kps = " ".join(f"{x:.4f} 0.5 2" for x in [0.1, 0.28, 0.46, 0.64, 0.82, 1.0])
+        line = f"0 0.5 0.5 0.8 0.3 {kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        for stem in ("img001", "img002"):
+            (labels_dir / f"{stem}.txt").write_text(line + "\n")
+
+        images_dir = tmp_path / "images" / "train"
+        images_dir.mkdir(parents=True)
+        Image.new("RGB", (128, 64)).save(images_dir / "img001.jpg")
+        # img002's sibling resolves but is not valid image data.
+        (images_dir / "img002.jpg").write_bytes(b"not an image")
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        assert "Processed 1 annotations" in result.output
+
     def test_fails_when_no_label_resolves_an_image(
         self,
         tmp_path: Path,

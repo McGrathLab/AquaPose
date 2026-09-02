@@ -346,6 +346,50 @@ alter an already-minted deposit README).
 Applies to: Plan 113-06 Task 3 (deposit README, template and tree together per
 D-06) and Plan 113-07 Task 2 (tutorial step 8).
 
+### Zenodo publish deferred (folded in 2026-09-02, mid-execution)
+
+**D-21.** The Zenodo upload and DOI mint are **deferred**. Plan 113-06 is halted
+before any external action; plan 113-07 is rescoped to author the tutorial against
+the **locally verified** deposit with an explicit `<!-- ZENODO-DOI-PENDING -->`
+placeholder at every archive-reference site.
+
+**Why.** Plan 113-05 filed two `calibrate-keypoints` correctness bugs — t-values
+written to a legacy midline config key, and the YOLO path measuring arc length in
+normalized space. `aquapose prep calibrate-keypoints` is **step 3 of the very path
+this tutorial documents**. A published DOI cannot be withdrawn, only superseded, so
+publishing an archive whose companion tutorial points users at a command with known
+correctness defects would permanently attach that state to a citable record. The
+user chose to fix the bugs first and publish the archive afterwards.
+
+**What this trades.** D-04 originally folded the DOI mint into this phase precisely
+because "the tutorial cannot honestly claim 'the published dataset' without it."
+Deferring reopens that gap: the tutorial ships describing a dataset that is not yet
+publicly retrievable. This is accepted knowingly, and the honesty requirement is
+preserved by *not pretending otherwise* — the tutorial must state plainly that the
+archive is pending publication rather than papering over it with a fabricated or
+placeholder-looking DOI. **DATA-03 is NOT satisfied by Phase 113** and must not be
+marked complete.
+
+**Consequences, all enforced by plan 113-07's acceptance criteria:**
+- No `doi.org` link and no invented DOI string may appear in the tutorial —
+  `grep -q 'doi\.org'` must FAIL.
+- Every archive-reference site carries the literal `<!-- ZENODO-DOI-PENDING -->`
+  token so the later fill-in pass is mechanical, not archaeological.
+- The bibtex `doi` field holds the marker, not a fabricated value.
+- The tutorial says how to obtain the deposit in the interim (from the
+  maintainers) without linking a non-public or local path.
+
+**Still true and unaffected:** the deposit itself verifies clean at 22/22 and the
+recipe was proven end to end by Plan 05, so the tutorial's commands, timings, and
+statistics are all real. Only the *distribution* of the archive is pending.
+
+**Sequencing after the bugs are fixed:** fix the two `calibrate-keypoints` todos →
+re-run plan 113-06 (reserve DOI, write it into template and tree, re-verify 22 OK,
+produce the upload list) → publish → fill every `ZENODO-DOI-PENDING` site in the
+tutorial and the deposit README. The reopened todo
+`.planning/todos/pending/2026-09-01-upload-yh-tutorial-dataset-to-zenodo.md` tracks
+this and must NOT be closed by Phase 113.
+
 ### Claude's Discretion
 
 - Exact page filenames and whether "Getting Started" is a directory

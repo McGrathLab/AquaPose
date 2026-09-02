@@ -408,6 +408,8 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 - [x] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs (completed 2026-09-02)
 - [x] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference (completed 2026-09-02)
 - [ ] **Phase 113: Concepts & Tutorial** - Install guide, concepts page, and end-to-end tutorial against the published dataset
+- [ ] **Phase 113.1: Pre-Release Bug Fixes** (INSERTED) - Clear the verified bug backlog before the release is cut: both `calibrate-keypoints` defects (which block the DOI mint), the `init` n_animals sentinel, the stale GUIDEBOOK stage order, and the `core/` import boundary violation
+- [ ] **Phase 113.2: Typecheck Backlog** (INSERTED) - Bring `hatch run typecheck` from 98 errors to 0 so the CI typecheck job passes and Phase 114's badge row is honest
 - [ ] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs
 
 ## Phase Details
@@ -573,6 +575,68 @@ Plans:
 **Wave 4** *(blocked on Wave 3 completion)*
 
 - [x] 113-07-PLAN.md — Publish the deposit and author the end-to-end tutorial against the published DOI (DOCS-07, DATA-03)
+
+### Phase 113.1: Pre-Release Bug Fixes (INSERTED)
+
+**Goal**: The verified bug backlog is cleared before the v4.0 release is cut — in particular the two `calibrate-keypoints` defects that block the Zenodo DOI mint
+**Depends on**: Nothing new. **Phase 113 depends on this** — items 1 and 2 below are the sole blockers on the deferred plan `113-06-PLAN.md` (DOI mint), which in turn blocks DATA-03 and the Phase 113 close-out.
+**Requirements**: QA-05
+**Success Criteria** (what must be TRUE):
+
+  1. `prep calibrate-keypoints` writes `keypoint_t_values` to the canonical `pose:` key, so a config that already carries `pose.keypoint_t_values` is actually updated rather than silently shadowed. Terminal gate: after running against such a config, `load_config(path).pose.keypoint_t_values` equals the newly computed values.
+  2. The YOLO annotation path measures arc length in pixel space, not normalized `[0,1]`, so t-values are unbiased on non-square (128×64) pose crops. Terminal gate: a synthetic 128×64 label set spaced evenly **in pixels** along a vertical or diagonal path yields `[0, 0.2, 0.4, 0.6, 0.8, 1.0]`. The shipped YH config, which carries the biased values, is recalibrated as part of this.
+  3. `aquapose init` produces a config that fails with the intended `ValueError: n_animals is required and must be > 0`, not a `TypeError`, and the post-scaffold guidance names setting `n_animals` as a step.
+  4. `GUIDEBOOK.md` §6 states the real stage order (Detection → Pose → Tracking → Association → Reconstruction) plus the 4-stage synthetic-mode variant, verified against `build_stages` rather than against other prose.
+  5. `core/types/frame_source.py` no longer imports from `aquapose.io` at module level; `core/` imports only stdlib, third-party, and core internals at runtime.
+  6. The two stale todos are filed to `.planning/todos/done/` with a note recording why (one obsolete, one already implemented).
+
+**Scope** (all verified live against source on 2026-09-02):
+
+- `2026-09-02-calibrate-keypoints-writes-t-values-to-legacy-midline-config-key.md` — `src/aquapose/training/prep.py:205-207` writes the legacy `midline:` key, which `pose:` overrides in `src/aquapose/engine/config.py:693-698`. **Fix this one first** — it can silently discard the corrected output of the next item.
+- `2026-09-02-calibrate-keypoints-yolo-path-measures-arc-length-in-normalized-space.md` — `src/aquapose/training/prep.py:90` appends raw normalized coordinates, weighting vertical displacement 2× on 128×64 crops.
+- `2026-09-02-init-cmd-emits-unusable-n-animals-sentinel.md` — `src/aquapose/cli.py:186` writes `n_animals: SET_ME`; the guard at `src/aquapose/engine/config.py:777-779` compares it numerically.
+- `2026-09-02-guidebook-pipeline-stage-order-is-stale.md` — `.planning/GUIDEBOOK.md:108`. Matters because `CLAUDE.md` instructs `discuss-phase` to read the guidebook as authoritative, so the stale order feeds into planning.
+- `2026-03-06-fix-core-import-boundary-violation-in-frame-source.md` — `src/aquapose/core/types/frame_source.py:25`, confirmed still the only module-level runtime violation.
+- Housekeeping: file `2026-02-28-regenerate-golden-regression-test-data-for-v2-1.md` (obsolete — `tests/golden/` and `scripts/generate_golden_data.py` no longer exist) and `2026-02-28-move-lut-generation-to-pre-pipeline.md` (already implemented — `core/association/stage.py:57-80` loads pre-generated LUTs and raises `FileNotFoundError` early) to `.planning/todos/done/`.
+
+**Explicitly out of scope**: the Zenodo upload/DOI todo — it stays as the deferred plan `113-06-PLAN.md`, not folded in here.
+
+**Plans:** 5 plans (wave 1: 01-04 in parallel; wave 2: 05)
+
+Plans:
+
+- [ ] 113.1-01-PLAN.md — `calibrate-keypoints`: canonical `pose:` key + pixel-space arc length, both terminal gates
+- [ ] 113.1-02-PLAN.md — `init` int `n_animals` sentinel, type-safe `load_config` guard, four-step guidance
+- [ ] 113.1-03-PLAN.md — GUIDEBOOK §6 corrected against `build_stages` + drift guard test + stale todos filed
+- [ ] 113.1-04-PLAN.md — `core/` import boundary closed (discovery relocated to Layer 1) + AST guard test
+- [ ] 113.1-05-PLAN.md — YH t-values recomputed on the 322-crop manual corpus, archive gap recorded, phase close-out
+
+### Phase 113.2: Typecheck Backlog (INSERTED)
+
+**Goal**: `hatch run typecheck` exits 0, so the CI `typecheck` job passes and Phase 114's badge row can be honest
+**Depends on**: Nothing new (independent of 113.1). **Phase 114 depends on this** — README-02's badge row cannot honestly claim green CI while this job fails.
+**Requirements**: QA-06
+**Success Criteria** (what must be TRUE):
+
+  1. `hatch run typecheck` exits 0 — basedpyright `basic` mode reports 0 errors, down from the 98 errors / 0 warnings re-measured on 2026-09-02.
+  2. The `typecheck` job in `.github/workflows/test.yml` passes on `dev`. It has never passed there.
+  3. Fixes are at root cause, grouped by cluster — not blanket `# type: ignore`.
+  4. A decision is recorded on whether `typeCheckingMode` stays `basic` (`pyproject.toml` `[tool.basedpyright]`) or is tightened once green.
+
+**Known error clusters** (the 98 errors look like ~6-10 underlying issues):
+
+- h5py `Dataset` / `Datatype` / `Group` union narrowing — `src/aquapose/core/reid/runner.py:120-123` and the `reportArgumentType` hits around it.
+- `_EmbedderConfig` fails the `ReidConfigLike` protocol — the protocol declares writable attributes but the frozen dataclass provides read-only ones (`src/aquapose/training/reid_training.py:197`).
+- `int`-annotated parameters that should be `float` — `src/aquapose/evaluation/stages/smoothing.py:414-415`, `src/aquapose/training/reid_training.py:475,811`.
+- A `str` passed to a `Literal['seeded', 'scan']` parameter.
+
+Todo: `.planning/todos/pending/2026-09-02-fix-basedpyright-typecheck-backlog.md`.
+
+**Plans:** 0 plans
+
+Plans:
+
+- [ ] TBD (run /gsd-plan-phase 113.2 to break down)
 
 ### Phase 114: Publication — README, Badges, Live Docs
 

@@ -516,7 +516,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 111-02-PLAN.md — DATA-02: `--regenerate-outputs` runs the real diagnostic pipeline + viz on the deposited clip with the canonical models on `dev`, producing reference_outputs/{outputs.h5, animation_3d.html, overlay_mosaic.mp4, timing.txt}
+- [x] 111-02-PLAN.md — DATA-02: `--regenerate-outputs` runs the real diagnostic pipeline + viz on the deposited clip with the canonical models on `dev`, producing reference_outputs/{outputs.h5, animation_3d.html, overlay_mosaic.mp4, timing.txt}
 
 **Wave 3** *(blocked on Wave 2)*
 
@@ -572,7 +572,7 @@ Plans:
 | 108. Branch Reconciliation & Repo Hygiene | 5/5 | Complete   | 2026-08-17 |
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
-| 111. Example Dataset & Reference Outputs | 1/3 | In Progress|  |
+| 111. Example Dataset & Reference Outputs | 2/3 | In Progress|  |
 | 112. Config & CLI Reference | 0/TBD | Not started | - |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

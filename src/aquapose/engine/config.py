@@ -774,8 +774,16 @@ def load_config(
         resolved_output_dir = _default_output_dir(resolved_run_id)
 
     # --- validate n_animals (sentinel 0 means not set) --------------------
+    # Type-check before comparing: bool is an int subclass and would
+    # otherwise pass `<= 0` silently (e.g. `True <= 0` is `False`), and a
+    # str/None sentinel would raise TypeError from the comparison itself
+    # instead of the actionable ValueError below.
     resolved_n_animals = top_kwargs.get("n_animals", 0)
-    if resolved_n_animals <= 0:
+    if (
+        not isinstance(resolved_n_animals, int)
+        or isinstance(resolved_n_animals, bool)
+        or resolved_n_animals <= 0
+    ):
         raise ValueError("n_animals is required and must be > 0")
 
     # --- propagate n_animals to sub-configs --------------------------------

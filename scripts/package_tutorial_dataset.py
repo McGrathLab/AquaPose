@@ -117,13 +117,20 @@ def _build_ffmpeg_cmd(
     return [
         "ffmpeg",
         "-y",
-        "-ss", str(start_offset),
-        "-i", str(input_path),
-        "-t", str(duration),
-        "-c:v", "libx264",
-        "-preset", "slow",
-        "-crf", str(crf),
-        "-pix_fmt", "yuv420p",
+        "-ss",
+        str(start_offset),
+        "-i",
+        str(input_path),
+        "-t",
+        str(duration),
+        "-c:v",
+        "libx264",
+        "-preset",
+        "slow",
+        "-crf",
+        str(crf),
+        "-pix_fmt",
+        "yuv420p",
         "-an",
         str(output_path),
     ]
@@ -328,7 +335,10 @@ def verify_deposit(deposit_dir: Path) -> list[str]:
         readme_text = readme_path.read_text(encoding="utf-8")
         if "CC-BY-4.0" not in readme_text:
             problems.append("README.md missing required string 'CC-BY-4.0' (D-12)")
-        if "AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)" not in readme_text:
+        if (
+            "AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)"
+            not in readme_text
+        ):
             problems.append(
                 "README.md missing required AGPL-3.0 label: "
                 "'AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)' (D-12)"
@@ -358,8 +368,7 @@ def verify_deposit(deposit_dir: Path) -> list[str]:
     ref_dir = deposit_dir / "reference_outputs"
     if ref_dir.exists():
         cache_dirs = [
-            d for d in ref_dir.iterdir()
-            if d.is_dir() and d.name.startswith("run_")
+            d for d in ref_dir.iterdir() if d.is_dir() and d.name.startswith("run_")
         ]
         if cache_dirs:
             names = ", ".join(d.name for d in sorted(cache_dirs))
@@ -401,11 +410,14 @@ def finalize_deposit(deposit_dir: Path) -> None:
     ref_dir = deposit_dir / "reference_outputs"
     if ref_dir.exists():
         cache_dirs = sorted(
-            d for d in ref_dir.iterdir()
-            if d.is_dir() and d.name.startswith("run_")
+            d for d in ref_dir.iterdir() if d.is_dir() and d.name.startswith("run_")
         )
         for cache_dir in cache_dirs:
-            print(f"  Removing pipeline cache dir: {cache_dir.name} ...", end="", flush=True)
+            print(
+                f"  Removing pipeline cache dir: {cache_dir.name} ...",
+                end="",
+                flush=True,
+            )
             shutil.rmtree(cache_dir)
             print(" done")
 
@@ -457,11 +469,17 @@ def copy_models_and_calibration(source_dir: Path, output_dir: Path) -> None:
     geometry_dir = output_dir / "geometry"
     geometry_dir.mkdir(parents=True, exist_ok=True)
 
-    print(f"  Copying OBB model ({OBB_RUN}) -> models/yolo_obb.pt ...", end="", flush=True)
+    print(
+        f"  Copying OBB model ({OBB_RUN}) -> models/yolo_obb.pt ...", end="", flush=True
+    )
     shutil.copy2(obb_src, models_dir / "yolo_obb.pt")
     print(" done")
 
-    print(f"  Copying pose model ({POSE_RUN}) -> models/yolo_pose.pt ...", end="", flush=True)
+    print(
+        f"  Copying pose model ({POSE_RUN}) -> models/yolo_pose.pt ...",
+        end="",
+        flush=True,
+    )
     shutil.copy2(pose_src, models_dir / "yolo_pose.pt")
     print(" done")
 
@@ -770,8 +788,10 @@ def regenerate_reference_outputs(deposit_dir: Path) -> None:
     pipeline_cmd = [
         *invoke,
         "run",
-        "--set", f"output_dir={ref_dir}",
-        "--mode", "diagnostic",
+        "--set",
+        f"output_dir={ref_dir}",
+        "--mode",
+        "diagnostic",
     ]
     t0_pipeline = time.perf_counter()
     _run_subprocess(pipeline_cmd, cwd=deposit_dir, label="aquapose run")
@@ -803,7 +823,8 @@ def regenerate_reference_outputs(deposit_dir: Path) -> None:
         str(run_dir),
         "--animation",
         "--overlay",
-        "--output-dir", str(ref_dir),
+        "--output-dir",
+        str(ref_dir),
     ]
     t0_viz = time.perf_counter()
     _run_subprocess(viz_cmd, cwd=deposit_dir, label="aquapose viz")
@@ -817,16 +838,25 @@ def regenerate_reference_outputs(deposit_dir: Path) -> None:
     # ------------------------------------------------------------------
     overlay_src = ref_dir / "overlay_mosaic.mp4"
     if overlay_src.exists() and shutil.which("ffmpeg"):
-        print("  Step B1: Re-encoding overlay_mosaic.mp4 at CRF 28 ...", end="", flush=True)
+        print(
+            "  Step B1: Re-encoding overlay_mosaic.mp4 at CRF 28 ...",
+            end="",
+            flush=True,
+        )
         overlay_tmp = ref_dir / "overlay_mosaic_crf28.mp4"
         reencode_cmd = [
             "ffmpeg",
             "-y",
-            "-i", str(overlay_src),
-            "-c:v", "libx264",
-            "-preset", "slow",
-            "-crf", "28",
-            "-pix_fmt", "yuv420p",
+            "-i",
+            str(overlay_src),
+            "-c:v",
+            "libx264",
+            "-preset",
+            "slow",
+            "-crf",
+            "28",
+            "-pix_fmt",
+            "yuv420p",
             "-an",
             str(overlay_tmp),
         ]

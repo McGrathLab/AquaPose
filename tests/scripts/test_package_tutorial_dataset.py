@@ -114,14 +114,21 @@ class TestParser:
     def test_parser_accepts_all_flags(self) -> None:
         """All documented flags parse without error."""
         parser = pkg._build_parser()
-        args = parser.parse_args([
-            "--source-dir", "/staging",
-            "--output-dir", "/deposit",
-            "--start-offset", "45.0",
-            "--duration", "30.0",
-            "--crf", "22",
-            "--regenerate-outputs",
-        ])
+        args = parser.parse_args(
+            [
+                "--source-dir",
+                "/staging",
+                "--output-dir",
+                "/deposit",
+                "--start-offset",
+                "45.0",
+                "--duration",
+                "30.0",
+                "--crf",
+                "22",
+                "--regenerate-outputs",
+            ]
+        )
         assert args.start_offset == 45.0
         assert args.crf == 22
         assert args.regenerate_outputs is True
@@ -216,7 +223,10 @@ class TestFfmpegGuard:
 
     def test_raises_when_ffmpeg_missing(self) -> None:
         """RuntimeError with 'ffmpeg' in message when shutil.which returns None."""
-        with patch("shutil.which", return_value=None), pytest.raises(RuntimeError, match="ffmpeg"):
+        with (
+            patch("shutil.which", return_value=None),
+            pytest.raises(RuntimeError, match="ffmpeg"),
+        ):
             pkg._check_ffmpeg()
 
     def test_no_raise_when_ffmpeg_present(self) -> None:
@@ -262,7 +272,9 @@ class TestWriteChecksums:
     def test_line_format(self, deposit_dir: Path) -> None:
         (deposit_dir / "b.txt").write_bytes(b"data")
         pkg.write_checksums(deposit_dir)
-        lines = (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        lines = (
+            (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        )
         assert len(lines) == 1
         digest, path = lines[0].split("  ", 1)
         assert len(digest) == 64
@@ -324,13 +336,18 @@ class TestWriteDepositReadme:
         """D-12: weights must be labeled as AGPL-3.0-derived artifacts."""
         pkg.write_deposit_readme(deposit_dir)
         content = (deposit_dir / "README.md").read_text(encoding="utf-8")
-        assert "AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)" in content
+        assert (
+            "AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)" in content
+        )
 
     def test_no_downscale_note(self, deposit_dir: Path) -> None:
         """Hard constraint note about never spatially downscaling must be present."""
         pkg.write_deposit_readme(deposit_dir)
         content = (deposit_dir / "README.md").read_text(encoding="utf-8")
-        assert "never spatially downscale" in content.lower() or "Never spatially downscale" in content
+        assert (
+            "never spatially downscale" in content.lower()
+            or "Never spatially downscale" in content
+        )
 
     def test_returns_path(self, deposit_dir: Path) -> None:
         result = pkg.write_deposit_readme(deposit_dir)
@@ -343,7 +360,9 @@ class TestWriteZenodoMetadata:
 
     def _load(self, deposit_dir: Path) -> dict:
         pkg.write_zenodo_metadata(deposit_dir)
-        return json.loads((deposit_dir / "zenodo-metadata.json").read_text(encoding="utf-8"))
+        return json.loads(
+            (deposit_dir / "zenodo-metadata.json").read_text(encoding="utf-8")
+        )
 
     def test_valid_json(self, deposit_dir: Path) -> None:
         data = self._load(deposit_dir)
@@ -484,21 +503,23 @@ class TestRegenerateReferenceOutputs:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
         assert calls, "subprocess.run was never called"
         pipeline_call = self._get_pipeline_call(calls)
         assert "run" in pipeline_call, f"'run' not in pipeline argv: {pipeline_call}"
-        assert "--mode" in pipeline_call, f"'--mode' not in pipeline argv: {pipeline_call}"
+        assert "--mode" in pipeline_call, (
+            f"'--mode' not in pipeline argv: {pipeline_call}"
+        )
         assert "diagnostic" in pipeline_call, (
             f"'diagnostic' not in pipeline argv: {pipeline_call}"
         )
 
-    def test_pipeline_argv_contains_output_dir_override(
-        self, tmp_path: Path
-    ) -> None:
+    def test_pipeline_argv_contains_output_dir_override(self, tmp_path: Path) -> None:
         """Pipeline argv must contain '--set' and an output_dir=...reference_outputs token."""
         deposit_dir = tmp_path / "deposit"
         deposit_dir.mkdir()
@@ -507,20 +528,22 @@ class TestRegenerateReferenceOutputs:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
         pipeline_call = self._get_pipeline_call(calls)
-        assert "--set" in pipeline_call, f"'--set' not in pipeline argv: {pipeline_call}"
+        assert "--set" in pipeline_call, (
+            f"'--set' not in pipeline argv: {pipeline_call}"
+        )
         joined = " ".join(str(t) for t in pipeline_call)
         assert "reference_outputs" in joined, (
             f"output_dir override not in pipeline argv: {pipeline_call}"
         )
 
-    def test_viz_argv_contains_animation_and_overlay(
-        self, tmp_path: Path
-    ) -> None:
+    def test_viz_argv_contains_animation_and_overlay(self, tmp_path: Path) -> None:
         """Viz subprocess argv must contain 'viz', '--animation', '--overlay'."""
         deposit_dir = tmp_path / "deposit"
         deposit_dir.mkdir()
@@ -529,7 +552,9 @@ class TestRegenerateReferenceOutputs:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
@@ -547,7 +572,9 @@ class TestRegenerateReferenceOutputs:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
@@ -566,7 +593,9 @@ class TestRegenerateReferenceOutputs:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
@@ -597,6 +626,7 @@ class TestModuleLevelImports:
     def test_no_top_level_yaml_import(self) -> None:
         """yaml must NOT be imported at module top level."""
         import scripts.package_tutorial_dataset as m
+
         # yaml is not in the module's global namespace unless called
         assert "yaml" not in vars(m), (
             "yaml was imported at module level — must be lazy (inside write_deposit_config)"
@@ -605,6 +635,7 @@ class TestModuleLevelImports:
     def test_no_top_level_aquapose_import(self) -> None:
         """aquapose must NOT be imported at module top level."""
         import scripts.package_tutorial_dataset as m
+
         assert "aquapose" not in vars(m), (
             "aquapose was imported at module level — must be lazy"
         )
@@ -622,13 +653,16 @@ class TestWriteChecksumsComplete:
     def test_line_regex_format(self, deposit_dir: Path) -> None:
         """Every manifest line matches ^[0-9a-f]{64}  .+$."""
         import re
+
         (deposit_dir / "file1.txt").write_bytes(b"alpha")
         (deposit_dir / "file2.bin").write_bytes(b"beta")
         sub = deposit_dir / "sub"
         sub.mkdir()
         (sub / "file3.dat").write_bytes(b"gamma")
         pkg.write_checksums(deposit_dir)
-        lines = (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        lines = (
+            (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        )
         pattern = re.compile(r"^[0-9a-f]{64}  .+$")
         for line in lines:
             assert pattern.match(line), f"Line does not match expected format: {line!r}"
@@ -639,7 +673,9 @@ class TestWriteChecksumsComplete:
         for name in files:
             (deposit_dir / name).write_bytes(b"x")
         pkg.write_checksums(deposit_dir)
-        lines = (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        lines = (
+            (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        )
         assert len(lines) == len(files), (
             f"Expected {len(files)} manifest lines, got {len(lines)}"
         )
@@ -658,7 +694,9 @@ class TestWriteChecksumsComplete:
         for name in ["z.txt", "a.txt", "m.txt"]:
             (deposit_dir / name).write_bytes(b"x")
         pkg.write_checksums(deposit_dir)
-        lines = (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        lines = (
+            (deposit_dir / "checksums.sha256").read_text(encoding="utf-8").splitlines()
+        )
         paths = [line.split("  ", 1)[1] for line in lines]
         assert paths == sorted(paths), "Manifest lines are not in sorted order"
 
@@ -672,7 +710,9 @@ class TestWriteChecksumsComplete:
         (deposit_dir / "b.txt").write_bytes(b"y")
         pkg.write_checksums(deposit_dir)
         raw = (deposit_dir / "checksums.sha256").read_bytes()
-        assert b"\r" not in raw, "checksums.sha256 contains CR bytes (should be LF-only)"
+        assert b"\r" not in raw, (
+            "checksums.sha256 contains CR bytes (should be LF-only)"
+        )
 
 
 def _make_complete_deposit(tmp_path: Path) -> Path:
@@ -713,6 +753,7 @@ def _make_complete_deposit(tmp_path: Path) -> Path:
 
     # zenodo-metadata.json
     import json as _json
+
     (d / "zenodo-metadata.json").write_text(
         _json.dumps({"license": "cc-by-4.0", "upload_type": "dataset"}),
         encoding="utf-8",
@@ -791,9 +832,9 @@ class TestVerifyDeposit:
         # Remove one video
         next(iter(d.glob("videos/*.mp4"))).unlink()
         problems = pkg.verify_deposit(d)
-        assert any(("12" in p and "mp4" in p.lower()) or "videos" in p for p in problems), (
-            f"Expected problem about video count, got: {problems}"
-        )
+        assert any(
+            ("12" in p and "mp4" in p.lower()) or "videos" in p for p in problems
+        ), f"Expected problem about video count, got: {problems}"
 
     def test_fails_when_luts_dir_present(self, tmp_path: Path) -> None:
         """Returns a problem when geometry/luts/ is present (must be excluded, D-03)."""
@@ -834,6 +875,7 @@ class TestVerifyDeposit:
     def test_fails_on_wrong_zenodo_license(self, tmp_path: Path) -> None:
         """Returns a problem when zenodo-metadata.json has wrong license value."""
         import json as _json
+
         d = _make_complete_deposit(tmp_path)
         (d / "zenodo-metadata.json").write_text(
             _json.dumps({"license": "mit", "upload_type": "dataset"}),
@@ -877,7 +919,9 @@ class TestFinalizeDeposit:
         cache.mkdir()
         (cache / "cache.pkl").write_bytes(b"pkl")
         pkg.finalize_deposit(deposit_dir)
-        assert not cache.exists(), "run_*/ cache dir was not removed by finalize_deposit"
+        assert not cache.exists(), (
+            "run_*/ cache dir was not removed by finalize_deposit"
+        )
 
     def test_leaves_canonical_artifacts(self, deposit_dir: Path) -> None:
         """finalize_deposit does not remove canonical reference output files."""
@@ -960,7 +1004,9 @@ class TestRegenerateReferenceOutputsPlan03:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
@@ -989,7 +1035,9 @@ class TestRegenerateReferenceOutputsPlan03:
         with (
             patch(
                 "subprocess.run",
-                side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+                side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                    ref_dir, calls, cmd, **kw
+                ),
             ),
             patch("shutil.which", return_value="/usr/bin/ffmpeg"),
         ):
@@ -1011,13 +1059,19 @@ class TestRegenerateReferenceOutputsPlan03:
 
         with patch(
             "subprocess.run",
-            side_effect=lambda cmd, **kw: self._fake_subprocess_run(ref_dir, calls, cmd, **kw),
+            side_effect=lambda cmd, **kw: self._fake_subprocess_run(
+                ref_dir, calls, cmd, **kw
+            ),
         ):
             pkg.regenerate_reference_outputs(deposit_dir)
 
         non_ffmpeg = [c for c in calls if not (c and c[0] == "ffmpeg")]
         luts_idx = next(
-            (i for i, c in enumerate(non_ffmpeg) if "prep" in c and "generate-luts" in c),
+            (
+                i
+                for i, c in enumerate(non_ffmpeg)
+                if "prep" in c and "generate-luts" in c
+            ),
             None,
         )
         run_idx = next(

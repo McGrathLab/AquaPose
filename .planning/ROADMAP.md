@@ -552,13 +552,13 @@ Plans:
      - ⚠ **Corrected during planning (Phase 113 CONTEXT D-01):** the `{p, ψ, κ, s}` state vector does **not exist** in the production pipeline — it is a leftover from the v1.x differentiable-rendering architecture. The concepts page documents the real representation (arc-length-sampled midline points fitted to a 3D B-spline, as verified against the reference `outputs.h5` schema) and records the discrepancy, rather than inventing a structure to match this wording.
   3. The tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step matching the regenerated reference outputs
 
-**Plans**: 1/7 plans executed (4 waves)
+**Plans**: 2/7 plans executed (4 waves)
 
 Plans:
 **Wave 1**
 
 - [x] 113-01-PLAN.md — TRACER: Getting Started docs section + end-user install guide + drop the cu121 wheel-index pin (DOCS-03)
-- [ ] 113-02-PLAN.md — CI green-up: stable float64 angular-error metric at all three `acos(dot)` sites (QA-01)
+- [x] 113-02-PLAN.md — CI green-up: stable float64 angular-error metric at all three `acos(dot)` sites (QA-01)
 - [ ] 113-03-PLAN.md — Zenodo deposit factual corrections in template and tree, plus regression tests and re-emitted checksums (DOCS-07, DATA-01)
 
 **Wave 2** *(blocked on Wave 1 completion)*
@@ -600,5 +600,5 @@ Plans:
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
 | 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
 | 112. Config & CLI Reference | 4/4 | Complete    | 2026-09-02 |
-| 113. Concepts & Tutorial | 1/7 | In Progress|  |
+| 113. Concepts & Tutorial | 2/7 | In Progress|  |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

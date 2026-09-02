@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113
 current_phase_name: Concepts & Tutorial
 status: executing
-stopped_at: Completed 113-01-PLAN.md
-last_updated: "2026-09-02T12:34:19.991Z"
+stopped_at: Completed 113-02-PLAN.md
+last_updated: "2026-09-02T12:40:40.912Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113 planning complete
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 27
-  completed_plans: 21
+  completed_plans: 22
   percent: 71
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113 (Concepts & Tutorial) — EXECUTING
-Plan: 2 of 7
+Plan: 3 of 7
 Status: Ready to execute
 Last activity: 2026-09-02 — Phase 113 execution started
 
@@ -46,6 +46,7 @@ Last activity: 2026-09-02 — Phase 113 execution started
 | Plan | Duration | Tasks | Files |
 |------|----------|-------|-------|
 | Phase 113 P01 | 4min | 2 tasks | 5 files |
+| Phase 113 P02 | 6min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,7 @@ Recent decisions affecting current work:
 - [Phase ?]: docs/index.md card ordering: Getting Started placed first, before Reference/API Reference/Contributing/Reports (beginner-first flow)
 - [Phase ?]: README nvrtc troubleshooting note carried into installation.md Troubleshooting, reframed for the pytorch.org selector rather than a hardcoded cu124 reinstall
 - [Phase ?]: Torch baseline for D-08: 2.5.1+cu121, CUDA available=True before and after removing the cu121 wheel-index pin (existing env not recreated)
+- [Phase ?]: [Phase 113-02]: Replaced ill-conditioned torch.acos(dot) angular-error metric with stable float64 atan2(||cross||, dot) at all 3 sites (test_luts.py x2, validate_forward_lut); thresholds (0.01/0.1 deg) unchanged; deliberate perturbation proved assertion is not vacuous (0.5558 deg red vs 2.07e-5 deg green); corrects Phase 109-05's QA-01 record which was a lucky local pass, not genuine verification (D-17, D-18)
 
 ### Pending Todos
 
@@ -102,10 +104,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T12:34:19.980Z
+**Last session:** 2026-09-02T12:40:40.903Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113-01-PLAN.md
+Stopped at: Completed 113-02-PLAN.md
 Resume file: None
 
 ## Performance Metrics

@@ -552,7 +552,7 @@ Plans:
      - ⚠ **Corrected during planning (Phase 113 CONTEXT D-01):** the `{p, ψ, κ, s}` state vector does **not exist** in the production pipeline — it is a leftover from the v1.x differentiable-rendering architecture. The concepts page documents the real representation (arc-length-sampled midline points fitted to a 3D B-spline, as verified against the reference `outputs.h5` schema) and records the discrepancy, rather than inventing a structure to match this wording.
   3. The tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step matching the regenerated reference outputs
 
-**Plans**: 4/7 plans executed (4 waves)
+**Plans**: 5/7 plans executed (4 waves)
 
 Plans:
 **Wave 1**
@@ -564,7 +564,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [x] 113-04-PLAN.md — Concepts page: five pipeline stages, refraction, and the real B-spline midline representation (DOCS-04)
-- [ ] 113-05-PLAN.md — End-to-end tutorial verification run on the deposit: timings, measured statistics, deviation fixes (DOCS-07)
+- [x] 113-05-PLAN.md — End-to-end tutorial verification run on the deposit: timings, measured statistics, deviation fixes (DOCS-07)
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -600,5 +600,5 @@ Plans:
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
 | 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
 | 112. Config & CLI Reference | 4/4 | Complete    | 2026-09-02 |
-| 113. Concepts & Tutorial | 4/7 | In Progress|  |
+| 113. Concepts & Tutorial | 5/7 | In Progress|  |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

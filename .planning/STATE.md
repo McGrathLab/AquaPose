@@ -4,13 +4,13 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 112 context gathered
-last_updated: "2026-09-02T00:55:31.787Z"
-last_activity: 2026-09-01 -- Phase 111 execution started
+last_updated: "2026-09-02T01:31:16.077Z"
+last_activity: 2026-09-02
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 16
-  completed_plans: 16
+  total_plans: 20
+  completed_plans: 17
   percent: 57
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 111 — Example Dataset & Reference Outputs
+**Current focus:** Phase 112 — config-cli-reference
 
 ## Current Position
 
-Phase: 111 (Example Dataset & Reference Outputs) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 111
-Last activity: 2026-09-01 -- Phase 111 execution started
+Phase: 112 (config-cli-reference) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-09-02
 
 ## Performance Metrics
 
@@ -91,7 +91,7 @@ Recent decisions affecting current work:
 
 Last activity: 2026-09-01 — Phase 109 complete: all 5 plans executed, code review (WR-01 fixed), verified 8/8 must-haves, phase marked complete in ROADMAP
 Stopped at: Phase 112 context gathered
-Resume file: .planning/phases/112-config-cli-reference/112-CONTEXT.md
+Resume file: None
 
 ## Performance Metrics
 

@@ -535,7 +535,7 @@ Plans:
 
 **Plans**: 4 plans
 
-- [ ] 112-01-PLAN.md — Wire the sphinx-click extension into the detached docs env (pyproject + conf.py), verify mock-import coverage of the CLI graph
+- [x] 112-01-PLAN.md — Wire the sphinx-click extension into the detached docs env (pyproject + conf.py), verify mock-import coverage of the CLI graph
 - [ ] 112-02-PLAN.md — CLI Reference page (sphinx-click auto-render of all command groups + hand-authored worked examples) [DOCS-05]
 - [ ] 112-03-PLAN.md — Config Reference page (Essential flat table + Advanced per-stage tiers, full ~86-field coverage) [DOCS-06]
 - [ ] 112-04-PLAN.md — Reference landing + toctree wiring, reciprocal API cross-links, sphinx-build -W green gate [DOCS-05/06]
@@ -578,6 +578,6 @@ Plans:
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
 | 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
-| 112. Config & CLI Reference | 0/TBD | Not started | - |
+| 112. Config & CLI Reference | 1/4 | In Progress|  |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

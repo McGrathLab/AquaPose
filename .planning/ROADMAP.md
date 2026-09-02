@@ -555,12 +555,23 @@ Plans:
 **Plans**: 7 plans (4 waves)
 
 Plans:
+**Wave 1**
+
 - [ ] 113-01-PLAN.md — TRACER: Getting Started docs section + end-user install guide + drop the cu121 wheel-index pin (DOCS-03)
 - [ ] 113-02-PLAN.md — CI green-up: stable float64 angular-error metric at all three `acos(dot)` sites (QA-01)
 - [ ] 113-03-PLAN.md — Zenodo deposit factual corrections in template and tree, plus regression tests and re-emitted checksums (DOCS-07, DATA-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 113-04-PLAN.md — Concepts page: five pipeline stages, refraction, and the real B-spline midline representation (DOCS-04)
 - [ ] 113-05-PLAN.md — End-to-end tutorial verification run on the deposit: timings, measured statistics, deviation fixes (DOCS-07)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
 - [ ] 113-06-PLAN.md — Zenodo DOI mint: one-way-door gate, DOI reservation, deposit finalized against it (DATA-03, DOCS-07)
+
+**Wave 4** *(blocked on Wave 3 completion)*
+
 - [ ] 113-07-PLAN.md — Publish the deposit and author the end-to-end tutorial against the published DOI (DOCS-07, DATA-03)
 
 ### Phase 114: Publication — README, Badges, Live Docs

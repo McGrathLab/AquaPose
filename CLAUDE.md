@@ -57,7 +57,7 @@ hatch run aquapose -p YH run -v                # verbose run
 ## Domain Conventions
 
 - **Refractive projection**: 3D-to-pixel through Snell's law at air-water interface (flat surface, no glass)
-- **Fish state vector**: `{p, ψ, κ, s}` — position, heading, curvature, scale
+- **Fish midline representation**: six arc-length-sampled anatomical keypoints (nose, head, spine1, spine2, spine3, tail) triangulated into 3D per fish per frame, optionally fitted to a 3D B-spline (control points, knot vector, degree)
 - **Direct triangulation**: Medial axis extraction → arc-length sampling → RANSAC triangulation → spline fitting
 - **Cross-view identity**: RANSAC centroid clustering to associate fish across cameras before reconstruction
 - AquaCal is the calibration dependency; AquaMVS is reference code only (not imported)

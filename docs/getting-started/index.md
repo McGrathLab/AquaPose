@@ -14,6 +14,14 @@ Install AquaPose, install the right PyTorch build for your platform, and
 verify your setup before your first run.
 :::
 
+:::{grid-item-card} Concepts
+:link: concepts
+:link-type: doc
+
+What the pipeline computes: the five production stages, why refraction
+matters, and the 3D midline output.
+:::
+
 ::::
 
 ```{toctree}
@@ -21,4 +29,5 @@ verify your setup before your first run.
 :hidden:
 
 installation
+concepts
 ```

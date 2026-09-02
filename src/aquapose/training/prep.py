@@ -133,10 +133,13 @@ def _parse_keypoints_yolo(
     txt_files = sorted(labels_dir.rglob("*.txt"))
     instances: list[list[tuple[float, float]]] = []
     n_resolved = 0
+    n_unresolved = 0
+    n_open_failed = 0
     for txt_path in txt_files:
         img_path = _resolve_sibling_image(txt_path)
         if img_path is None:
             logger.warning("No sibling image found for label %s, skipping", txt_path)
+            n_unresolved += 1
             continue
 
         try:
@@ -146,6 +149,7 @@ def _parse_keypoints_yolo(
             logger.warning(
                 "Could not open image %s for label %s, skipping", img_path, txt_path
             )
+            n_open_failed += 1
             continue
 
         n_resolved += 1
@@ -171,10 +175,29 @@ def _parse_keypoints_yolo(
             instances.append(points)
 
     if txt_files and n_resolved == 0:
+        if n_open_failed and not n_unresolved:
+            # Every candidate image path resolved but failed to open --
+            # the directory layout is fine, the image files are the problem.
+            raise click.ClickException(
+                f"No images resolved for any label file in {labels_dir}. "
+                f"All {n_open_failed} sibling image(s) found could not be "
+                "opened (corrupt or unreadable file); the 'images/' "
+                "directory layout looks correct."
+            )
+        if n_unresolved and not n_open_failed:
+            # Nothing resolved a sibling path at all -- the classic
+            # missing/mismatched 'images/' directory case.
+            raise click.ClickException(
+                f"No images resolved for any label file in {labels_dir}. "
+                "Images are expected under a sibling 'images/' directory "
+                "mirroring 'labels/'."
+            )
+        # A mix of both failure modes.
         raise click.ClickException(
             f"No images resolved for any label file in {labels_dir}. "
             "Images are expected under a sibling 'images/' directory "
-            "mirroring 'labels/'."
+            "mirroring 'labels/', and/or the resolved images could not be "
+            "opened (corrupt or unreadable)."
         )
 
     return instances

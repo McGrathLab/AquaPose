@@ -604,6 +604,52 @@ class TestCalibrateKeypointsYolo:
         assert result.exit_code != 0
         assert "No images resolved for any label file" in result.output
         assert "No valid keypoint annotations" not in result.output
+        assert "could not be opened" not in result.output
+
+    def test_fails_with_distinct_message_when_all_images_are_corrupt(
+        self,
+        tmp_path: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """When every sibling image resolves but fails to open, the error
+        message must name the actual cause (corrupt/unreadable images)
+        rather than blaming a missing or mismatched 'images/' directory.
+
+        WR-02: n_resolved == 0 previously conflated two distinct root
+        causes (nothing resolved a sibling path vs. everything resolved
+        but failed to open) into one message that was only accurate for
+        the former.
+        """
+        kps = " ".join(f"{x:.4f} 0.5 2" for x in [0.1, 0.28, 0.46, 0.64, 0.82, 1.0])
+        line = f"0 0.5 0.5 0.8 0.3 {kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        (labels_dir / "img001.txt").write_text(line + "\n")
+
+        images_dir = tmp_path / "images" / "train"
+        images_dir.mkdir(parents=True)
+        # The sibling resolves (correct dir, correct extension) but is not
+        # valid image data -- every candidate fails to open, none is
+        # unresolved.
+        (images_dir / "img001.jpg").write_bytes(b"not an image")
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code != 0
+        assert "No images resolved for any label file" in result.output
+        assert "could not be opened" in result.output
+        assert "No valid keypoint annotations" not in result.output
 
     def test_coincident_keypoints_share_t_value(
         self,

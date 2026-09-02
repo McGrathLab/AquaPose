@@ -22,6 +22,8 @@ import h5py
 import numpy as np
 from numpy.typing import NDArray
 
+from aquapose.core.h5 import require_dataset
+
 logger = logging.getLogger(__name__)
 
 
@@ -291,9 +293,9 @@ class SwapDetector:
             self._fish_id = cast(h5py.Dataset, grp["fish_id"])[()]
             self._points = cast(h5py.Dataset, grp["points"])[()]
             # Load swap events if present
-            self._swap_events_raw = None
+            self._swap_events_raw: NDArray[np.void] | None = None
             if "swap_events" in grp:
-                self._swap_events_raw = grp["swap_events"][()]
+                self._swap_events_raw = require_dataset(grp, "swap_events")[()]
 
         # Opportunistically load existing embeddings
         self._embeddings: NDArray[np.float32] | None = None
@@ -799,7 +801,7 @@ class SwapDetector:
                 grp = cast(h5py.Group, f["midlines"])
                 fish_id_ds = cast(h5py.Dataset, grp["fish_id"])
                 data = fish_id_ds[()]
-                frame_index = grp["frame_index"][:]
+                frame_index = require_dataset(grp, "frame_index")[:]
 
                 for event in repaired:
                     start_row = int(np.searchsorted(frame_index, event.frame))

@@ -333,6 +333,7 @@ Accurate 3D fish midline reconstruction from multi-view silhouettes via refracti
 | Core/research separation is docs tiering, not an import boundary | An enforced firewall would impose a separation the project does not want; everything ships in one package. Tiering allocates docs depth and QA effort only | Decided 2026-08-12 — v4.0 |
 | CC-BY-4.0 for the Zenodo data deposit | AGPL is a software license and a poor fit for video and calibration data; CC-BY keeps attribution without copyleft on derived analyses. Model weights labeled separately as AGPL-derived artifacts | Decided 2026-08-12 — v4.0 |
 | Temporal trim + bitrate reduction, never spatial downscale | Calibration intrinsics and refractive projection are bound to 1600×1200; halving resolution silently invalidates every ray cast | Decided 2026-08-12 — v4.0 |
+| basedpyright `typeCheckingMode` stays `basic` (D-07) | Phase 113.2 closed the 98-error typecheck backlog under `basic`; tightening to `standard`/`strict` is a separate decision with its own re-measurement burden, not a side effect of closing the backlog | Deferred 2026-09-02 — see `.planning/todos/pending/2026-09-02-evaluate-tightening-basedpyright-typecheckingmode.md` |
 
 ## Evolution
 

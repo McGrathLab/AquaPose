@@ -58,3 +58,18 @@ and a published DOI cannot be withdrawn — only superseded.
    (prose link + bibtex `doi` field) and the deposit README citation block.
    `grep -rn 'ZENODO-DOI-PENDING'` finds them all.
 5. Mark **DATA-03** complete — Phase 113 leaves it deliberately unsatisfied.
+
+## Status update — 2026-09-02 (Phase 113 Plan 07)
+
+**Still open — this todo is not closed by Phase 113.** The tutorial itself is
+now fully written (`docs/getting-started/tutorial.md`, Plan 113-07) and
+authored entirely against the locally verified deposit and the Plan 113-05
+verification run — every command, timing, and statistic on the page is real.
+The **only** thing the page is missing is the DOI: every archive-reference
+site on the page (the download step, the citation bibtex `doi` field, and the
+"get the dataset today" note) carries the literal `<!-- ZENODO-DOI-PENDING -->`
+token, findable with `grep -rn 'ZENODO-DOI-PENDING' docs/`.
+
+Nothing in the sequence above changed. Once the two `calibrate-keypoints`
+bugs are fixed and steps 2-4 above complete, filling in the tutorial's
+placeholder sites is a mechanical grep-and-replace, not a rewrite.

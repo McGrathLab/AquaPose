@@ -22,6 +22,14 @@ What the pipeline computes: the five production stages, why refraction
 matters, and the 3D midline output.
 :::
 
+:::{grid-item-card} Tutorial
+:link: tutorial
+:link-type: doc
+
+Run the full pipeline end-to-end on the sample dataset, with a measured
+expectation to check your results against at every step.
+:::
+
 ::::
 
 ```{toctree}
@@ -30,4 +38,5 @@ matters, and the 3D midline output.
 
 installation
 concepts
+tutorial
 ```

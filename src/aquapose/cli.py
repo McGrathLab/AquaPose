@@ -183,7 +183,7 @@ def init_cmd(name: str, synthetic: bool) -> None:
     data["calibration_path"] = "geometry/calibration.json"
     data["output_dir"] = "runs"
     # --- Core parameters ---
-    data["n_animals"] = "SET_ME"  # required -- must be an integer
+    data["n_animals"] = 0  # required -- must be set to an integer > 0
     # --- Detection ---
     data["detection"] = {
         "detector_kind": "yolo_obb",  # oriented bounding box detection
@@ -200,6 +200,11 @@ def init_cmd(name: str, synthetic: bool) -> None:
     # Write config.yaml with brief comment header
     header = "# AquaPose pipeline config\n# See documentation for advanced options\n\n"
     yaml_content = yaml.dump(data, default_flow_style=False, sort_keys=False)
+    # Inject reminder comment on the n_animals line
+    yaml_content = yaml_content.replace(
+        "n_animals: 0",
+        "n_animals: 0  # REQUIRED -- set to the number of animals in the scene",
+    )
     # Inject reminder comment before the pose section
     yaml_content = yaml_content.replace(
         "pose:",

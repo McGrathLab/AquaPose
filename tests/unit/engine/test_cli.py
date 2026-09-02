@@ -316,6 +316,35 @@ class TestInitConfig:
         assert result.exit_code == 0
         assert "NAME" in result.output
 
+    def test_init_generated_config_fails_with_value_error_not_type_error(
+        self,
+        runner: click.testing.CliRunner,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """Loading a fresh init scaffold raises ValueError, not TypeError.
+
+        This is the D-12 terminal gate: a brand-new user running `init` and
+        then loading the unedited config must see the actionable
+        `n_animals is required and must be > 0` message, not an internal
+        TypeError from comparing a string sentinel to an int.
+        """
+        home_str = str(tmp_path)
+        monkeypatch.setenv("HOME", home_str)
+        monkeypatch.setenv("USERPROFILE", home_str)
+        result = runner.invoke(cli, ["init", "probe"])
+        assert result.exit_code == 0, result.output
+        project_dir = tmp_path / "aquapose" / "projects" / "probe"
+        config_path = project_dir / "config.yaml"
+
+        from aquapose.engine.config import load_config
+
+        with pytest.raises(
+            ValueError, match="n_animals is required and must be > 0"
+        ) as excinfo:
+            load_config(config_path)
+        assert not isinstance(excinfo.value, TypeError)
+
 
 class TestSyntheticMode:
     """Tests for --mode synthetic CLI behavior."""

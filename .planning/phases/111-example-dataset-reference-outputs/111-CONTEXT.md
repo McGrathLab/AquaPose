@@ -55,8 +55,19 @@ deposit `README.md`, and Zenodo metadata prep.
   PROJECT.md — those are the benchmark-clip models; the YH deposit uses the
   `run_20260318_*` runs. Confirm against the deposit config before copying.
 - **D-03:** Ship `geometry/calibration.json` only (~1.5 MB). **Do not ship the
-  refractive LUTs** (~597 MiB) — they auto-generate on first pipeline run (existing
-  "auto-generate LUTs on first run" decision). Keeps the deposit small.
+  refractive LUTs** (~597 MiB) — deterministic from `calibration.json`, so tutorial
+  users regenerate them with a one-time `aquapose prep generate-luts`. Keeps the
+  deposit small.
+  **⚠ CORRECTION (2026-09-01, during Wave 2 execution):** the original rationale
+  said LUTs "auto-generate on first pipeline run" — that was a stale v2.1 behavior.
+  The current pipeline **fail-fasts** (`FileNotFoundError: LUTs not found. Run:
+  aquapose prep generate-luts`) via the v3.5 "prep infrastructure with fail-fast"
+  (`engine/pipeline.py::_check_luts_if_needed`). Consequences the deposit MUST
+  honor: (a) the deposit `README.md` documents the one-time `aquapose prep
+  generate-luts` setup step before `aquapose run`; (b) the packaging script's
+  `--regenerate-outputs` path runs `aquapose prep generate-luts` before the pipeline
+  so maintainer regeneration is self-contained; (c) `geometry/luts/` is EXCLUDED
+  from the shipped tree and the checksum manifest.
 
 ### Trim & re-encode
 - **D-04:** **30-second temporal trim** per camera (~900 frames @ 30 fps) — lands

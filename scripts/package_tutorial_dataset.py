@@ -24,12 +24,19 @@ Deposit tree produced::
 
     <output-dir>/
     ├── videos/                     # 12 x 30s trimmed, re-encoded H.264
-    ├── geometry/calibration.json
+    ├── geometry/calibration.json   # LUTs omitted (regenerate with prep generate-luts)
     ├── models/{yolo_obb.pt, yolo_pose.pt}
     ├── config.yaml                 # fresh, platform-neutral, relative paths
     ├── README.md
     ├── zenodo-metadata.json
+    ├── reference_outputs/          # outputs.h5, animation_3d.html, overlay_mosaic.mp4, timing.txt
     └── checksums.sha256            # written last, over the complete tree
+
+Note on LUTs (D-03):
+    The refractive lookup tables (~597 MB) are NOT shipped. They are deterministic
+    from calibration.json and are regenerated with ``aquapose prep generate-luts``
+    before the first pipeline run. The --regenerate-outputs path runs this step
+    automatically to keep maintainer regeneration self-contained.
 """
 
 from __future__ import annotations
@@ -236,6 +243,171 @@ def write_checksums(deposit_dir: Path) -> Path:
 
 
 # ---------------------------------------------------------------------------
+# Deposit verification and cleanup
+# ---------------------------------------------------------------------------
+
+
+def verify_deposit(deposit_dir: Path) -> list[str]:
+    """Check the deposit tree for completeness and correct licensing.
+
+    Returns a list of human-readable problem strings. An empty list means the
+    deposit passes all checks and is ready for checksumming and Zenodo upload.
+
+    Checks performed:
+
+    - (a) Required paths exist: ``videos/`` has 12 ``.mp4`` files,
+      ``geometry/calibration.json``, ``models/yolo_obb.pt``,
+      ``models/yolo_pose.pt``, ``config.yaml``, ``README.md``,
+      ``zenodo-metadata.json``, and ``reference_outputs/{outputs.h5,
+      animation_3d.html, overlay_mosaic.mp4, timing.txt}``.
+    - (b) ``config.yaml`` contains no ``/home/`` or ``D:\\`` absolute-path
+      substrings (T-111-09 — username / Windows path leak prevention).
+    - (c) ``README.md`` contains both ``"CC-BY-4.0"`` and the exact string
+      ``"AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)"``.
+    - (d) ``zenodo-metadata.json`` parses as valid JSON and declares
+      ``"license": "cc-by-4.0"`` (T-111-10 — licensing gate).
+    - (e) ``geometry/luts/`` is ABSENT — the 597 MB transient LUT directory
+      must not be shipped (D-03 corrected).
+    - (f) No ``reference_outputs/run_*/`` diagnostic cache directories remain
+      (they are transient pipeline artifacts, not deliverables).
+
+    Args:
+        deposit_dir: Root of the assembled deposit tree.
+
+    Returns:
+        List of problem description strings. Empty list means all checks pass.
+    """
+    problems: list[str] = []
+
+    # (a) Required paths
+    required_files = [
+        "geometry/calibration.json",
+        "models/yolo_obb.pt",
+        "models/yolo_pose.pt",
+        "config.yaml",
+        "README.md",
+        "zenodo-metadata.json",
+        "reference_outputs/outputs.h5",
+        "reference_outputs/animation_3d.html",
+        "reference_outputs/overlay_mosaic.mp4",
+        "reference_outputs/timing.txt",
+    ]
+    for rel in required_files:
+        if not (deposit_dir / rel).exists():
+            problems.append(f"Missing required file: {rel}")
+
+    videos_dir = deposit_dir / "videos"
+    if not videos_dir.exists():
+        problems.append("Missing required directory: videos/")
+    else:
+        mp4_files = list(videos_dir.glob("*.mp4"))
+        if len(mp4_files) != 12:
+            problems.append(
+                f"Expected 12 .mp4 files in videos/, found {len(mp4_files)}"
+            )
+
+    # (b) No absolute paths in config.yaml
+    config_path = deposit_dir / "config.yaml"
+    if config_path.exists():
+        config_text = config_path.read_text(encoding="utf-8")
+        if "/home/" in config_text:
+            problems.append(
+                "config.yaml contains absolute path '/home/' — replace with relative paths (D-07)"
+            )
+        if "D:\\" in config_text:
+            problems.append(
+                "config.yaml contains absolute path 'D:\\' — replace with relative paths (D-07)"
+            )
+
+    # (c) README licensing strings
+    readme_path = deposit_dir / "README.md"
+    if readme_path.exists():
+        readme_text = readme_path.read_text(encoding="utf-8")
+        if "CC-BY-4.0" not in readme_text:
+            problems.append("README.md missing required string 'CC-BY-4.0' (D-12)")
+        if "AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)" not in readme_text:
+            problems.append(
+                "README.md missing required AGPL-3.0 label: "
+                "'AGPL-3.0-derived artifacts (trained with Ultralytics, AGPL-3.0)' (D-12)"
+            )
+
+    # (d) zenodo-metadata.json license field
+    meta_path = deposit_dir / "zenodo-metadata.json"
+    if meta_path.exists():
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            if meta.get("license") != "cc-by-4.0":
+                problems.append(
+                    f"zenodo-metadata.json 'license' must be 'cc-by-4.0', "
+                    f"got {meta.get('license')!r} (T-111-10)"
+                )
+        except json.JSONDecodeError as exc:
+            problems.append(f"zenodo-metadata.json is not valid JSON: {exc}")
+
+    # (e) geometry/luts/ must be absent (D-03 corrected — LUTs not shipped)
+    luts_dir = deposit_dir / "geometry" / "luts"
+    if luts_dir.exists():
+        problems.append(
+            "geometry/luts/ is present — transient LUTs must be excluded from the shipped tree (D-03)"
+        )
+
+    # (f) No reference_outputs/run_*/ cache directories
+    ref_dir = deposit_dir / "reference_outputs"
+    if ref_dir.exists():
+        cache_dirs = [
+            d for d in ref_dir.iterdir()
+            if d.is_dir() and d.name.startswith("run_")
+        ]
+        if cache_dirs:
+            names = ", ".join(d.name for d in sorted(cache_dirs))
+            problems.append(
+                f"reference_outputs/ contains pipeline cache dir(s): {names} — "
+                "remove before shipping (run finalize_deposit)"
+            )
+
+    return problems
+
+
+def finalize_deposit(deposit_dir: Path) -> None:
+    """Remove transient build artifacts that must not appear in the shipped tree.
+
+    Removes, if present:
+
+    - ``geometry/luts/`` — the ~597 MB refractive lookup tables. Deterministic
+      from ``calibration.json`` so they are NOT shipped (D-03 corrected). Users
+      regenerate them with ``aquapose prep generate-luts`` before their first run.
+    - Any ``reference_outputs/run_*/`` directories — intermediate diagnostic
+      cache dirs (per-chunk pickles and manifests) written by the pipeline.
+      They are not deliverables and must not appear in the checksum manifest.
+
+    Call this in ``main`` AFTER ``--regenerate-outputs`` and BEFORE
+    ``verify_deposit``/``write_checksums`` so the manifest never covers these
+    transient artifacts.
+
+    Args:
+        deposit_dir: Root of the assembled deposit tree.
+    """
+    # Remove geometry/luts/ if present
+    luts_dir = deposit_dir / "geometry" / "luts"
+    if luts_dir.exists():
+        print(f"  Removing transient LUTs: {luts_dir} ...", end="", flush=True)
+        shutil.rmtree(luts_dir)
+        print(" done")
+
+    # Remove any reference_outputs/run_*/ cache directories
+    ref_dir = deposit_dir / "reference_outputs"
+    if ref_dir.exists():
+        cache_dirs = sorted(
+            d for d in ref_dir.iterdir()
+            if d.is_dir() and d.name.startswith("run_")
+        )
+        for cache_dir in cache_dirs:
+            print(f"  Removing pipeline cache dir: {cache_dir.name} ...", end="", flush=True)
+            shutil.rmtree(cache_dir)
+            print(" done")
+
+
+# ---------------------------------------------------------------------------
 # Model and calibration copy
 # ---------------------------------------------------------------------------
 
@@ -249,7 +421,9 @@ def copy_models_and_calibration(source_dir: Path, output_dir: Path) -> None:
     - ``training/pose/run_20260318_013005/best_model.pt`` → ``models/yolo_pose.pt``
     - ``geometry/calibration.json`` → ``geometry/calibration.json``
 
-    LUTs are NOT copied (D-03) — they auto-generate on the first pipeline run.
+    LUTs are NOT copied (D-03) — they are ~597 MB and are deterministic from
+    calibration.json. Users regenerate them with ``aquapose prep generate-luts``
+    before the first pipeline run (the pipeline fail-fasts if LUTs are absent).
 
     Args:
         source_dir: Root of the YH staging directory.
@@ -400,8 +574,13 @@ pip install aquapose
 # Change into the deposit directory (config.yaml uses relative paths)
 cd aquapose-tutorial-data
 
+# One-time setup: generate the refractive lookup tables (~600 MB, ~2-5 min)
+# The LUTs are deterministic from calibration.json and are NOT shipped with the deposit.
+# The pipeline will fail-fast with an error if you skip this step.
+aquapose prep generate-luts
+
 # Run the pipeline (generates outputs.h5 + per-chunk diagnostic cache)
-aquapose run --config config.yaml
+aquapose run
 
 # Produce the 3D animation and overlay mosaic
 aquapose viz runs/<run_dir>
@@ -567,6 +746,21 @@ def regenerate_reference_outputs(deposit_dir: Path) -> None:
     print("--- Reference Output Regeneration (--regenerate-outputs) ---")
 
     # ------------------------------------------------------------------
+    # Step A0: Generate refractive LUTs (required before pipeline run)
+    # The pipeline fail-fasts with FileNotFoundError if LUTs are absent.
+    # LUTs are deterministic from calibration.json (~597 MB, ~2-5 min).
+    # They will be removed by finalize_deposit() before checksumming.
+    # ------------------------------------------------------------------
+    print("  Step A0: Running aquapose prep generate-luts ...")
+    luts_cmd = [
+        *invoke,
+        "prep",
+        "generate-luts",
+    ]
+    _run_subprocess(luts_cmd, cwd=deposit_dir, label="aquapose prep generate-luts")
+    print("  LUTs generated")
+
+    # ------------------------------------------------------------------
     # Step A: Run the pipeline in diagnostic mode
     # ------------------------------------------------------------------
     print("  Step A: Running aquapose run (diagnostic mode) ...")
@@ -612,6 +806,40 @@ def regenerate_reference_outputs(deposit_dir: Path) -> None:
     _run_subprocess(viz_cmd, cwd=deposit_dir, label="aquapose viz")
     viz_elapsed = time.perf_counter() - t0_viz
     print(f"  Viz done in {viz_elapsed:.1f}s")
+
+    # ------------------------------------------------------------------
+    # Step B1: Re-encode overlay_mosaic.mp4 at CRF 28 to shrink it
+    # The viz-produced overlay can be ~110 MB; CRF 28 yields ~12 MB.
+    # Re-encode in-place: write to a temp path, then replace the original.
+    # ------------------------------------------------------------------
+    overlay_src = ref_dir / "overlay_mosaic.mp4"
+    if overlay_src.exists() and shutil.which("ffmpeg"):
+        print("  Step B1: Re-encoding overlay_mosaic.mp4 at CRF 28 ...", end="", flush=True)
+        overlay_tmp = ref_dir / "overlay_mosaic_crf28.mp4"
+        reencode_cmd = [
+            "ffmpeg",
+            "-y",
+            "-i", str(overlay_src),
+            "-c:v", "libx264",
+            "-preset", "slow",
+            "-crf", "28",
+            "-pix_fmt", "yuv420p",
+            "-an",
+            str(overlay_tmp),
+        ]
+        result = subprocess.run(reencode_cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            parts = []
+            if result.stderr and result.stderr.strip():
+                parts.append(result.stderr.strip())
+            if result.stdout and result.stdout.strip():
+                parts.append(result.stdout.strip())
+            error = "\n".join(parts) if parts else f"Exit code {result.returncode}"
+            raise RuntimeError(f"ffmpeg overlay re-encode failed:\n{error}")
+        overlay_tmp.replace(overlay_src)
+        print(" done")
+    elif not shutil.which("ffmpeg"):
+        print("  Step B1: ffmpeg not found on PATH — skipping overlay re-encode")
 
     # ------------------------------------------------------------------
     # Step C: Normalize filenames + write timing.txt
@@ -751,7 +979,8 @@ def main(argv: list[str] | None = None) -> int:
 
     Orchestrates: ffmpeg trim+re-encode → tree assembly → model/calibration copy
     → deposit config.yaml → README.md → zenodo-metadata.json → (optional)
-    reference-output regeneration → checksums.sha256.
+    reference-output regeneration → finalize_deposit (remove transient artifacts)
+    → verify_deposit gate → checksums.sha256.
 
     Args:
         argv: Command-line arguments (defaults to sys.argv[1:]).
@@ -819,8 +1048,25 @@ def main(argv: list[str] | None = None) -> int:
         if args.regenerate_outputs:
             regenerate_reference_outputs(deposit_dir=output_dir)
 
-        # Step 7: Write checksums over the assembled tree (partial — full manifest in Plan 03)
-        print("--- Step 7: Write checksums.sha256 ---")
+        # Step 6b: Remove transient build artifacts before verify + manifest
+        # Removes geometry/luts/ (~597 MB) and reference_outputs/run_*/ cache dirs.
+        print("--- Step 6b: Finalize deposit (remove transient artifacts) ---")
+        finalize_deposit(output_dir)
+        print()
+
+        # Step 7: Verify deposit completeness + licensing before checksumming
+        print("--- Step 7: Verify deposit tree ---")
+        problems = verify_deposit(output_dir)
+        if problems:
+            print("  DEPOSIT VERIFICATION FAILED:", file=sys.stderr)
+            for problem in problems:
+                print(f"    - {problem}", file=sys.stderr)
+            return 1
+        print("  All checks passed")
+        print()
+
+        # Step 8: Write checksums over the complete, verified tree (D-10)
+        print("--- Step 8: Write checksums.sha256 ---")
         manifest = write_checksums(output_dir)
         print(f"  Written: {manifest}")
         print()

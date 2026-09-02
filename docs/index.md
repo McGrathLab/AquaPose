@@ -5,6 +5,14 @@
 ::::{grid} 1 2 2 3
 :gutter: 3
 
+:::{grid-item-card} Getting Started
+:link: getting-started/index
+:link-type: doc
+
+Install AquaPose, understand the pipeline, and run the tutorial dataset
+end-to-end.
+:::
+
 :::{grid-item-card} Reference
 :link: reference/index
 :link-type: doc
@@ -39,6 +47,7 @@ Analysis of depth reconstruction uncertainty across the camera rig.
 :maxdepth: 2
 :hidden:
 
+getting-started/index
 reference/index
 api/index
 contributing

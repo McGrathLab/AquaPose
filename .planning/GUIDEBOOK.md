@@ -119,10 +119,21 @@ Detection → Pose → 2D Tracking → Cross-Camera Association → Reconstructi
 - YOLO-OBB is a configurable detection model producing oriented bounding boxes — each detection includes `angle` and `obb_points` fields for rotation-aware downstream crops
 - Affine crop utilities support rotation-aligned crops from OBB detections and back-projection from crop coordinates to frame coordinates
 
-### Stage 2 — 2D Tracking
+### Stage 2 — Pose
+
+- **In:** `detections` (Stage 1 output), frames
+- **Out:** none — enriches each `Detection` object **in place** with `keypoints` (shape `(6, 2)`, full-frame pixel coordinates) and `keypoint_conf` (shape `(6,)`) rather than writing a dedicated `PipelineContext` field. `_STAGE_OUTPUT_FIELDS["PoseStage"]` is an empty tuple — the pipeline detects a pre-populated Pose stage by inspecting `detections`, not by a field of its own.
+- Runs **before** 2D Tracking and Cross-Camera Association — this is the structural fact the old stage order got backwards
+- Crops each detection from Stage 1's OBB-aligned bounding box and runs a YOLO-pose keypoint-regression model on the crop; never sees the full frame
+- Extracts 6 fixed anatomical keypoints per crop: nose, head, spine1, spine2, spine3, tail
+- Each keypoint has a fixed `t` value in `[0, 1]` (arc-length fraction), calibrated separately via `aquapose prep calibrate-keypoints` and carried in `pose.keypoint_t_values`. PoseStage accepts this config but does not use it directly — it is consumed downstream by Stage 5 when converting raw keypoints into a parameterized midline.
+- A keypoint counts as "observed" only when its confidence exceeds `keypoint_confidence_floor`; a pose result additionally needs at least `min_observed_keypoints` (default 3) observed keypoints
+- Does not fit a spline, does not resample to a different point count, does not apply orientation resolution — those happen in Stage 5
+
+### Stage 3 — 2D Tracking
 *Swappable backend: OC-SORT*
 
-- **In:** `detections`, CarryForward (previous batch's per-camera track state)
+- **In:** `detections` (now keypoint-enriched by Stage 2), CarryForward (previous batch's per-camera track state)
 - **Out:** `tracks_2d` — per-camera list of 2D tracklets, each a time-series of detections with a local track ID. Updates CarryForward for next batch.
 - Each camera is tracked independently — no cross-camera awareness at this stage
 - Tracklets carry per-frame status tags: `"detected"` (matched to a real detection) or `"coasted"` (Kalman prediction only). This distinction is consumed by association for must-not-link constraints and fragment merging.
@@ -130,10 +141,10 @@ Detection → Pose → 2D Tracking → Cross-Camera Association → Reconstructi
 - OC-SORT extends standard SORT with observation-centric re-update, momentum, and lost-track recovery. No appearance model — within a single top-down camera view, fish are distinguishable by position and velocity alone.
 - Fallback: plain SORT if OC-SORT proves problematic
 
-### Stage 3 — Cross-Camera Association
+### Stage 4 — Cross-Camera Association
 
 - **In:** `tracks_2d`, calibration, LUTs
-- **Out:** `tracklet_groups` — groups of tracklets matched across cameras, each representing one physical fish with a global ID. Also emits `handoff_state` for future chunk-aware operation.
+- **Out:** `tracklet_groups` — groups of tracklets matched across cameras, each representing one physical fish with a global ID.
 - Assigns **global fish IDs** that are authoritative for all downstream stages. Local per-camera IDs are internal bookkeeping from this point forward.
 - Algorithm overview (see `MS3-SPECSEED.md` for full design):
   1. Camera overlap graph from inverse LUT
@@ -143,51 +154,46 @@ Detection → Pose → 2D Tracking → Cross-Camera Association → Reconstructi
   5. 3D consistency refinement (triangulate per-cluster, evict outlier tracklets)
 - Per-frame confidence estimates (reprojection residuals, camera count, close-encounter flags) are attached to each group
 - Handles partial observability (fish visible in 4–5 of 12 cameras) and tracklet fragmentation (multiple short tracklets per fish per camera)
-- The pipeline accepts an optional `prior_context` for chunk-aware seeding and always emits `handoff_state`. Chunk orchestration is deferred; the stage operates as a single-chunk full-batch processor.
-
-### Stage 4 — Midline
-*Swappable backend: segment-then-extract / direct pose estimation*
-
-- **In:** `tracklet_groups`, `detections`, frames
-- **Out:** `annotated_detections` — midlines for detections belonging to confirmed tracklet-groups only. Ungrouped detections are skipped entirely.
-- Segment-then-extract (`segment_then_extract`): crop → YOLO26n-seg instance segmentation → binary mask → skeletonize → BFS → arc-length resample to N points + half-widths
-- Direct pose estimation (`direct_pose`): crop → YOLO26n-pose keypoint regression → 6 anatomical keypoints per crop
-  - Keypoints: nose, head, spine1, spine2, spine3, tail
-  - Each keypoint has a fixed `t` value in [0, 1] calibrated from full skeletons (mean cumulative arc-length fraction)
-  - Output is always `np.linspace(0, 1, N)` — point #k always corresponds to the same anatomical location
-  - Spline is fitted using only the observed keypoints and their fixed t values
-  - Spline is evaluated only within `[t_min_observed, t_max_observed]`; output points outside that range → NaN + confidence=0 (no extrapolation)
-  - Per-point confidence from the keypoint model flows through to Stage 5 for confidence-weighted triangulation
-- Both backends operate on OBB-aligned crops from Stage 1 detections — they never see full images
-- All backends must produce the same output structure: N arc-length-sampled points with optional half-widths
-- Detections that fail midline extraction (e.g. degenerate masks) produce a flagged empty midline, not an exception
-- Cross-camera group membership (from Stage 3) provides a head-tail consistency signal — if most cameras agree on head direction, flip outliers
+- LUTs must be pre-generated (`aquapose prep generate-luts`) — this stage loads them from disk and raises `FileNotFoundError` if they are missing rather than generating them lazily
 
 ### Stage 5 — Reconstruction
 *Backend: DLT (confidence-weighted triangulation with outlier rejection)*
 
-- **In:** `tracklet_groups`, `annotated_detections`, calibration
-- **Out:** `midlines_3d` — per-frame `dict[fish_id, Spline3D]` (B-spline 3D midlines) + `dropped: dict[fish_id, DropReason]` for fish that failed reconstruction.
+- **In:** `tracklet_groups` — and, through each group's tracklets, the keypoints Stage 2 wrote onto their `Detection` objects
+- **Out:** `midlines_3d` — per-frame `dict[fish_id, Midline3D]` (3D midlines, optionally B-spline-fitted), plus per-fish dropped-frame reasons for frames that failed reconstruction.
+- Converts each fish's raw per-camera keypoints into a 2D midline using the calibrated `keypoint_t_values`: only keypoints above the confidence floor count as observed, and the midline is interpolated through the observed keypoints only, evaluated within `[t_min_observed, t_max_observed]` — no extrapolation beyond what was actually seen. Fewer than 2 observed keypoints yields a degenerate, zero-confidence midline for that camera/frame instead of a crash.
 - Triangulates using only the cameras known to observe each fish (from tracklet association). Per-fish, per-frame with known correspondence — no RANSAC needed for cross-view matching.
 - Head-tail orientation is resolved before reconstruction
-- Single-view fish cannot be reconstructed; they appear in `dropped` with an appropriate reason
-- Output spline control point count is config, not hardcoded
-- The DLT backend supports confidence-weighted observations — per-point confidence from the YOLO-pose keypoint backend is used to weight triangulation; when confidence is None (e.g. from segment-then-extract), uniform weights are applied
+- Single-view fish cannot be reconstructed
+- Frames with fewer than `min_cameras` cameras are dropped; consecutive dropped frames up to `max_interp_gap` are filled by linear interpolation
+- Output spline control point count is config, not hardcoded; B-spline fitting is optional (`spline_enabled`) — the default is raw triangulated keypoints
+- Per-point confidence from Stage 2's keypoint model is used to weight triangulation
+
+### Synthetic Mode
+
+```
+Synthetic Data → 2D Tracking → Cross-Camera Association → Reconstruction
+```
+
+When `config.mode == "synthetic"`, `build_stages` returns a 4-stage list: `SyntheticDataStage` replaces `DetectionStage`, and there is **no Pose stage** in this variant — synthetic ground-truth keypoints are generated directly by `SyntheticDataStage`, so there is nothing for a raw-keypoint-extraction step to do.
+
+- `SyntheticDataStage` populates `frame_count`, `camera_ids`, and `detections` — the same `PipelineContext` fields `DetectionStage` populates in production mode (`_STAGE_OUTPUT_FIELDS["SyntheticDataStage"]` is identical to `_STAGE_OUTPUT_FIELDS["DetectionStage"]`).
+- From `TrackingStage` onward, synthetic mode and production mode share the same three stages and the same `PipelineContext` fields.
 
 ### PipelineContext Data Flow
 
 | Stage | Reads | Writes |
 |-------|-------|--------|
 | 1. Detection | frames, calibration | `detections` |
-| 2. 2D Tracking | `detections`, CarryForward | `tracks_2d`, CarryForward |
-| 3. Association | `tracks_2d`, calibration, LUTs | `tracklet_groups`, `handoff_state` |
-| 4. Midline | `tracklet_groups`, `detections`, frames | `annotated_detections` |
-| 5. Reconstruction | `tracklet_groups`, `annotated_detections`, calibration | `midlines_3d` |
+| 2. Pose | `detections`, frames | *(none — enriches `detections` in place)* |
+| 3. 2D Tracking | `detections`, CarryForward | `tracks_2d`, CarryForward |
+| 4. Association | `tracks_2d`, calibration, LUTs | `tracklet_groups` |
+| 5. Reconstruction | `tracklet_groups` | `midlines_3d` |
 
 ### Identity Model
 
-- **Stage 2** assigns **local per-camera IDs** — meaningful only within a single camera's timeline
-- **Stage 3** assigns **global fish IDs** — authoritative from this point forward
+- **Stage 3** assigns **local per-camera IDs** — meaningful only within a single camera's timeline
+- **Stage 4** assigns **global fish IDs** — authoritative from this point forward
 - Downstream stages reference global fish IDs only
 
 ### CarryForward

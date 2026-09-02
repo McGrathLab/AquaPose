@@ -335,14 +335,17 @@ def _guidebook_path() -> Path:
     return Path(__file__).resolve().parents[3] / ".planning" / "GUIDEBOOK.md"
 
 
+@pytest.mark.parametrize("mode", ["production", "synthetic"])
 def test_build_stages_sequence_matches_guidebook(
+    mode: str,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """build_stages() production order must appear verbatim in GUIDEBOOK.md section 6.
+    """build_stages() order must appear verbatim in GUIDEBOOK.md section 6.
 
-    The expected arrow-joined sequence is derived from a real build_stages()
-    call, not hardcoded, so a future pipeline reorder that isn't mirrored in
-    GUIDEBOOK.md turns this test red (D-14, D-15).
+    Covers both the 5-stage production order and the 4-stage synthetic-mode
+    order. The expected arrow-joined sequence is derived from a real
+    build_stages() call, not hardcoded, so a future pipeline reorder that
+    isn't mirrored in GUIDEBOOK.md turns this test red (D-14, D-15).
     """
     from aquapose.core import (
         DetectionStage,
@@ -368,7 +371,7 @@ def test_build_stages_sequence_matches_guidebook(
     config = load_config(
         cli_overrides={
             "n_animals": 3,
-            "mode": "production",
+            "mode": mode,
             "video_dir": ".",
             "calibration_path": ".",
         },

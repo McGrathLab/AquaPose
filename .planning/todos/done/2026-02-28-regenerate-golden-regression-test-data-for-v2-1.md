@@ -18,3 +18,26 @@ The 8 golden regression tests in `tests/golden/test_stage_harness.py` are perman
 2. Run on reference data to produce new `.pt` fixtures
 3. Update `test_stage_harness.py` assertions for new stage outputs
 4. Remove the `pytest.mark.skip` from the test module
+
+## Filed
+
+**Date:** 2026-09-02
+**Reason:** Obsolete — the tests and script this todo asks to fix no longer exist.
+
+Re-verified against the working tree during 113.1-03 (not copied from
+113.1-CONTEXT.md's summary):
+
+```
+$ test -e tests/golden && echo EXISTS || echo ABSENT
+ABSENT
+$ test -e scripts/generate_golden_data.py && echo EXISTS || echo ABSENT
+ABSENT
+```
+
+`tests/golden/test_stage_harness.py`, `tests/golden/conftest.py`, and
+`scripts/generate_golden_data.py` — every file this todo names — are all
+absent from the repository. There is nothing left to regenerate data for or
+rewrite; the golden-regression harness itself was removed at some point
+after this todo was filed. Closing as obsolete rather than working it.
+
+**Filed by:** Phase 113.1, Plan 03 (113.1-03-PLAN.md, D-03).

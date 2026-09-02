@@ -72,11 +72,15 @@ Root commands
 
     aquapose -p myproject eval-compare run_20260101_120000 run_20260102_090000
 
-**tune** — Hyperparameter sweep over config fields:
+**tune** — Hyperparameter sweep for a stage (``--stage`` is required):
 
 .. code-block:: bash
 
-    aquapose -p myproject tune
+    # Sweep reconstruction parameters
+    aquapose -p myproject tune --stage reconstruction
+
+    # Sweep association parameters (short flag -s)
+    aquapose -p myproject tune -s association
 
 **viz** — Visualise pipeline outputs (detections, tracks, reconstructions):
 
@@ -90,7 +94,7 @@ Root commands
 
     aquapose -p myproject stitch
 
-**smooth-z** — Post-process z-coordinates with a Kalman smoother:
+**smooth-z** — Post-process centroid z-coordinates with a Gaussian smoother:
 
 .. code-block:: bash
 
@@ -103,17 +107,17 @@ Manage training data stores (OBB and pose sample stores).
 
 .. code-block:: bash
 
-    # Import labelled samples from a Label Studio export
-    aquapose -p myproject data import --store obb --input labels.json
+    # Import labelled samples from a YOLO-format directory (images/ + labels/)
+    aquapose -p myproject data import --store obb --source manual --input-dir path/to/yolo_dir
 
     # List all samples in the pose store
     aquapose -p myproject data list --store pose
 
-    # Show store status (counts, class distribution)
-    aquapose -p myproject data status --store obb
+    # Show store status (counts, class distribution) across all stores
+    aquapose -p myproject data status
 
-    # Exclude a problematic sample by ID
-    aquapose -p myproject data exclude --store obb --id 42
+    # Exclude a problematic sample by ID (repeat --ids to exclude several)
+    aquapose -p myproject data exclude --store obb --ids 42
 
 Subgroup: ``train``
 ~~~~~~~~~~~~~~~~~~~
@@ -128,8 +132,8 @@ Train oriented bounding-box, segmentation, and pose models.
     # Train the pose model with a custom epoch count
     aquapose -p myproject train pose --epochs 100
 
-    # Compare two training runs
-    aquapose -p myproject train compare run_a run_b
+    # Compare two training runs (--model-type is required; run paths must exist)
+    aquapose -p myproject train compare --model-type pose runs/run_a runs/run_b
 
 Subgroup: ``prep``
 ~~~~~~~~~~~~~~~~~~

@@ -390,8 +390,8 @@ def evaluate_smoothing(
         reproj_after = _compute_reproj_stats(
             frame_results_post, midline_sets_by_frame, projection_models, n_body_points
         )
-        reproj_n_fish_frames = reproj_before.get("n_fish_frames", 0)
-        reproj_n_residuals = reproj_before.get("n_residuals", 0)
+        reproj_n_fish_frames = int(reproj_before.get("n_fish_frames", 0))
+        reproj_n_residuals = int(reproj_before.get("n_residuals", 0))
         # Remove count keys from stat dicts
         reproj_before = {
             k: v

@@ -169,12 +169,14 @@ def _build_dz_lookup(smoothed_path: Path) -> dict[tuple[int, int], float]:
     """
     import h5py
 
+    from aquapose.core.h5 import require_dataset, require_group
+
     with h5py.File(str(smoothed_path), "r") as f:
-        grp = f["midlines"]
-        centroid_z = grp["centroid_z"][:]
-        smoothed_cz = grp["smoothed_centroid_z"][:]
-        fish_ids = grp["fish_id"][:]
-        frame_indices = grp["frame_index"][:]
+        grp = require_group(f, "midlines")
+        centroid_z = require_dataset(grp, "centroid_z")[:]
+        smoothed_cz = require_dataset(grp, "smoothed_centroid_z")[:]
+        fish_ids = require_dataset(grp, "fish_id")[:]
+        frame_indices = require_dataset(grp, "frame_index")[:]
 
     dz_all = smoothed_cz - centroid_z
     lookup: dict[tuple[int, int], float] = {}

@@ -595,7 +595,8 @@ pip install aquapose
 # Change into the deposit directory (config.yaml uses relative paths)
 cd aquapose-tutorial-data
 
-# One-time setup: generate the refractive lookup tables (~600 MB, ~2-5 min)
+# One-time setup: generate the refractive lookup tables (~600 MB). Wall time
+# varies by GPU -- seconds on a fast card, a few minutes on a modest one.
 # The LUTs are deterministic from calibration.json and are NOT shipped with the deposit.
 # The pipeline will fail-fast with an error if you skip this step.
 aquapose prep generate-luts
@@ -769,7 +770,8 @@ def regenerate_reference_outputs(deposit_dir: Path) -> None:
     # ------------------------------------------------------------------
     # Step A0: Generate refractive LUTs (required before pipeline run)
     # The pipeline fail-fasts with FileNotFoundError if LUTs are absent.
-    # LUTs are deterministic from calibration.json (~597 MB, ~2-5 min).
+    # LUTs are deterministic from calibration.json (~597 MB). Wall time
+    # varies by GPU -- seconds on a fast card, a few minutes on a modest one.
     # They will be removed by finalize_deposit() before checksumming.
     # ------------------------------------------------------------------
     print("  Step A0: Running aquapose prep generate-luts ...")

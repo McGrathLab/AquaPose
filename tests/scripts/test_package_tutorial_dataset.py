@@ -403,6 +403,20 @@ class TestDepositDocCorrections:
         assert "generates midlines.h5" in content
         assert "generates outputs.h5" not in content
 
+    def test_readme_lut_timing_is_not_a_fixed_minute_range(
+        self, deposit_dir: Path
+    ) -> None:
+        """Fifth defect (confirmed by Phase 113 Plan 05's GPU verification run):
+        the README claimed LUT generation takes "~2-5 min". Measured 7 s on an
+        RTX 4070 Ti — an order of magnitude under the claimed lower bound. The
+        claim is corrected to note wall time varies by GPU instead of asserting
+        an unverified fixed range.
+        """
+        pkg.write_deposit_readme(deposit_dir)
+        content = (deposit_dir / "README.md").read_text(encoding="utf-8")
+        assert "~2-5 min" not in content
+        assert "varies by GPU" in content
+
 
 class TestWriteZenodoMetadata:
     """Tests for write_zenodo_metadata()."""

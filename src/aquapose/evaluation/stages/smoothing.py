@@ -101,12 +101,14 @@ def _compute_jitter_metrics(
     """
     import h5py
 
+    from aquapose.core.h5 import require_dataset, require_group
+
     with h5py.File(str(smoothed_path), "r") as f:
-        grp = f["midlines"]
-        centroid_z = grp["centroid_z"][:]  # (N, max_fish)
-        smoothed_cz = grp["smoothed_centroid_z"][:]  # (N, max_fish)
-        fish_ids = grp["fish_id"][:]  # (N, max_fish)
-        frame_indices = grp["frame_index"][:]  # (N,)
+        grp = require_group(f, "midlines")
+        centroid_z = require_dataset(grp, "centroid_z")[:]  # (N, max_fish)
+        smoothed_cz = require_dataset(grp, "smoothed_centroid_z")[:]  # (N, max_fish)
+        fish_ids = require_dataset(grp, "fish_id")[:]  # (N, max_fish)
+        frame_indices = require_dataset(grp, "frame_index")[:]  # (N,)
 
     # Group by fish_id: list of (frame_index, raw_z, smoothed_z)
     fish_data: dict[int, list[tuple[int, float, float]]] = {}

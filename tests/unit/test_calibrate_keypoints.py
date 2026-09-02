@@ -441,6 +441,227 @@ class TestCalibrateKeypointsYolo:
         assert t_values is not None
         assert t_values == pytest.approx([0.0, 0.2, 0.4, 0.6, 0.8, 1.0], abs=1e-3)
 
+    def test_label_without_sibling_image_is_skipped_with_warning(
+        self,
+        tmp_path: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """A label with no resolvable sibling image is skipped, not fatal.
+
+        Three labels are written, only two get a sibling image. The
+        command must still succeed, processing the two resolvable labels.
+        """
+        kps = " ".join(f"{x:.4f} 0.5 2" for x in [0.1, 0.28, 0.46, 0.64, 0.82, 1.0])
+        line = f"0 0.5 0.5 0.8 0.3 {kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        for stem in ("img001", "img002", "img003"):
+            (labels_dir / f"{stem}.txt").write_text(line + "\n")
+
+        images_dir = tmp_path / "images" / "train"
+        images_dir.mkdir(parents=True)
+        # img003 deliberately has no sibling image.
+        Image.new("RGB", (128, 64)).save(images_dir / "img001.jpg")
+        Image.new("RGB", (128, 64)).save(images_dir / "img002.jpg")
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        assert "Processed 2 annotations" in result.output
+
+    def test_fails_when_no_label_resolves_an_image(
+        self,
+        tmp_path: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """When labels exist but none resolves an image, the command fails.
+
+        The failure message must be the unresolved-sibling message, not
+        the pre-existing no-valid-annotations message -- the two failure
+        modes must stay distinguishable so a missing images/ directory is
+        never reported as an annotation-quality problem.
+        """
+        kps = " ".join(f"{x:.4f} 0.5 2" for x in [0.1, 0.28, 0.46, 0.64, 0.82, 1.0])
+        line = f"0 0.5 0.5 0.8 0.3 {kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        (labels_dir / "img001.txt").write_text(line + "\n")
+        # No images/ directory at all -- nothing can resolve.
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code != 0
+        assert "No images resolved for any label file" in result.output
+        assert "No valid keypoint annotations" not in result.output
+
+    def test_coincident_keypoints_share_t_value(
+        self,
+        tmp_path: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """Two coincident keypoints inside an instance get equal t-values.
+
+        Pixel path: (0,0) -> (20,0) -> (40,0) -> (40,0) -> (60,0) -> (80,0).
+        Keypoints 2 and 3 sit at the identical pixel (40,0), a 0px segment.
+        Segment lengths: 20, 20, 0, 20, 20 (total 80).
+        Cumulative:      0, 20, 40, 40, 60, 80.
+        t = cumulative / 80 = [0.0, 0.25, 0.5, 0.5, 0.75, 1.0].
+        """
+        img_w, img_h = 128, 64
+        px_points = [(0, 0), (20, 0), (40, 0), (40, 0), (60, 0), (80, 0)]
+        norm_points = [(x / img_w, y / img_h) for x, y in px_points]
+        kps = " ".join(f"{x:.6f} {y:.6f} 2" for x, y in norm_points)
+        line = f"0 0.5 0.5 0.5 0.5 {kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        (labels_dir / "img001.txt").write_text(line + "\n", encoding="utf-8")
+
+        images_dir = tmp_path / "images" / "train"
+        images_dir.mkdir(parents=True)
+        Image.new("RGB", (img_w, img_h)).save(images_dir / "img001.jpg")
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code == 0, result.output
+
+        config_yaml = monkeypatch_project / "config.yaml"
+        updated = yaml.safe_load(config_yaml.read_text())
+        t_values = updated["pose"]["keypoint_t_values"]
+        assert not any(v != v for v in t_values)  # no NaN (v != v is NaN test)
+        assert t_values[2] == pytest.approx(0.5, abs=1e-3)
+        assert t_values[3] == pytest.approx(0.5, abs=1e-3)
+        assert t_values[2] == pytest.approx(t_values[3], abs=1e-9)
+
+    def test_degenerate_all_coincident_instance_is_excluded(
+        self,
+        tmp_path: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """An all-coincident instance is excluded from the mean, not NaN'd.
+
+        Two labels: one normal instance, one where all six keypoints sit
+        at the same pixel (total chord length below 1e-6). Only the
+        non-degenerate instance is counted.
+        """
+        img_w, img_h = 128, 64
+
+        normal_kps = " ".join(
+            f"{x:.4f} 0.5 2" for x in [0.1, 0.28, 0.46, 0.64, 0.82, 1.0]
+        )
+        normal_line = f"0 0.5 0.5 0.8 0.3 {normal_kps}"
+
+        degenerate_px = (10, 10)
+        degenerate_norm = (degenerate_px[0] / img_w, degenerate_px[1] / img_h)
+        degenerate_kps = " ".join(
+            f"{degenerate_norm[0]:.6f} {degenerate_norm[1]:.6f} 2" for _ in range(6)
+        )
+        degenerate_line = f"0 0.5 0.5 0.5 0.5 {degenerate_kps}"
+
+        labels_dir = tmp_path / "labels" / "train"
+        labels_dir.mkdir(parents=True)
+        (labels_dir / "img001.txt").write_text(normal_line + "\n", encoding="utf-8")
+        (labels_dir / "img002.txt").write_text(degenerate_line + "\n", encoding="utf-8")
+
+        images_dir = tmp_path / "images" / "train"
+        images_dir.mkdir(parents=True)
+        Image.new("RGB", (img_w, img_h)).save(images_dir / "img001.jpg")
+        Image.new("RGB", (img_w, img_h)).save(images_dir / "img002.jpg")
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(tmp_path / "labels"),
+            ],
+        )
+        assert result.exit_code == 0, result.output
+        assert "Processed 1 annotations" in result.output
+
+    def test_repeat_runs_are_deterministic(
+        self,
+        yolo_labels_dir: Path,
+        monkeypatch_project: Path,
+    ) -> None:
+        """Running the command twice over the same corpus is byte-identical.
+
+        Traversal is a sorted rglob(...) and the per-keypoint mean does
+        not depend on instance order, so repeat runs over the same corpus
+        must produce identical t-values -- compared here for exact
+        equality, not approximate.
+        """
+        from aquapose.engine.config import load_config
+
+        config_path = monkeypatch_project / "config.yaml"
+        runner = CliRunner()
+
+        result1 = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(yolo_labels_dir),
+            ],
+        )
+        assert result1.exit_code == 0, result1.output
+        t_values_1 = load_config(config_path).pose.keypoint_t_values
+
+        result2 = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(yolo_labels_dir),
+            ],
+        )
+        assert result2.exit_code == 0, result2.output
+        t_values_2 = load_config(config_path).pose.keypoint_t_values
+
+        assert t_values_1 == t_values_2
+
     def test_yolo_empty_dir_fails(
         self,
         tmp_path: Path,

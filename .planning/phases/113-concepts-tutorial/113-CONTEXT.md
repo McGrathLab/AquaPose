@@ -26,6 +26,9 @@ structuring work over existing docstrings), this phase is genuinely
 - Minting the Zenodo DOI (human step) and writing the tutorial against it (D-03).
 - An end-to-end verification run of the tutorial on the extracted deposit (D-14).
 - Keeping the docs build green (`sphinx-build -W --keep-going`).
+- **Three folded-in CI fixes** (D-16, D-17, D-18) — see "CI green-up" below. Added
+  after the main discussion, when the user flagged that the Tests workflow is red
+  on `dev`.
 
 **Explicitly NOT this phase (scope fence):**
 - README refresh, badge row, hero media, citation block, Read the Docs publish →
@@ -39,6 +42,9 @@ structuring work over existing docstrings), this phase is genuinely
 - Re-encoding or regenerating the deposit videos/models/reference outputs —
   Phase 111 delivered them and they verify clean (22/22 checksums OK).
 - Any pipeline behavior change. This is a publication milestone.
+- **The 98-error basedpyright typecheck backlog** → captured as
+  `.planning/todos/pending/2026-09-02-fix-basedpyright-typecheck-backlog.md`,
+  deliberately NOT folded in (D-19).
 
 </domain>
 
@@ -202,6 +208,73 @@ structuring work over existing docstrings), this phase is genuinely
   an RTX 4070 Ti. Present both so a user can locate their own GPU between them.
   Rejected: quoting only the deposit reference, and an order-of-magnitude range.
 
+### CI green-up (folded in 2026-09-02)
+
+Raised by the user after the main discussion: the Tests workflow is red on `dev`.
+Diagnosed run **33620368943** (commit `497ac5b`). Four distinct failures; three
+are folded into this phase, one is deferred (D-19). Windows 3.11 and 3.12 passed;
+the Documentation workflow is green.
+
+- **D-16:** **`ruff format` on the two Phase 111 files — ALREADY DONE, commit
+  `39a1bf1`.** `scripts/package_tutorial_dataset.py` and
+  `tests/scripts/test_package_tutorial_dataset.py` were committed unformatted in
+  `9dfa6bf`/`e531009`, so the `pre-commit` CI job fails ("2 files reformatted",
+  exit 1). Pure formatting, no semantic change; the 80 packaging tests still
+  pass. **No remaining work — do not re-plan this.** Noted because D-06 patches
+  the same script and must not reintroduce the drift.
+- **D-17:** **Fix the ill-conditioned angular-error metric in
+  `tests/unit/calibration/test_luts.py` (both sites, lines ~152 and ~189).**
+  This is the `test (ubuntu-latest, 3.12)` failure:
+  `test_forward_lut_cast_ray_matches_model` — `assert 0.01978234015405178 < 0.01`.
+  **Root cause (verified, not assumed): the test's metric is broken, the LUT is
+  fine.** `torch.acos(dot)` on a float32 dot product of two nearly-parallel unit
+  vectors is numerically ill-conditioned — `d(acos)/dx → ∞` as `x → 1`. Measured
+  locally: the float32 dot lands on exactly `1.0` (max observed `1.0000001192`,
+  clamped), so `acos` returns **0.000000°** and the assertion passes *trivially,
+  measuring nothing*. On CI a 1-ulp difference puts the dot at ~`1 − 6e-8`, which
+  `acos` amplifies to 0.0198°. Computed stably as
+  `atan2(‖a×b‖, a·b)` in float64, the **true** max angular error is
+  **2.07e-5°** — 500× under the 0.01° threshold.
+  **Fix:** compute the angle via `torch.atan2(torch.linalg.cross(a, b).norm(-1),
+  (a*b).sum(-1))` in float64. **Keep the 0.01° and 0.1° thresholds unchanged** —
+  this is not a tolerance relaxation; the real margin becomes 500×.
+  **⚠ Corrects the record on QA-01.** Phase 109-05 reported this test "confirmed
+  green (resolved, not skipped, tolerances intact)" and attributed the CI failure
+  to a stale "Linux/CI estimate". That conclusion was luck: `acos(1.0) == 0`
+  locally. The requirement was never genuinely verified until now.
+- **D-18:** **Apply the same stable-angle formula to
+  `src/aquapose/calibration/luts.py:439`** (`validate_forward_lut`). Production
+  code with the identical `acos(dot)` pattern, whose reported
+  `max_angular_error_deg` is therefore float32 rounding noise rather than signal,
+  and which **raises `ValueError`** above 0.1°. Verified **not** tutorial-blocking:
+  `validate_forward_lut` is only reachable from `calibration/__init__.py`'s
+  re-export and `tests/unit/calibration/test_luts.py` — `aquapose prep
+  generate-luts` never calls it, so the tutorial's first step (D-13) cannot trip
+  it. Folded in anyway because it is the same one-line fix and the function's
+  whole purpose is to report a trustworthy number.
+- **D-19:** **Do NOT fold in the basedpyright typecheck backlog.** `hatch run
+  typecheck` reports **98 errors, 0 warnings**, and the CI `typecheck` job has
+  failed on every run examined (2026-09-02 and both 2026-08-17 runs) — a
+  long-standing backlog, **not** a regression from the recent push. It spans
+  `core/reid/runner.py` (h5py `Dataset`/`Datatype` narrowing), `evaluation/
+  stages/smoothing.py` (`float` → `int` params), and `training/reid_training.py`
+  (a `ReidConfigLike` protocol that declares writable attributes against frozen
+  dataclasses). Far too large and too unrelated for a documentation phase.
+  **Captured as** `.planning/todos/pending/2026-09-02-fix-basedpyright-typecheck-backlog.md`
+  with the error clusters and a suggested phase shape.
+- **Note — D-08 already fixes the largest CI failure.** Three of the six test
+  matrix jobs (ubuntu 3.11, ubuntu 3.13, windows 3.13) failed at **Create
+  environment**, not at the tests:
+  ```
+  error: Request failed after 3 retries in 8.5s
+    Caused by: Failed to fetch: `https://download.pytorch.org/whl/cu121/ultralytics-thop/`
+    Caused by: HTTP status server error (503 Service Unavailable)
+  ```
+  `UV_EXTRA_INDEX_URL` makes uv query `download.pytorch.org` for **every**
+  package — including pure-Python ones like `ultralytics-thop` — so any hiccup on
+  that index breaks environment creation. This is independent evidence for D-08
+  beyond the wasted-bandwidth argument: the pin is an active flakiness source.
+
 ### Claude's Discretion
 
 - Exact page filenames and whether "Getting Started" is a directory
@@ -330,9 +403,24 @@ structuring work over existing docstrings), this phase is genuinely
   default, tells users to reinstall with cu124). D-08 resolves the underlying
   cause; the README rewrite itself is **Phase 114**.
 
+### CI green-up (D-16..D-19)
+- `.github/workflows/test.yml` — the failing workflow. Jobs: `pre-commit`,
+  `typecheck`, and a `test` matrix of {ubuntu,windows}-latest ×
+  Python 3.11/3.12/3.13. **No GPU on any runner** (D-08 evidence).
+- Failing run: `gh run view 33620368943` (commit `497ac5b`, 2026-09-02).
+- `tests/unit/calibration/test_luts.py` lines ~146-155 and ~183-192 — the two
+  `acos(dot)` angular-error assertions D-17 replaces.
+- `src/aquapose/calibration/luts.py:394-455` — `validate_forward_lut`, the
+  production twin D-18 fixes. Docstring already promises `ValueError` above 0.1°.
+- `.planning/todos/pending/2026-09-02-fix-basedpyright-typecheck-backlog.md` —
+  the deferred typecheck work (D-19), with error clusters and a phase shape.
+
 ### Build gate
 - `sphinx-build -W --keep-going` must stay clean, via `hatch run docs:build`.
   Inherited hard gate from Phases 110/112.
+- `hatch run test` must pass, and the `pre-commit` CI job must pass. The
+  `typecheck` job stays red by design this phase (D-19) — do not treat it as a
+  phase failure, and do not add `# type: ignore` suppressions to make it green.
 
 </canonical_refs>
 
@@ -433,6 +521,10 @@ video — calibration intrinsics and refractive ray-casting are bound to 1600×1
 - **Correcting `CLAUDE.md`'s `{p, ψ, κ, s}` "Domain Conventions" line** — the
   source of the D-01 discrepancy. Listed under Claude's Discretion; small enough
   to fold in, but not required by any success criterion.
+- **The 98-error basedpyright typecheck backlog** → own phase, tracked as
+  `.planning/todos/pending/2026-09-02-fix-basedpyright-typecheck-backlog.md`
+  (D-19). Blocks the honest **README-02 badge row** in Phase 114, so it should be
+  scheduled before or alongside 114.
 
 ### Reviewed Todos (not folded)
 

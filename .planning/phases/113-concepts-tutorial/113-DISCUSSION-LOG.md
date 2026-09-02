@@ -233,3 +233,33 @@
 **Folded:** `2026-09-01-upload-yh-tutorial-dataset-to-zenodo.md` (score 0.6, area publication) — folded by D-04.
 
 **Reviewed, not folded (13):** Add per-stage diagnostic visualizations (0.6); Move LUT generation to pre-pipeline setup (0.6); Wire frame selection into pseudo-label assembly CLI (0.6); Fix core import boundary violation in frame_source (0.6); Generate augmentations on-the-fly at assembly time (0.6); Adapt pseudo-label pipeline for hard case mining (0.6); Triangulate keypoints directly instead of 6-to-15 upsampling (0.6); Active calibration refinement (0.4); Extract frame status strings to constants or enum (0.4); Regenerate golden regression test data for v2.1 (0.4); Iterate only active frames in reconstruction per-fish loop (0.4); Integrate full-frame exclusion masks from AquaMVS (0.2); Speed correlation as second discriminant for association (0.2). All matched on generic keywords; none concern install, concepts, or tutorial documentation.
+
+---
+
+## CI green-up (follow-up, after the main discussion)
+
+User: "I also noticed that when we pushed to dev this morning the CI is far from green -- see if these are small fixes we can fold in here"
+
+Diagnosed `gh run view 33620368943` (commit `497ac5b`). Four distinct failures:
+
+| Job | Failure | Assessment |
+|---|---|---|
+| `pre-commit` | `ruff format` — 2 Phase 111 files unformatted | Trivial |
+| `test` ×3 (ubuntu 3.11/3.13, win 3.13) | env creation: 503 fetching `ultralytics-thop` from the cu121 index | Already fixed by D-08 |
+| `test` (ubuntu 3.12) | `test_forward_lut_cast_ray_matches_model`: `assert 0.0198 < 0.01` | Small, ~5 lines |
+| `typecheck` | 98 basedpyright errors | Large, pre-existing |
+
+| Option | Description | Selected |
+|--------|-------------|----------|
+| ruff format (2 files) | Pure formatting, fixes the pre-commit job | ✓ |
+| LUT test numerics | Replace `acos(dot)` with `atan2(‖a×b‖, a·b)` in float64, thresholds unchanged | ✓ |
+| Also fix `luts.py:439` | Same formula in the production `validate_forward_lut` | ✓ |
+| typecheck (98 errors) | Not recommended — own phase | |
+
+**User's choice:** *(free text)* "ruff format (2 files), LUT test numerics, Also fix luts.py:439, make a TODO for the typecheck fix"
+
+**Notes:**
+- Investigation established the LUT test's metric — not the LUT — is broken. Locally the float32 dot product lands on exactly `1.0` (max observed `1.0000001192`), so `acos` returns `0.000000°` and the assertion passes trivially. The true error, via `atan2(‖a×b‖, a·b)` in float64, is `2.07e-5°` — 500× under the 0.01° threshold. On CI a 1-ulp difference puts the dot near `1 − 6e-8`, which `acos` amplifies to 0.0198°. This corrects Phase 109-05's record on QA-01, which reported the test "confirmed green" on the strength of `acos(1.0) == 0`.
+- `validate_forward_lut` was checked and is **not** reachable from `aquapose prep generate-luts`, so it cannot break the tutorial's first step; folded in on principle rather than urgency.
+- typecheck was confirmed failing on all three runs examined (2026-09-02 and both 2026-08-17 runs), so it is a backlog rather than a regression.
+- D-16 was executed immediately as commit `39a1bf1` (the working tree already held the reformat); no remaining work for planning.

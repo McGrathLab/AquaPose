@@ -13,6 +13,7 @@ import numpy as np
 import yaml
 
 from aquapose.core.context import StaleCacheError, load_chunk_cache
+from aquapose.core.h5 import require_dataset
 from aquapose.core.pose.crop import extract_affine_crop
 from aquapose.core.reid.embedder import FishEmbedder
 
@@ -117,10 +118,10 @@ class EmbedRunner:
             return {}
 
         with h5py.File(pre_path, "r") as pre, h5py.File(post_path, "r") as post:
-            fid_pre = pre["midlines/fish_id"][:]
-            fid_post = post["midlines/fish_id"][:]
-            pts_pre = pre["midlines/points"][:]
-            pts_post = post["midlines/points"][:]
+            fid_pre = require_dataset(pre, "midlines/fish_id")[:]
+            fid_post = require_dataset(post, "midlines/fish_id")[:]
+            pts_pre = require_dataset(pre, "midlines/points")[:]
+            pts_post = require_dataset(post, "midlines/points")[:]
 
         mapping: dict[int, int] = {}
         n_frames = fid_pre.shape[0]

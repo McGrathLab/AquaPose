@@ -406,7 +406,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 - [x] **Phase 109: Correctness — Green Test Suite & Config Consolidation** - Fix the 8 failing tests, consolidate weights-path config, make the tutorial config platform-neutral (completed 2026-09-01)
 - [x] **Phase 110: API Reference & Docs Tiering** - Two-tier documentation IA distinguishing the core pipeline from research utilities; full API coverage for the 52 missing modules (completed 2026-09-01)
 - [x] **Phase 111: Example Dataset & Reference Outputs** - Package and deposit the Zenodo tutorial dataset with regenerated reference outputs (completed 2026-09-02)
-- [ ] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference
+- [x] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference (completed 2026-09-02)
 - [ ] **Phase 113: Concepts & Tutorial** - Install guide, concepts page, and end-to-end tutorial against the published dataset
 - [ ] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs
 
@@ -538,7 +538,7 @@ Plans:
 - [x] 112-01-PLAN.md — Wire the sphinx-click extension into the detached docs env (pyproject + conf.py), verify mock-import coverage of the CLI graph
 - [x] 112-02-PLAN.md — CLI Reference page (sphinx-click auto-render of all command groups + hand-authored worked examples) [DOCS-05]
 - [x] 112-03-PLAN.md — Config Reference page (Essential flat table + Advanced per-stage tiers, full ~86-field coverage) [DOCS-06]
-- [ ] 112-04-PLAN.md — Reference landing + toctree wiring, reciprocal API cross-links, sphinx-build -W green gate [DOCS-05/06]
+- [x] 112-04-PLAN.md — Reference landing + toctree wiring, reciprocal API cross-links, sphinx-build -W green gate [DOCS-05/06]
 
 ### Phase 113: Concepts & Tutorial
 
@@ -578,6 +578,6 @@ Plans:
 | 109. Correctness — Green Test Suite & Config Consolidation | 5/5 | Complete    | 2026-09-01 |
 | 110. API Reference & Docs Tiering | 3/3 | Complete    | 2026-09-01 |
 | 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
-| 112. Config & CLI Reference | 3/4 | In Progress|  |
+| 112. Config & CLI Reference | 4/4 | Complete   | 2026-09-02 |
 | 113. Concepts & Tutorial | 0/TBD | Not started | - |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

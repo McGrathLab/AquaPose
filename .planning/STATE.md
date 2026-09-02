@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-status: executing
-stopped_at: Phase 112 Plan 03 complete
-last_updated: "2026-09-01T00:00:00.000Z"
-last_activity: 2026-09-01
+status: verifying
+stopped_at: Phase 112 Plan 04 complete
+last_updated: "2026-09-02T01:45:47.182Z"
+last_activity: 2026-09-02
 progress:
   total_phases: 7
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 20
-  completed_plans: 19
-  percent: 57
+  completed_plans: 20
+  percent: 71
 ---
 
 # Project State
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 
 Phase: 112 (config-cli-reference) — EXECUTING
 Plan: 4 of 4
-Status: Ready to execute
-Last activity: 2026-09-01
+Status: Phase complete — ready for verification
+Last activity: 2026-09-02
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ Recent decisions affecting current work:
 - [Phase 109-04]: Corrected the 2 @slow re-ID end-to-end fixtures crop_size 32→224 to match the fixed-224 MegaDescriptor-T Swin contract (D-10, stale fixture not a regression); made the fixtures device-adaptive (cuda if available else cpu) — the hardcoded device="cpu" was the true cause of the ~2h runtime. Both slow tests verified green on GPU (~47m); slow suite green locally rather than deferred to CI
 - [Phase 109-05]: Terminal green gate — QA-01 LUT parity confirmed green (resolved not skipped, 1e-4/0.01 tolerances untouched; STATE-108's "8 failing" was the Linux/CI estimate); QA-02 both suites green locally (fast 1295 passed; slow 15 passed / 2 e2e data-skips); no skip/xfail added anywhere in the phase. Code review WR-01 (store-registration weights_path not as_posix()) fixed post-review for D-07 consistency; phase verified 8/8 must-haves
 - [Phase ?]: suppress_warnings=['ref.python'] in conf.py resolves cross-reference ambiguity from re-exported submodule symbols without relaxing -W
+- [Phase ?]: Reference section landing page wired into docs IA; reference/index placed above api/index (D-10); reciprocal :doc: cross-links added to api/cli.rst and api/engine.rst without modifying automodule blocks (D-13); build-green gate confirmed
 
 ### Pending Todos
 
@@ -90,7 +91,7 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Phase 112 Plan 03 complete
+Stopped at: Phase 112 Plan 04 complete
 Resume file: None
 
 ## Performance Metrics
@@ -100,3 +101,4 @@ Resume file: None
 | Phase 110 P01 | 10 | 2 tasks | 11 files |
 | Phase 110 P03 | 30m | 2 tasks | 9 files |
 | Phase 112 P03 | ~20m | 2 tasks | 1 file |
+| Phase 112 P04 | 5m | - tasks | - files |

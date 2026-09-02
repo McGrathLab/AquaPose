@@ -5,15 +5,15 @@ milestone_name: Publication
 current_phase: 113.1
 current_phase_name: Pre-Release Bug Fixes
 status: planned
-stopped_at: Completed 113.1-02-PLAN.md
-last_updated: "2026-09-02T20:42:43.103Z"
+stopped_at: Completed 113.1-03-PLAN.md
+last_updated: "2026-09-02T20:58:38.415Z"
 last_activity: 2026-09-02
 last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
 progress:
   total_phases: 9
   completed_phases: 5
   total_plans: 33
-  completed_plans: 28
+  completed_plans: 29
   percent: 56
 ---
 
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 113.1 (Pre-Release Bug Fixes) — PLANNED
-Plan: 2 of 6
+Plan: 3 of 6
 Status: Ready to execute — 6 plans in 3 waves
 Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 
@@ -53,6 +53,7 @@ Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 | Phase 113 P07 | ~14min | 2 tasks | 3 files |
 | Phase 113.1 P01 | 25min | 3 tasks | 2 files |
 | Phase 113.1 P02 | 15min | 3 tasks | 4 files |
+| Phase 113.1 P03 | ~25min | 3 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,8 @@ Recent decisions affecting current work:
 - [Phase ?]: Terminal-gate fixture uses a zigzag (both-axes) path rather than a straight diagonal, since a straight evenly-pixel-spaced line is invariant to the arc-length bug under any linear per-axis scaling
 - [Phase ?]: D-12: init_cmd writes int sentinel 0 with YAML comment; load_config guard type-checks (isinstance int, not bool) before comparing
 - [Phase ?]: D-13: init post-scaffold guidance leads with n_animals edit as step 1, renumbering prior three steps to 2-4
+- [Phase ?]: GUIDEBOOK section 6 corrected against build_stages()/_STAGE_OUTPUT_FIELDS directly (D-14); spline/t-range content relocated from the old Midline description to Stage 5 Reconstruction where _keypoints_to_midline actually implements it, not to Stage 2 Pose as the plan's action text suggested
+- [Phase ?]: Bounded GUIDEBOOK drift scan (sections 3,4,7,8,14) found 4 of 5 drifted -- filed one follow-up todo rather than fixing, per phase scope fence (D-03 discretion clause)
 
 ### Pending Todos
 
@@ -124,10 +127,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-02T20:42:43.091Z
+**Last session:** 2026-09-02T20:58:38.404Z
 
 Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.1-02-PLAN.md
+Stopped at: Completed 113.1-03-PLAN.md
 Resume file: None
 
 ## Performance Metrics

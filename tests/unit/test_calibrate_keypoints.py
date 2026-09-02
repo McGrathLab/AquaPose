@@ -176,6 +176,53 @@ class TestCalibrateKeypointsConfig:
         assert "pose" in updated
         assert "keypoint_t_values" in updated["pose"]
 
+    def test_null_pose_section_is_treated_as_missing(
+        self,
+        coco_annotations: Path,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """A `pose:` key present but with no mapping (YAML null) is handled.
+
+        `yaml.safe_load("pose:\\n")` parses to ``{"pose": None}`` -- the key
+        is present but its value is not a dict. This is what a config
+        scaffolded from a template with a bare `pose:` placeholder left in
+        place (or hand-edited to comment out the block's contents) produces.
+        The writer must treat this the same as a missing `pose:` key rather
+        than crashing with `TypeError: 'NoneType' object does not support
+        item assignment` when it tries `config_data["pose"][...] = ...`.
+        """
+        proj = tmp_path / "null_pose_project"
+        proj.mkdir()
+        (proj / "config.yaml").write_text(
+            yaml.dump(
+                {"project_dir": str(proj), "video_dir": "videos", "pose": None},
+                default_flow_style=False,
+            )
+        )
+        monkeypatch.setattr(
+            "aquapose.cli_utils.resolve_project",
+            lambda name: proj,
+        )
+
+        runner = CliRunner()
+        result = runner.invoke(
+            cli,
+            [
+                "--project",
+                "test",
+                "prep",
+                "calibrate-keypoints",
+                "--annotations",
+                str(coco_annotations),
+            ],
+        )
+        assert result.exit_code == 0, result.output
+
+        updated = yaml.safe_load((proj / "config.yaml").read_text())
+        assert "pose" in updated
+        assert "keypoint_t_values" in updated["pose"]
+
     def test_removes_stale_legacy_midline_keypoint_t_values(
         self,
         coco_annotations: Path,

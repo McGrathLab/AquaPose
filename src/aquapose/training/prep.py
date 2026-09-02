@@ -289,7 +289,7 @@ def calibrate_keypoints(ctx: click.Context, annotations: str, n_keypoints: int) 
     with config_path.open() as fh:
         config_data = yaml.safe_load(fh) or {}
 
-    if "pose" not in config_data:
+    if not isinstance(config_data.get("pose"), dict):
         config_data["pose"] = {}
     config_data["pose"]["keypoint_t_values"] = t_values_list
 

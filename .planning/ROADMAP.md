@@ -604,7 +604,7 @@ Plans:
 
 **Explicitly out of scope**: the Zenodo upload/DOI todo — it stays as the deferred plan `113-06-PLAN.md`, not folded in here.
 
-**Plans:** 5/7 plans executed (wave 1: 01-04 in parallel; wave 2: 06, 07; wave 3: 05)
+**Plans:** 6/7 plans executed (wave 1: 01-04 in parallel; wave 2: 06, 07; wave 3: 05)
 
 Plans:
 
@@ -618,7 +618,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [x] 113.1-06-PLAN.md — fix the suite's one standing failure: per-line OBB label assertion that also pins the consensus+gap merge (test-only; no `src/` change)
-- [ ] 113.1-07-PLAN.md — declare `pillow` as a real dependency; stop `CLAUDE.md` feeding the drifted GUIDEBOOK into planning
+- [x] 113.1-07-PLAN.md — declare `pillow` as a real dependency; stop `CLAUDE.md` feeding the drifted GUIDEBOOK into planning
 
 **Wave 3** *(blocked on Wave 2 completion)*
 

@@ -43,3 +43,16 @@ Found during Phase 113.1 (113.1-03, D-03) while verifying evidence for the
 LUT-generation todo's closure and cross-checking `prep.py`'s imports after
 113.1-01 added a third `PIL` import there (`_resolve_sibling_image`, D-08's
 arc-length fix).
+
+## Fixed
+
+Fixed in Phase 113.1, plan 07 (113.1-07). Added `"pillow>=10.0"` to
+`dependencies` in `pyproject.toml`. The floor was chosen above every real
+constraint rather than at the bare minimum: the code's own API floor is
+7.0.0 (`UnidentifiedImageError`, imported in `prep.py`), `ultralytics`
+declares `pillow>=7.1.2`, and `torchvision` declares
+`pillow!=8.3.*,>=5.3.0` (both read from installed package metadata via
+`importlib.metadata.requires(...)`, not assumed). The installed version in
+the working environment is 12.1.1, comfortably satisfying `>=10.0`.
+`hatch run lint` and `hatch run docs:build` both exit 0 with the new
+dependency declared; no `hatch env` command was run to verify resolution.

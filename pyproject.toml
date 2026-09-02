@@ -31,6 +31,7 @@ dependencies = [
     "scipy>=1.11",
     "scikit-image>=0.21",
     "h5py>=3.9",
+    "pillow>=10.0",
     "aquacal",
     "pycocotools>=2.0",
     "ultralytics>=8.0",

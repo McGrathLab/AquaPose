@@ -15,13 +15,29 @@ logger = logging.getLogger(__name__)
 
 
 class ReidConfigLike(Protocol):
-    """Structural protocol matching ReidConfig from engine.config."""
+    """Structural protocol matching ReidConfig from engine.config.
 
-    model_name: str
-    batch_size: int
-    crop_size: int
-    device: str
-    embedding_dim: int
+    Members are read-only properties rather than writable attributes because
+    ``FishEmbedder`` only ever reads them, and implementers (e.g. the frozen
+    dataclasses ``ReidConfig`` and ``_EmbedderConfig``) are immutable. A
+    writable-attribute protocol would reject frozen dataclasses even though
+    they satisfy every read the protocol's consumers perform.
+    """
+
+    @property
+    def model_name(self) -> str: ...
+
+    @property
+    def batch_size(self) -> int: ...
+
+    @property
+    def crop_size(self) -> int: ...
+
+    @property
+    def device(self) -> str: ...
+
+    @property
+    def embedding_dim(self) -> int: ...
 
 
 class FishEmbedder:

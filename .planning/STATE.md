@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-current_phase: 113
-current_phase_name: Concepts & Tutorial
-status: executing
-stopped_at: Completed 113-07-PLAN.md
-last_updated: "2026-09-02T14:04:34.293Z"
+current_phase: 113.1
+current_phase_name: Pre-Release Bug Fixes
+status: planned
+stopped_at: Phase 113 at 6/7 — 113-06 deferred, blocked on Phase 113.1
+last_updated: "2026-09-02T20:20:06.077Z"
 last_activity: 2026-09-02
-last_activity_desc: Phase 113 planning complete
+last_activity_desc: Phase 113.1 planned — 6 plans, 3 waves, checker passed
 progress:
-  total_phases: 7
+  total_phases: 9
   completed_phases: 5
-  total_plans: 27
+  total_plans: 33
   completed_plans: 26
-  percent: 71
+  percent: 56
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 113 — Concepts & Tutorial
+**Current focus:** Phase 113.1 — Pre-Release Bug Fixes (Phase 113 blocked at 6/7 on its two `calibrate-keypoints` bugs)
 
 ## Current Position
 
-Phase: 113 (Concepts & Tutorial) — EXECUTING
-Plan: 7 of 7
-Status: Ready to execute
-Last activity: 2026-09-02 — Phase 113 execution started
+Phase: 113.1 (Pre-Release Bug Fixes) — PLANNED
+Plan: 0 of 6
+Status: Ready to execute — 6 plans in 3 waves
+Last activity: 2026-09-02 — Phase 113.1 planned (6 plans, 3 waves)
 
 ## Performance Metrics
 
@@ -94,7 +94,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-12 pending todos — see .planning/todos/pending/ (review for relevance)
+17 pending todos — triaged 2026-09-02. 5 bugs scheduled into Phase 113.1, the basedpyright backlog into Phase 113.2; 2 stale ones to be filed to done/ by 113.1. The rest are features or non-critical refactors — see .planning/todos/pending/
 
 ### Blockers/Concerns
 
@@ -109,6 +109,11 @@ Recent decisions affecting current work:
 - Working branch is `dev` (fast-forwarded to `origin/dev`, 1494 commits ahead of `main`).
 - PROJECT.md, MILESTONES.md, config.json, GUIDEBOOK.md, and todos/ restored from `78d9b7a^` — the last commit before `.planning/` was untracked on `dev`.
 - Phase numbering continues from **108** through **114** for v4.0.
+
+### Roadmap Evolution
+
+- Phase 113.1 inserted after Phase 113: Pre-Release Bug Fixes: clear the verified bug backlog; blocks 113-06 DOI mint (URGENT)
+- Phase 113.2 inserted after Phase 113: Typecheck Backlog: 98 basedpyright errors to 0; blocks Phase 114 badge row (URGENT)
 
 ## Session Continuity
 

@@ -584,11 +584,12 @@ Plans:
 **Success Criteria** (what must be TRUE):
 
   1. `prep calibrate-keypoints` writes `keypoint_t_values` to the canonical `pose:` key, so a config that already carries `pose.keypoint_t_values` is actually updated rather than silently shadowed. Terminal gate: after running against such a config, `load_config(path).pose.keypoint_t_values` equals the newly computed values.
-  2. The YOLO annotation path measures arc length in pixel space, not normalized `[0,1]`, so t-values are unbiased on non-square (128×64) pose crops. Terminal gate: a synthetic 128×64 label set spaced evenly **in pixels** along a vertical or diagonal path yields `[0, 0.2, 0.4, 0.6, 0.8, 1.0]`. The shipped YH config, which carries the biased values, is recalibrated as part of this.
+  2. The YOLO annotation path measures arc length in pixel space, not normalized `[0,1]`, so t-values are unbiased on non-square (128×64) pose crops. Terminal gate: a synthetic 128×64 label set spaced evenly **in pixels** along a vertical or diagonal path yields `[0, 0.2, 0.4, 0.6, 0.8, 1.0]`. The corrected t-values for YH are recomputed on the 322-crop manual corpus and recorded for application; the production YH config carrying the biased values lives on the lab archive and is **not** reachable from this machine, so writing them there is handed off explicitly rather than claimed (CONTEXT D-11).
   3. `aquapose init` produces a config that fails with the intended `ValueError: n_animals is required and must be > 0`, not a `TypeError`, and the post-scaffold guidance names setting `n_animals` as a step.
   4. `GUIDEBOOK.md` §6 states the real stage order (Detection → Pose → Tracking → Association → Reconstruction) plus the 4-stage synthetic-mode variant, verified against `build_stages` rather than against other prose.
   5. `core/types/frame_source.py` no longer imports from `aquapose.io` at module level; `core/` imports only stdlib, third-party, and core internals at runtime.
   6. The two stale todos are filed to `.planning/todos/done/` with a note recording why (one obsolete, one already implemented).
+  7. `hatch run test` exits 0. The suite's one standing failure (`test_generates_merged_obb_and_separate_pose`) is a defect in the test's own assertion — a whole-file `.split()` collapsing a legitimate 2-line label file into 18 tokens — and is fixed test-only, with no `src/` change.
 
 **Scope** (all verified live against source on 2026-09-02):
 
@@ -601,15 +602,23 @@ Plans:
 
 **Explicitly out of scope**: the Zenodo upload/DOI todo — it stays as the deferred plan `113-06-PLAN.md`, not folded in here.
 
-**Plans:** 5 plans (wave 1: 01-04 in parallel; wave 2: 05)
+**Plans:** 6 plans (wave 1: 01-04 in parallel; wave 2: 06; wave 3: 05)
 
 Plans:
+**Wave 1**
 
 - [ ] 113.1-01-PLAN.md — `calibrate-keypoints`: canonical `pose:` key + pixel-space arc length, both terminal gates
 - [ ] 113.1-02-PLAN.md — `init` int `n_animals` sentinel, type-safe `load_config` guard, four-step guidance
 - [ ] 113.1-03-PLAN.md — GUIDEBOOK §6 corrected against `build_stages` + drift guard test + stale todos filed
 - [ ] 113.1-04-PLAN.md — `core/` import boundary closed (discovery relocated to Layer 1) + AST guard test
-- [ ] 113.1-05-PLAN.md — YH t-values recomputed on the 322-crop manual corpus, archive gap recorded, phase close-out
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 113.1-06-PLAN.md — fix the suite's one standing failure: per-line OBB label assertion that also pins the consensus+gap merge (test-only; no `src/` change)
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 113.1-05-PLAN.md — YH t-values recomputed on the 322-crop manual corpus, archive gap recorded, phase close-out against a green suite
 
 ### Phase 113.2: Typecheck Backlog (INSERTED)
 

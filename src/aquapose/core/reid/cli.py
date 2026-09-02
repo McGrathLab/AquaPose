@@ -576,6 +576,11 @@ def repair_cmd(
     cfg = SwapDetectorConfig(cosine_margin_threshold=cosine_margin)
     detector = SwapDetector(run_dir, config=cfg, projection_head_path=weights_path)
 
+    if mode not in ("seeded", "scan"):
+        raise click.BadParameter(
+            f"mode must be 'seeded' or 'scan', got {mode!r}", param_hint="'--mode'"
+        )
+
     click.echo(f"Running swap detection (mode={mode})...")
     events = detector.run(mode=mode)
 

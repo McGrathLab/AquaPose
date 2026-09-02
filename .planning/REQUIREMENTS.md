@@ -36,12 +36,12 @@ Prerequisites. These gate doc authoring and the badge row.
 - [ ] **DOCS-04**: A concepts page explains refractive projection, the `{p, ψ, κ, s}` state vector, and the five pipeline stages well enough that a reader understands what the pipeline computes before running it
 - [x] **DOCS-05**: Every CLI command group is documented with purpose, arguments, and a worked example
 - [x] **DOCS-06**: Every config field across the 9 dataclasses is documented with type, default, and effect, tiered so a tutorial user is not confronted with all 71 at once
-- [ ] **DOCS-07**: A tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step
+- [x] **DOCS-07**: A tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step
 - [ ] **DOCS-08**: Documentation builds green on Read the Docs from `dev` and is reachable at the URL declared in `pyproject.toml`
 
 ### Example Dataset
 
-- [ ] **DATA-01**: A reproducible script packages the tutorial deposit — temporal trim and re-encode across 12 cameras, assemble the tree, emit checksums — with no spatial downscaling
+- [x] **DATA-01**: A reproducible script packages the tutorial deposit — temporal trim and re-encode across 12 cameras, assemble the tree, emit checksums — with no spatial downscaling
 - [ ] **DATA-02**: Reference outputs (`outputs.h5`, animation, overlay mosaic, timing) are regenerated on `dev` with current production models, so the tutorial is verifiable against what the code actually produces
 - [ ] **DATA-03**: The dataset is deposited on Zenodo with a citable DOI, videos and calibration under CC-BY-4.0, and bundled model weights labeled separately as AGPL-derived artifacts
 
@@ -120,9 +120,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOCS-04 | 113 | Pending |
 | DOCS-05 | 112 | Complete |
 | DOCS-06 | 112 | Complete |
-| DOCS-07 | 113 | Pending |
+| DOCS-07 | 113 | Complete |
 | DOCS-08 | 114 | Pending |
-| DATA-01 | 111 | Pending |
+| DATA-01 | 111 | Complete |
 | DATA-02 | 111 | Pending |
 | DATA-03 | 111 | Pending |
 | README-01 | 114 | Pending |

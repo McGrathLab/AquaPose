@@ -36,6 +36,9 @@ resolves to the same object.
 
 <!-- version list -->
 
+## v1.2.0-dev.5 (2026-09-03)
+
+
 ## v1.2.0-dev.4 (2026-09-02)
 
 ### Bug Fixes

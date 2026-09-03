@@ -36,6 +36,119 @@ resolves to the same object.
 
 <!-- version list -->
 
+## v1.2.0-dev.4 (2026-09-02)
+
+### Bug Fixes
+
+- **113-01**: Drop cu121 wheel-index pin from default hatch env (D-08)
+  ([`07e27e6`](https://github.com/McGrathLab/AquaPose/commit/07e27e64c5d23cc9922906c3baec8bb86f18ac0c))
+
+- **113-02**: Apply stable atan2 angular-error formula to validate_forward_lut (D-18)
+  ([`ff8b0df`](https://github.com/McGrathLab/AquaPose/commit/ff8b0df9180da33541305aa0be0b117ef2d3db49))
+
+- **113-02**: Replace ill-conditioned acos angular-error metric in test_luts (D-17)
+  ([`01c60ae`](https://github.com/McGrathLab/AquaPose/commit/01c60ae8257a29c85728c342f0b0c978c630c9cb))
+
+- **113-03**: Correct deposit templates and lock with regression tests (D-05, D-06)
+  ([`13e5737`](https://github.com/McGrathLab/AquaPose/commit/13e573784b4d7730075b7e6736535da82541fc19))
+
+- **113-05**: Correct deposit LUT-generation timing claim after GPU verification run
+  ([`cdd7491`](https://github.com/McGrathLab/AquaPose/commit/cdd749175e84e61f1b6a49a33521879d1b6a2692))
+
+### Code Style
+
+- Apply ruff format to Phase 111 packaging script and tests
+  ([`39a1bf1`](https://github.com/McGrathLab/AquaPose/commit/39a1bf1a1abb04d9eadff52e03c5c493e0b2f05c))
+
+### Documentation
+
+- **113**: Add handoff for deferred Zenodo publish
+  ([`9a97a53`](https://github.com/McGrathLab/AquaPose/commit/9a97a532ed0a235ec68fa6418df96e863b280a96))
+
+- **113**: Add pattern map
+  ([`68ab734`](https://github.com/McGrathLab/AquaPose/commit/68ab734e2af12838a5518108ec3056dd69dcafb7))
+
+- **113**: Capture phase context
+  ([`804321c`](https://github.com/McGrathLab/AquaPose/commit/804321c40042d39545a753b75c53136048fd1dd5))
+
+- **113**: Correct D-20 smooth-z mechanics and document smoothed-viz path
+  ([`eac2132`](https://github.com/McGrathLab/AquaPose/commit/eac21320128e6d89e7b77f89aa71495649c54cd0))
+
+- **113**: Create phase plan — 7 plans in 4 waves
+  ([`6b998c4`](https://github.com/McGrathLab/AquaPose/commit/6b998c48f57cc4aca030ce62ce2120cf55556a81))
+
+- **113**: Defer Zenodo publish, rescope 113-07 to placeholder tutorial (D-21)
+  ([`3ca5388`](https://github.com/McGrathLab/AquaPose/commit/3ca538822628509639072f980a89c8c1ad4e8fe5))
+
+- **113**: Fold CI green-up into phase context (D-16..D-19)
+  ([`f872be5`](https://github.com/McGrathLab/AquaPose/commit/f872be523ce700fedf0b15fcc6c145fadbdada3f))
+
+- **113**: Fold smooth-z post-processing into tutorial and deposit recipe (D-20)
+  ([`097ab3b`](https://github.com/McGrathLab/AquaPose/commit/097ab3b5e655ed1c5c8406871d903b1b5672408c))
+
+- **113**: Record planning completion and roadmap wave annotations
+  ([`076c065`](https://github.com/McGrathLab/AquaPose/commit/076c065baff23edd9373bfe7c1721ce8ad5fea79))
+
+- **113-01**: Complete Getting Started install guide plan
+  ([`d6daf46`](https://github.com/McGrathLab/AquaPose/commit/d6daf460306da0dbaed2870cbfe64f8c84b6e2a2))
+
+- **113-02**: Add SUMMARY for CI green-up plan (D-17, D-18)
+  ([`7caea94`](https://github.com/McGrathLab/AquaPose/commit/7caea942b33a28e1ecc6c11270f6d11a0990aea6))
+
+- **113-02**: Complete CI green-up plan
+  ([`90fd48d`](https://github.com/McGrathLab/AquaPose/commit/90fd48df6a732d17259b5c8bd533d2bd50ef83b3))
+
+- **113-03**: Complete deposit doc corrections plan
+  ([`5fdbe3d`](https://github.com/McGrathLab/AquaPose/commit/5fdbe3db616c99045016cf643d64da3dd3b96b19))
+
+- **113-04**: Add plan summary
+  ([`5f8b5c8`](https://github.com/McGrathLab/AquaPose/commit/5f8b5c851c10fc6a40f0d13a3be8919a25301bd9))
+
+- **113-04**: Complete concepts page plan
+  ([`32db20c`](https://github.com/McGrathLab/AquaPose/commit/32db20c70b253f604e8516bbafe631b5cc91924f))
+
+- **113-04**: Log GUIDEBOOK.md and CLAUDE.md staleness found while writing concepts page
+  ([`1be04ba`](https://github.com/McGrathLab/AquaPose/commit/1be04ba1a76f668aedf905908e35b2ae9562d5c8))
+
+- **113-05**: Complete end-to-end deposit verification plan
+  ([`2ad21fa`](https://github.com/McGrathLab/AquaPose/commit/2ad21fa0ebee4e16b1a1bd638c95d55a3bedf3f4))
+
+- **113-05**: Record end-to-end deposit verification run summary
+  ([`7e08d8b`](https://github.com/McGrathLab/AquaPose/commit/7e08d8bfc6fe5971dad9eef4ddc194dd37a7d329))
+
+- **113-07**: Complete end-to-end tutorial plan
+  ([`5caa0d5`](https://github.com/McGrathLab/AquaPose/commit/5caa0d5297d1032f38abd78509982c318f79cecf))
+
+- **113-07**: Wire tutorial into Getting Started section, keep DOI todo open (D-21)
+  ([`7be960d`](https://github.com/McGrathLab/AquaPose/commit/7be960dce1fd11f4bab1902ca2077082e2644bba))
+
+- **state**: Record phase 113 context session
+  ([`b79833f`](https://github.com/McGrathLab/AquaPose/commit/b79833f02b9dee83a6812384ae260db22a8bdd22))
+
+- **todos**: Add post-init console guidance gap to n_animals todo
+  ([`214082e`](https://github.com/McGrathLab/AquaPose/commit/214082efa20db359ef48d0d42ca6bc91cd271b29))
+
+- **todos**: Queue init n_animals sentinel bug and GUIDEBOOK staleness
+  ([`91095cb`](https://github.com/McGrathLab/AquaPose/commit/91095cb28218ef433e19b18ce94b5eaab94dcc61))
+
+### Features
+
+- **113-01**: Add Getting Started docs section with install guide
+  ([`bb4f325`](https://github.com/McGrathLab/AquaPose/commit/bb4f325a229a7c6e8844faa5cbf96bb9ea8d384c))
+
+- **113-04**: Author the concepts page (DOCS-04)
+  ([`859ab8b`](https://github.com/McGrathLab/AquaPose/commit/859ab8be5ad333111afd608adae8bc37fd4bb22b))
+
+- **113-04**: Wire concepts page into Getting Started index; fix CLAUDE.md state vector
+  ([`28810ce`](https://github.com/McGrathLab/AquaPose/commit/28810ce73dde389aaa732cbfdea9dfd4f0e48e45))
+
+- **113-07**: Author end-to-end tutorial against verified deposit (D-11..D-15, D-20, D-21)
+  ([`e5a79e9`](https://github.com/McGrathLab/AquaPose/commit/e5a79e94886d413650839cbc320d95dace49d322))
+
+- **scripts**: Add ID mosaic and swap event visualization tools
+  ([`0b9568e`](https://github.com/McGrathLab/AquaPose/commit/0b9568e6400eda7e32571a577f0f83920418253e))
+
+
 ## v1.2.0-dev.3 (2026-09-02)
 
 ### Bug Fixes

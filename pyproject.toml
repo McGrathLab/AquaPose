@@ -34,7 +34,11 @@ dependencies = [
     "pillow>=10.0",
     "aquacal",
     "pycocotools>=2.0",
-    "ultralytics>=8.0",
+    # Upper bound, not an exact pin: this ships to users. 8.4.138 changed
+    # Model.predict() annotations to include Iterator[...], which the
+    # typecheck gate rejects against our call sites. Raise the ceiling only
+    # together with a typecheck run.
+    "ultralytics>=8.0,<=8.4.28",
     "plotly>=5.18",
     "click>=8.1",
     "igraph>=0.11",
@@ -66,7 +70,11 @@ dependencies = [
     "pytest-cov",
     "ruff",
     "pre-commit",
-    "basedpyright",
+    # Pinned exactly: basedpyright IS the typecheck gate, so a floating
+    # version means local and CI can disagree about what "0 errors" means.
+    # CI resolved 1.39.10 against local 1.38.4 and reported 6 errors local did
+    # not (see .planning/phases/113.2-typecheck-backlog/). Bump deliberately.
+    "basedpyright==1.38.4",
 ]
 
 [tool.hatch.envs.default.scripts]

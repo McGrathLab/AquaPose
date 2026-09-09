@@ -5,7 +5,7 @@ milestone_name: Publication
 current_phase: 113.2
 current_phase_name: Typecheck Backlog
 status: executing
-stopped_at: All 6 plans executed — awaiting phase verification (/gsd:verify-phase)
+stopped_at: All 6 plans executed — awaiting phase verification (gsd-verifier agent)
 last_updated: "2026-09-09T00:00:00.000Z"
 last_activity: 2026-09-09
 last_activity_desc: Phase 113.2 plans 1-6 executed — typecheck 98 -> 0, CI typecheck job green on dev; awaiting phase verification
@@ -30,7 +30,7 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 
 Phase: 113.2 (Typecheck Backlog) — EXECUTED, AWAITING VERIFICATION
 Plan: 6 of 6
-Status: All 6 plans complete — `hatch run typecheck` 0 errors, CI `typecheck` job green on `dev` (run 33703999565). Run `/gsd:verify-phase` to close the phase.
+Status: All 6 plans complete — `hatch run typecheck` 0 errors, CI `typecheck` job green on `dev` (run 33703999565). Awaiting a gsd-verifier pass to close the phase.
 Last activity: 2026-09-09 — 113.2-06 SUMMARY written, QA-06 marked complete, bookkeeping reconciled
 
 ## Performance Metrics

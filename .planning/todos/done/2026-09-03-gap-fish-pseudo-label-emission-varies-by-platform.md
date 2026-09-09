@@ -95,3 +95,57 @@ here rather than pinned over.
 
 Worth stating plainly: the over-strict assertion is what exposed this. The
 platform variance predates it and would still be unknown without it.
+
+## Resolved
+
+**Date:** 2026-09-09
+**Resolved by:** Quick task `260909-lkw` (`260909-lkw-PLAN.md`).
+**Evidence:** The title of this todo is inaccurate — there is no platform- or
+version-dependent production behavior. The real cause and disproving evidence:
+
+1. **The real cause:** the test selected an OBB label file via an unordered
+   `list((pseudo_dir / "obb" / "labels" / "train").glob("*.txt"))[0]`. Labels
+   are written one file per (frame, camera) named `{frame:06d}_{cam_id}.txt`
+   (`pseudo_label_cli.py:462,479`). Gaps were mocked for `cam1` only
+   (`mock_detect_gaps.return_value = [("cam1", "no-detection")]`), so the run
+   deterministically produces `000000_cam0.txt` (1 line, consensus only) and
+   `000000_cam1.txt` (2 lines, consensus+gap) — and equivalently for frame 1.
+   `Path.glob` does not sort; `[0]` returns whichever entry the filesystem
+   yields first — alphabetical on NTFS (always a `cam0` file), hash-seeded and
+   effectively arbitrary on ext4. That is the entire "platform variance":
+   which file `[0]` happened to pick, not what the production code emitted.
+
+2. **Evidence disproving the original diagnosis:**
+   - The CI failure text quoted in the Problem section above shows the
+     surviving line as `0.0 0.233333 ...` — the CONSENSUS line. The mocked gap
+     line is `0 0.1 0.2 0.3 ...` — a different leading token and different
+     numbers. CI was reading a `cam0` file the whole time, which never
+     contains a gap line on any platform. Nothing was dropped.
+   - `frame_tracklet_index` is empty in this test, so
+     `_count_detected_tracklets` returns 0 and the completeness filter at
+     `pseudo_label_cli.py:467-480` (`n_labeled < n_tracked`) is disabled
+     outright. It could not have fired, so investigation starting point 2
+     above is a dead end for this test.
+   - Investigation starting point 4 ("Python 3.11 vs 3.12 on ubuntu is the
+     cleanest discriminator") was a red herring: ext4 htree directory
+     ordering depends on a per-directory hash seed and varies run to run, not
+     by interpreter version. The CI matrix result was noise from an unordered
+     `glob()[0]`, not a real interpreter-version effect.
+
+3. **Non-defect note:** the production emission path in
+   `src/aquapose/training/pseudo_label_cli.py` was not found to be defective.
+   No ordering, hash, or platform dependency was demonstrated there, and no
+   file under `src/` was changed to resolve this todo. This
+   todo's original title and Problem section should not be read as evidence
+   of a live production bug — nobody should re-open a hunt for an ordering
+   bug in `pseudo_label_cli.py` on the strength of this record.
+
+4. **The fix that landed:** `test_generates_merged_obb_and_separate_pose`
+   (`tests/unit/training/test_pseudo_label_cli.py`) now asserts against named
+   files instead of `glob(...)[0]`: `000000_cam1.txt` has exactly 2 lines,
+   `000000_cam0.txt` has exactly 1 line, and every line in both files has
+   exactly 9 whitespace-separated tokens. This is strictly stronger than both
+   the Phase 113.1-06 `assert len(lines) == 2` pin (which only ever checked
+   whichever file `[0]` selected) and the Phase 113.2 `assert len(lines) >= 1`
+   relaxation, and it is deterministic on every platform because file
+   selection no longer depends on filesystem iteration order.

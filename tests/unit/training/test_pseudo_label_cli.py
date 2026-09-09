@@ -343,33 +343,40 @@ class TestGenerateCommand:
         assert (pseudo_dir / "pose" / "consensus" / "confidence.json").exists()
         assert (pseudo_dir / "pose" / "gap" / "confidence.json").exists()
 
-        # Check OBB label files exist
-        obb_labels = list((pseudo_dir / "obb" / "labels" / "train").glob("*.txt"))
-        assert len(obb_labels) > 0
+        # Check OBB label content. Labels are written one file per
+        # (frame, camera) named `{frame:06d}_{cam_id}.txt`. Gaps were mocked
+        # for `cam1` only (`mock_detect_gaps.return_value =
+        # [("cam1", "no-detection")]`), so `cam1` files carry the merged
+        # consensus+gap pair (2 lines) and `cam0` files carry consensus alone
+        # (1 line). Files are addressed by name rather than via
+        # `glob(...)[0]` because `Path.glob` is unordered — that unordered
+        # selection is what previously made this assertion appear
+        # platform-dependent.
+        obb_labels_dir = pseudo_dir / "obb" / "labels" / "train"
+        cam1_lines = (
+            (obb_labels_dir / "000000_cam1.txt").read_text().strip().splitlines()
+        )
+        assert len(cam1_lines) == 2, (
+            f"Expected consensus+gap pair (2 lines) in 000000_cam1.txt, "
+            f"got: {cam1_lines!r}"
+        )
+        cam0_lines = (
+            (obb_labels_dir / "000000_cam0.txt").read_text().strip().splitlines()
+        )
+        assert len(cam0_lines) == 1, (
+            f"Expected consensus only (1 line) in 000000_cam0.txt, got: {cam0_lines!r}"
+        )
 
-        # Check OBB label content format. Each object is one line; the file
-        # may hold a consensus-fish OBB and, when the gap path fires, a
-        # gap-fish OBB injected via
-        # `mock_detect_gaps.return_value = [("cam1", "no-detection")]`.
-        #
-        # The exact line COUNT is deliberately not asserted. It is
-        # environment-dependent: CI produces 2 lines on ubuntu 3.12/3.13 but
-        # only 1 (consensus, no gap) on ubuntu 3.11 and on Windows. That
-        # variance is a real finding tracked by
-        # `.planning/todos/pending/2026-09-03-gap-fish-pseudo-label-emission-varies-by-platform.md`
-        # and must be diagnosed rather than pinned over here. What this test
-        # owns is the per-line FORMAT, which is invariant: the original defect
-        # was a whole-file `.split()` collapsing a multi-line file into one
-        # token list.
-        label_content = obb_labels[0].read_text().strip()
-        lines = label_content.splitlines()
-        assert len(lines) >= 1, f"Expected at least one OBB line, got: {lines!r}"
-        for line in lines:
-            parts = line.split()
-            assert len(parts) == 9, (  # cls + 4 corners x 2
-                f"Expected 9 whitespace-separated tokens, got {len(parts)} "
-                f"in line: {line!r}"
-            )
+        # Check per-line format: cls + 4 corners x 2 = 9 tokens. Guards
+        # against the original defect where a whole-file `.split()` collapsed
+        # a multi-line file into one 18-token list.
+        for lines in (cam1_lines, cam0_lines):
+            for line in lines:
+                parts = line.split()
+                assert len(parts) == 9, (  # cls + 4 corners x 2
+                    f"Expected 9 whitespace-separated tokens, got {len(parts)} "
+                    f"in line: {line!r}"
+                )
 
         # Check pose files have fish-index suffix pattern (crop-based)
         pose_images = list(

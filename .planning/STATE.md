@@ -149,12 +149,18 @@ Recent decisions affecting current work:
 - Phase 113.1 inserted after Phase 113: Pre-Release Bug Fixes: clear the verified bug backlog; blocks 113-06 DOI mint (URGENT)
 - Phase 113.2 inserted after Phase 113: Typecheck Backlog: 98 basedpyright errors to 0; blocks Phase 114 badge row (URGENT)
 
+## Quick Tasks Completed
+
+| ID | Task | Date | Result |
+|----|------|------|--------|
+| 260909-lkw | Fix gap-fish pseudo-label test defect; correct the filed todo's diagnosis | 2026-09-09 | Complete — `glob()[0]` replaced with named-file assertions (`000000_cam1.txt` == 2 lines, `000000_cam0.txt` == 1); todo resolved as a test defect, not the platform-variance production bug it was filed as. No `src/` change. |
+
 ## Session Continuity
 
-**Last session:** 2026-09-02T23:28:25.477Z
+**Last session:** 2026-09-09T19:31:59.381Z
 
-Last activity: 2026-09-01 — Phase 112 Plan 03 complete: config reference page authored with all 86 leaf fields covered (Essential + Advanced tiers), MISSING=[]
-Stopped at: Completed 113.2-05-PLAN.md
+Last activity: 2026-09-09 — Phases 113 and 113.2 both closed; quick task 260909-lkw fixed the gap-fish test defect
+Stopped at: Phase 114 (Publication) is next and unblocked — real DOI to cite, green CI typecheck job to badge
 Resume file: None
 
 ## Performance Metrics
@@ -165,3 +171,4 @@ Resume file: None
 | Phase 110 P03 | 30m | 2 tasks | 9 files |
 | Phase 112 P03 | ~20m | 2 tasks | 1 file |
 | Phase 112 P04 | 5m | - tasks | - files |
+| Quick 260909-lkw | 4m | 2 tasks | 2 files |

@@ -409,7 +409,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 - [x] **Phase 112: Config & CLI Reference** - CLI command reference and the 71-field config reference (completed 2026-09-02)
 - [ ] **Phase 113: Concepts & Tutorial** - Install guide, concepts page, and end-to-end tutorial against the published dataset
 - [x] **Phase 113.1: Pre-Release Bug Fixes** (INSERTED) - Clear the verified bug backlog before the release is cut: both `calibrate-keypoints` defects (which block the DOI mint), the `init` n_animals sentinel, the stale GUIDEBOOK stage order, and the `core/` import boundary violation (completed 2026-09-02)
-- [ ] **Phase 113.2: Typecheck Backlog** (INSERTED) - Bring `hatch run typecheck` from 98 errors to 0 so the CI typecheck job passes and Phase 114's badge row is honest
+- [x] **Phase 113.2: Typecheck Backlog** (INSERTED) - Bring `hatch run typecheck` from 98 errors to 0 so the CI typecheck job passes and Phase 114's badge row is honest (completed 2026-09-03, verified 2026-09-09)
 - [ ] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs
 
 ## Phase Details
@@ -689,4 +689,6 @@ Plans:
 | 111. Example Dataset & Reference Outputs | 3/3 | Complete   | 2026-09-02 |
 | 112. Config & CLI Reference | 4/4 | Complete    | 2026-09-02 |
 | 113. Concepts & Tutorial | 6/7 | In Progress|  |
+| 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
+| 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
 | 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |

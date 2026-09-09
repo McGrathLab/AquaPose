@@ -675,7 +675,31 @@ Plans:
   4. Install, quick start against the Zenodo dataset, docs link, and a citation block with the DOI are all present and correct
   5. Documentation builds green on Read the Docs from `dev` and is reachable at the URL declared in `pyproject.toml`
 
-**Plans**: TBD
+**Plans**: 7 plans in 5 waves
+
+Plans:
+
+**Wave 1** *(parallel — no file overlap)*
+
+- [ ] 114-01-PLAN.md — D-13 URL hygiene (`CODE_OF_CONDUCT.md`, `docs/contributing.md`) and README-03 deferral bookkeeping (REQUIREMENTS + ROADMAP annotation + backlog todo)
+- [ ] 114-02-PLAN.md — Activate Read the Docs from `dev` (DOCS-08) and confirm the Codecov project link; record every badge/funnel URL as verified
+- [ ] 114-03-PLAN.md — Version reset to `4.0.0` (D-01), CHANGELOG migration note, and `CITATION.cff` Pass A with no `doi` key (D-11)
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 114-04-PLAN.md — Rewrite `README.md` as the D-12 landing page with the six-badge row; verify the docs already cover the removed Development and GPU sections
+
+**Wave 3** *(blocked on Wave 2)*
+
+- [ ] 114-05-PLAN.md — Release preconditions: PyPI **and TestPyPI** trusted publishing (the retained `needs: publish-testpypi` gate), both GitHub environments, the Zenodo webhook, and the pre-tag local build/`twine check`/clean-install verification
+
+**Wave 4** *(blocked on Wave 3)*
+
+- [ ] 114-06-PLAN.md — Cut `v4.0.0`: branch decision, tag push (fires `publish.yml`), GitHub Release (fires Zenodo), and post-publish verification of PyPI, badges, and both DOIs
+
+**Wave 5** *(blocked on Wave 4)*
+
+- [ ] 114-07-PLAN.md — Pass B: backfill the Zenodo software **concept** DOI into `CITATION.cff` and the seventh badge, then the phase-closing identifier map and evidence tables
 
 ## Progress
 
@@ -691,4 +715,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 0/TBD | Not started | - |
+| 114. Publication — README, Badges, Live Docs | 0/7 | Planned | - |

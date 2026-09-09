@@ -5,16 +5,16 @@ milestone_name: Publication
 current_phase: 113.2
 current_phase_name: Typecheck Backlog
 status: complete
-stopped_at: Phase 113.2 complete — verification passed 12/12, three escalations resolved
+stopped_at: Phases 113 and 113.2 both closed — Phase 114 is next and unblocked
 last_updated: "2026-09-09T00:00:00.000Z"
 last_activity: 2026-09-09
-last_activity_desc: Phase 113.2 complete — 6 plans, verification passed 12/12, typecheck 98 -> 0, CI typecheck job green on dev
+last_activity_desc: Phase 113 plan 06 closed — Zenodo DOI 10.5281/zenodo.22264079 published and filled in repo-wide; DATA-03 complete
 progress:
   total_phases: 9
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 40
-  completed_plans: 39
-  percent: 78
+  completed_plans: 40
+  percent: 89
 ---
 
 # Project State
@@ -24,14 +24,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 114 — Publication (README, badges, hero media, citation, live docs). Phase 113.2 is complete; its green CI typecheck job is what makes README-02's badge row honest. Phase 113 remains open at 6/7 (113-06, the Zenodo DOI mint).
+**Current focus:** Phase 114 — Publication (README, badges, hero media, citation, live docs). Every dependency is now clear: Phase 113.2's green CI typecheck job makes the badge row honest, and Phase 113's Zenodo mint (10.5281/zenodo.22264079) gives the citation block a real DOI.
 
 ## Current Position
 
 Phase: 113.2 (Typecheck Backlog) — COMPLETE
 Plan: 6 of 6
 Status: Complete — verification passed (12/12 must-haves), `hatch run typecheck` 0 errors under the pinned checker, CI `typecheck` job green on `dev` (run 33703999565). Both gate-letter deviations accepted by the developer; 113.1 not re-opened.
-Last activity: 2026-09-09 — Phase 113.2 verified and closed
+Last activity: 2026-09-09 — Phase 113 closed out: Zenodo DOI filled in repo-wide, 113-06 summary written
 
 ## Performance Metrics
 

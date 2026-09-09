@@ -36,18 +36,19 @@ for MP4 export in step 5).
 
 ## 2. Get the dataset
 
-:::{note}
-The dataset archive is being prepared for publication on Zenodo. The DOI and
-a public download link will be added at every site marked below, in place of
-this note, once the record is live.
-:::
+The dataset is published on Zenodo as
+[**10.5281/zenodo.22264079**](https://zenodo.org/records/22264079).
+Download the archive (~206 MB) and extract it:
 
-<!-- ZENODO-DOI-PENDING -->
+```bash
+curl -L -o aquapose-tutorial-data.zip \
+  https://zenodo.org/records/22264079/files/aquapose-tutorial-data.zip
+unzip aquapose-tutorial-data.zip
+```
 
-Once published, the archive will be a single download that extracts to a
-directory named `aquapose-tutorial-data/` — that directory name is stable
-across publication and is what every command on this page assumes. After
-extracting it, verify the download before doing anything else:
+The archive extracts to a directory named `aquapose-tutorial-data/` — that
+directory name is what every command on this page assumes. After extracting,
+verify the download before doing anything else:
 
 ```bash
 cd aquapose-tutorial-data
@@ -57,6 +58,10 @@ sha256sum -c checksums.sha256
 All 22 files should report `OK`. If any file fails, re-download rather than
 proceeding — a corrupted video or model file fails confusingly deep into the
 pipeline rather than up front.
+
+The manifest lists every file in the archive except itself. The table below
+groups them; `zenodo-metadata.json`, also covered by the manifest, is deposit
+metadata rather than tutorial input.
 
 The archive contains:
 
@@ -70,26 +75,23 @@ The archive contains:
 | `reference_outputs/` | Pre-computed outputs for comparison |
 | `checksums.sha256` | This SHA-256 manifest |
 
-**Citation.** Once published, cite the dataset with:
+**Citation.** Cite the dataset with:
 
 ```bibtex
 @dataset{lancaster_aquapose_yh_tutorial_2026,
   title   = {AquaPose YH Tutorial Dataset},
   author  = {Lancaster, Tucker},
   year    = {2026},
-  doi     = {<!-- ZENODO-DOI-PENDING -->},
+  doi     = {10.5281/zenodo.22264079},
   license = {CC-BY-4.0 (data), AGPL-3.0 (models)},
 }
 ```
 
-The entry becomes citable once the record is published and the `doi` field
-above is filled in.
-
-**If you need the data today.** This page is being used before the archive
-is public. In the interim, the deposit can be obtained directly from the
-AquaPose maintainers — it is not yet available at a public URL, so no link is
-given here; ask the maintainers for the current tutorial dataset and they
-will provide it directly.
+That is the *version* DOI, which always resolves to the exact files this
+tutorial was verified against — cite it when reproducing these results. The
+concept DOI [10.5281/zenodo.22264078](https://doi.org/10.5281/zenodo.22264078) resolves
+to the latest version instead, and is the right one to cite when you mean the
+dataset in general rather than this specific snapshot.
 
 ## 3. Generate the refractive lookup tables
 

@@ -45,7 +45,7 @@ Prerequisites. These gate doc authoring and the badge row.
 
 - [x] **DATA-01**: A reproducible script packages the tutorial deposit — temporal trim and re-encode across 12 cameras, assemble the tree, emit checksums — with no spatial downscaling
 - [ ] **DATA-02**: Reference outputs (`outputs.h5`, animation, overlay mosaic, timing) are regenerated on `dev` with current production models, so the tutorial is verifiable against what the code actually produces
-- [ ] **DATA-03**: The dataset is deposited on Zenodo with a citable DOI, videos and calibration under CC-BY-4.0, and bundled model weights labeled separately as AGPL-derived artifacts
+- [x] **DATA-03**: The dataset is deposited on Zenodo with a citable DOI, videos and calibration under CC-BY-4.0, and bundled model weights labeled separately as AGPL-derived artifacts
 
 ### README
 
@@ -124,11 +124,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOCS-04 | 113 | Complete |
 | DOCS-05 | 112 | Complete |
 | DOCS-06 | 112 | Complete |
-| DOCS-07 | 113 | Complete |
+| DOCS-07 | 113 | Complete (the "published dataset" wording became literally true on 2026-09-03; the 113 handoff's open question is resolved by publication, not by a judgment call) |
 | DOCS-08 | 114 | Pending |
 | DATA-01 | 111 | Complete |
 | DATA-02 | 111 | Pending |
-| DATA-03 | 111 | Pending |
+| DATA-03 | 111, 113 | Complete (Zenodo record 10.5281/zenodo.22264079, published 2026-09-03) |
 | README-01 | 114 | Pending |
 | README-02 | 114 | Pending |
 | README-03 | 114 | Pending |

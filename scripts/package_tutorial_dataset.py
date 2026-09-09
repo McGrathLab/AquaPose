@@ -631,7 +631,7 @@ When using the videos or calibration data, please cite the Zenodo DOI (see below
   title   = {AquaPose YH Tutorial Dataset},
   author  = {Lancaster, Tucker},
   year    = {2026},
-  doi     = {<DOI filled after upload>},
+  doi     = {10.5281/zenodo.22264079},
   license = {CC-BY-4.0 (data), AGPL-3.0 (models)},
 }
 ```

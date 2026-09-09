@@ -2,13 +2,10 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-current_phase: 113.2
-current_phase_name: Typecheck Backlog
-status: complete
-stopped_at: Phases 113 and 113.2 both closed — Phase 114 is next and unblocked
-last_updated: "2026-09-09T00:00:00.000Z"
-last_activity: 2026-09-09
-last_activity_desc: Phase 113 plan 06 closed — Zenodo DOI 10.5281/zenodo.22264079 published and filled in repo-wide; DATA-03 complete
+status: verifying
+stopped_at: Phase 114 context gathered
+last_updated: "2026-09-09T20:28:53.838Z"
+last_activity: "2026-09-09 — Phase 113 closed out: Zenodo DOI filled in repo-wide, 113-06 summary written"
 progress:
   total_phases: 9
   completed_phases: 8
@@ -157,11 +154,11 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-09T19:31:59.381Z
+**Last session:** 2026-09-09T20:28:53.827Z
 
 Last activity: 2026-09-09 — Phases 113 and 113.2 both closed; quick task 260909-lkw fixed the gap-fish test defect
-Stopped at: Phase 114 (Publication) is next and unblocked — real DOI to cite, green CI typecheck job to badge
-Resume file: None
+Stopped at: Phase 114 context gathered
+Resume file: .planning/phases/114-publication-readme-badges-live-docs/114-CONTEXT.md
 
 ## Performance Metrics
 

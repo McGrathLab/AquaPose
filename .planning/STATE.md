@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-status: verifying
+status: executing
 stopped_at: Phase 114 context gathered
-last_updated: "2026-09-09T20:28:53.838Z"
-last_activity: "2026-09-09 — Phase 113 closed out: Zenodo DOI filled in repo-wide, 113-06 summary written"
+last_updated: "2026-09-09T21:07:21.264Z"
+last_activity: 2026-09-09 -- Phase 114 planning complete
 progress:
   total_phases: 9
   completed_phases: 8
-  total_plans: 40
+  total_plans: 47
   completed_plans: 40
-  percent: 89
+  percent: 85
 ---
 
 # Project State
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 
 Phase: 113.2 (Typecheck Backlog) — COMPLETE
 Plan: 6 of 6
-Status: Complete — verification passed (12/12 must-haves), `hatch run typecheck` 0 errors under the pinned checker, CI `typecheck` job green on `dev` (run 33703999565). Both gate-letter deviations accepted by the developer; 113.1 not re-opened.
-Last activity: 2026-09-09 — Phase 113 closed out: Zenodo DOI filled in repo-wide, 113-06 summary written
+Status: Ready to execute
+Last activity: 2026-09-09 -- Phase 114 planning complete
 
 ## Performance Metrics
 

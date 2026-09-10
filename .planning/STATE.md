@@ -4,14 +4,14 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 114 context gathered
-last_updated: "2026-09-10T12:42:26.021Z"
-last_activity: 2026-09-10 -- Phase 114 execution started
+last_updated: "2026-09-10T13:16:46.554Z"
+last_activity: 2026-09-10
 progress:
   total_phases: 9
   completed_phases: 8
   total_plans: 47
-  completed_plans: 40
-  percent: 85
+  completed_plans: 44
+  percent: 89
 ---
 
 # Project State
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 114 (publication-readme-badges-live-docs) — EXECUTING
-Plan: 1 of 7
-Status: Executing Phase 114
-Last activity: 2026-09-10 -- Phase 114 execution started
+Plan: 2 of 7
+Status: Ready to execute
+Last activity: 2026-09-10
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Last activity: 2026-09-10 -- Phase 114 execution started
 | Phase 113.2 P04 | 9min | 2 tasks | 2 files |
 | Phase 113.2 P05 | 3min | 2 tasks | 1 files |
 | Phase 113.2 P06 | ~2h | 3 tasks | 6 files |
+| Phase 114 P04 | ~20m | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -122,6 +123,7 @@ Recent decisions affecting current work:
 - [Phase ?]: runner.py: used slash-path require_dataset form directly (4 calls), left pre-existing cast() block untouched
 - [Phase ?]: stitching.py: converted midlines-group read + frame_index read only; left grp/fish_id_ds cast() as lower-risk default, kept unreachable 'points is None' guard per D-06
 - [Phase ?]: Line-310 reportOptionalMemberAccess in swap_detector.py verdict: narrowing artifact (Any-typed .npz load assigned to declared-optional attribute), not a live defect — fixed via locally-annotated concrete NDArray bindings, no todo filed
+- [Phase ?]: README docs/badge targets use main/latest, not dev (D-07 override from 114-02, applied in 114-04)
 
 ### Pending Todos
 
@@ -154,11 +156,11 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-09T20:28:53.827Z
+**Last session:** 2026-09-10T13:16:37.197Z
 
 Last activity: 2026-09-09 — Phases 113 and 113.2 both closed; quick task 260909-lkw fixed the gap-fish test defect
 Stopped at: Phase 114 context gathered
-Resume file: .planning/phases/114-publication-readme-badges-live-docs/114-CONTEXT.md
+Resume file: None
 
 ## Performance Metrics
 

@@ -688,7 +688,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 114-04-PLAN.md — Rewrite `README.md` as the D-12 landing page with the six-badge row; verify the docs already cover the removed Development and GPU sections
+- [x] 114-04-PLAN.md — Rewrite `README.md` as the D-12 landing page with the six-badge row; verify the docs already cover the removed Development and GPU sections
 
 **Wave 3** *(blocked on Wave 2)*
 
@@ -716,4 +716,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 3/7 | In Progress|  |
+| 114. Publication — README, Badges, Live Docs | 4/7 | In Progress|  |

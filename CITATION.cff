@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: AquaPose
+abstract: >-
+  AquaPose reconstructs fish 3D midlines from multi-view pose/segmentation
+  data using a refractive multi-view triangulation pipeline, targeting
+  12-camera aquarium rigs with refractive calibration for behavioral
+  neuroscience research.
+authors:
+  - family-names: Lancaster
+    given-names: Tucker
+    affiliation: McGrath Lab, Georgia Institute of Technology
+version: 4.0.0
+date-released: "2026-09-10"
+url: "https://github.com/McGrathLab/AquaPose"
+repository-code: "https://github.com/McGrathLab/AquaPose"
+license: AGPL-3.0-or-later
+keywords:
+  - pose-estimation
+  - 3d-reconstruction
+  - computer-vision
+  - pytorch
+  - differentiable-rendering
+  - fish
+  - behavioral-neuroscience

@@ -41,11 +41,11 @@ PyTorch is not pinned by this install; see the
 page for the platform-specific PyTorch step before running the pipeline.
 
 ```bash
-# Initialize a project
-aquapose init-config my_project
+# Scaffold a project under ~/aquapose/projects/my_project
+aquapose init my_project
 
-# Run the pipeline
-aquapose run --config path/to/config.yaml
+# Run the pipeline against it
+aquapose -p my_project run
 ```
 
 To see it run end to end against real data, follow the

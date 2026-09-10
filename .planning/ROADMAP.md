@@ -682,9 +682,9 @@ Plans:
 
 **Wave 1** *(parallel — no file overlap)*
 
-- [ ] 114-01-PLAN.md — D-13 URL hygiene (`CODE_OF_CONDUCT.md`, `docs/contributing.md`) and README-03 deferral bookkeeping (REQUIREMENTS + ROADMAP annotation + backlog todo)
+- [x] 114-01-PLAN.md — D-13 URL hygiene (`CODE_OF_CONDUCT.md`, `docs/contributing.md`) and README-03 deferral bookkeeping (REQUIREMENTS + ROADMAP annotation + backlog todo)
 - [ ] 114-02-PLAN.md — Activate Read the Docs from `dev` (DOCS-08) and confirm the Codecov project link; record every badge/funnel URL as verified
-- [ ] 114-03-PLAN.md — Version reset to `4.0.0` (D-01), CHANGELOG migration note, and `CITATION.cff` Pass A with no `doi` key (D-11)
+- [x] 114-03-PLAN.md — Version reset to `4.0.0` (D-01), CHANGELOG migration note, and `CITATION.cff` Pass A with no `doi` key (D-11)
 
 **Wave 2** *(blocked on Wave 1)*
 
@@ -716,4 +716,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 0/7 | Planned | - |
+| 114. Publication — README, Badges, Live Docs | 2/7 | In Progress|  |

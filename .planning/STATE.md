@@ -4,8 +4,8 @@ milestone: v4.0
 milestone_name: Publication
 status: executing
 stopped_at: Phase 114 context gathered
-last_updated: "2026-09-09T21:07:21.264Z"
-last_activity: 2026-09-09 -- Phase 114 planning complete
+last_updated: "2026-09-10T12:42:26.021Z"
+last_activity: 2026-09-10 -- Phase 114 execution started
 progress:
   total_phases: 9
   completed_phases: 8
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 114 — Publication (README, badges, hero media, citation, live docs). Every dependency is now clear: Phase 113.2's green CI typecheck job makes the badge row honest, and Phase 113's Zenodo mint (10.5281/zenodo.22264079) gives the citation block a real DOI.
+**Current focus:** Phase 114 — publication-readme-badges-live-docs
 
 ## Current Position
 
-Phase: 113.2 (Typecheck Backlog) — COMPLETE
-Plan: 6 of 6
-Status: Ready to execute
-Last activity: 2026-09-09 -- Phase 114 planning complete
+Phase: 114 (publication-readme-badges-live-docs) — EXECUTING
+Plan: 1 of 7
+Status: Executing Phase 114
+Last activity: 2026-09-10 -- Phase 114 execution started
 
 ## Performance Metrics
 

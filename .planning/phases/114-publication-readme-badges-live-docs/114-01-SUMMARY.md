@@ -120,3 +120,7 @@ None - no external service configuration required.
 ---
 *Phase: 114-publication-readme-badges-live-docs*
 *Completed: 2026-09-10*
+
+## Self-Check: PASSED
+
+All created/modified files confirmed present (CODE_OF_CONDUCT.md, docs/contributing.md, .planning/REQUIREMENTS.md, .planning/ROADMAP.md, .planning/todos/pending/2026-09-09-readme-hero-media-3d-reconstruction.md, .planning/todos/done/2026-09-01-upload-yh-tutorial-dataset-to-zenodo.md, this SUMMARY.md). All three task/summary commit hashes (bca5e2c, 2eb116c, 4313ffa) confirmed in `git log`.

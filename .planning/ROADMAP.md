@@ -696,7 +696,7 @@ Plans:
 
 **Wave 4** *(blocked on Wave 3)*
 
-- [ ] 114-06-PLAN.md — Cut `v4.0.0`: branch decision, tag push (fires `publish.yml`), GitHub Release (fires Zenodo), and post-publish verification of PyPI, badges, and both DOIs
+- [x] 114-06-PLAN.md — Cut `v4.0.0`: branch decision, tag push (fires `publish.yml`), GitHub Release (fires Zenodo), and post-publish verification of PyPI, badges, and both DOIs
 
 **Wave 5** *(blocked on Wave 4)*
 
@@ -716,4 +716,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 5/7 | In Progress|  |
+| 114. Publication — README, Badges, Live Docs | 6/7 | In Progress|  |

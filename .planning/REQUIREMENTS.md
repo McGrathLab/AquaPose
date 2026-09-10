@@ -39,7 +39,8 @@ Prerequisites. These gate doc authoring and the badge row.
 - [x] **DOCS-05**: Every CLI command group is documented with purpose, arguments, and a worked example
 - [x] **DOCS-06**: Every config field across the 9 dataclasses is documented with type, default, and effect, tiered so a tutorial user is not confronted with all 71 at once
 - [x] **DOCS-07**: A tutorial walks a new user from install through a complete pipeline run on the published dataset to interpreting the 3D output, with expected results at each step
-- [ ] **DOCS-08**: Documentation builds green on Read the Docs from `dev` and is reachable at the URL declared in `pyproject.toml`
+- [x] **DOCS-08**: Documentation builds green on Read the Docs and is reachable at the URL declared in `pyproject.toml`
+  - *Satisfied via `main`/RTD `latest`, not `dev`: D-07 was overridden during Phase 114 execution because `main` was 1732 commits stale and three of the four README funnel destinations 404'd. `main` was fast-forwarded to `dev` and `latest` rebuilt green. See `114-02-SUMMARY.md` "Decision Overrides".*
 
 ### Example Dataset
 
@@ -125,7 +126,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DOCS-05 | 112 | Complete |
 | DOCS-06 | 112 | Complete |
 | DOCS-07 | 113 | Complete (the "published dataset" wording became literally true on 2026-09-03; the 113 handoff's open question is resolved by publication, not by a judgment call) |
-| DOCS-08 | 114 | Pending |
+| DOCS-08 | 114 | Complete (satisfied via `main`/RTD `latest` rather than `dev` — D-07 overridden mid-phase; see `114-02-SUMMARY.md`) |
 | DATA-01 | 111 | Complete |
 | DATA-02 | 111, 113 | Complete (111-02 regenerated on dev with canonical models; re-run end-to-end in 113-05; all four artifacts present in the published Zenodo archive) |
 | DATA-03 | 111, 113 | Complete (Zenodo record 10.5281/zenodo.22264079, published 2026-09-03) |

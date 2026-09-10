@@ -12,6 +12,23 @@ published under the MIT License, and that grant is unaffected. See
 Hand-maintained. Entries below the version list are generated from commit
 messages by python-semantic-release; this section is not.
 
+### Unreleased — package version reset from `1.2.0-dev.6` to `4.0.0`
+
+The distributed package version jumped from `1.2.0-dev.6` directly to `4.0.0`.
+This is a **one-time alignment to the GSD v4.0 Publication milestone (D-01)**,
+not a semver-earned major bump — there is no breaking API change behind it.
+
+AquaPose had never been published to PyPI before `4.0.0`. If you go looking for
+`2.x` or `3.x` releases on PyPI, you will not find them, because none were ever
+made; `4.0.0` is the first release that exists there at all.
+
+The repository's `v3.4` .. `v3.9` git tags are historical milestone markers, not
+package releases. Their two-component format (`v3.9`, not `v3.9.0`) never
+matched `.github/workflows/publish.yml`'s `v[0-9]+.[0-9]+.[0-9]+` trigger — which
+is the mechanical reason no publish workflow run ever fired for them.
+
+From `4.0.0` forward, versions follow normal semver via python-semantic-release.
+
 ### Unreleased — `aquapose.io.discovery` submodule removed
 
 `discover_camera_videos` moved to `aquapose.core.types.video_discovery` so that

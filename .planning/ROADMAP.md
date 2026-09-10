@@ -692,7 +692,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2)*
 
-- [ ] 114-05-PLAN.md — Release preconditions: PyPI **and TestPyPI** trusted publishing (the retained `needs: publish-testpypi` gate), both GitHub environments, the Zenodo webhook, and the pre-tag local build/`twine check`/clean-install verification
+- [x] 114-05-PLAN.md — Release preconditions: PyPI **and TestPyPI** trusted publishing (the retained `needs: publish-testpypi` gate), both GitHub environments, the Zenodo webhook, and the pre-tag local build/`twine check`/clean-install verification
 
 **Wave 4** *(blocked on Wave 3)*
 
@@ -716,4 +716,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 4/7 | In Progress|  |
+| 114. Publication — README, Badges, Live Docs | 5/7 | In Progress|  |

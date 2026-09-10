@@ -17,7 +17,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
     concurrency: release
 
     permissions:

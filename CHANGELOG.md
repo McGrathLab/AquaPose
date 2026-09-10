@@ -18,16 +18,19 @@ The distributed package version jumped from `1.2.0-dev.6` directly to `4.0.0`.
 This is a **one-time alignment to the GSD v4.0 Publication milestone (D-01)**,
 not a semver-earned major bump — there is no breaking API change behind it.
 
-AquaPose had never been published to PyPI before `4.0.0`. If you go looking for
-`2.x` or `3.x` releases on PyPI, you will not find them, because none were ever
-made; `4.0.0` is the first release that exists there at all.
+The only prior release on PyPI is `1.0.0` (published 2026-02-19). If you go
+looking for `2.x` or `3.x` releases there, you will not find them, because none
+were ever made — `4.0.0` follows `1.0.0` directly.
 
 The repository's `v3.4` .. `v3.9` git tags are historical milestone markers, not
 package releases. Their two-component format (`v3.9`, not `v3.9.0`) never
-matched `.github/workflows/publish.yml`'s `v[0-9]+.[0-9]+.[0-9]+` trigger — which
-is the mechanical reason no publish workflow run ever fired for them.
+matched `.github/workflows/publish.yml`'s `v[0-9]+.[0-9]+.[0-9]+` trigger, so no
+publish workflow run ever fired for them.
 
-From `4.0.0` forward, versions follow normal semver via python-semantic-release.
+From `4.0.0` forward, versions follow normal semver. Release tags are created
+deliberately as annotated tags (`git tag -a vX.Y.Z`), which fires
+`.github/workflows/publish.yml`; automated version computation on push was
+retired in the v4.0 milestone.
 
 ### Unreleased — `aquapose.io.discovery` submodule removed
 

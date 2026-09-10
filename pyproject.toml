@@ -152,6 +152,14 @@ exclude_lines = [
     "@abstractmethod",
 ]
 
+# RETIRED as of the v4.0 Publication milestone — kept only for changelog
+# generation and manual (workflow_dispatch) invocation. Do NOT run
+# `semantic-release version`: it recomputes the version from commit history and
+# would clobber the deliberate 4.0.0 reset; on main it would additionally cut a
+# tag matching publish.yml's trigger and publish an unintended version to PyPI,
+# where filenames are immutable. Release tags are created by hand:
+#   git tag -a vX.Y.Z -m "..."   →   fires .github/workflows/publish.yml
+# See .github/workflows/release.yml, whose push trigger was removed for this reason.
 [tool.semantic_release]
 version_toml = ["pyproject.toml:project.version"]
 commit_message = "chore(release): {version}"

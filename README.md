@@ -24,9 +24,9 @@ posture out, as used for cichlid behavioral research.
 AquaPose processes multi-view video through a 5-stage pipeline:
 
 1. **Detection** — YOLO-based fish detection (standard or oriented bounding boxes)
-2. **Tracking** — Per-camera 2D temporal tracking via OC-SORT
-3. **Association** — Cross-camera tracklet association using ray-ray geometry and Leiden clustering
-4. **Midline** — 2D midline extraction via YOLO-seg or YOLO-pose backends
+2. **Pose** — 2D anatomical keypoint extraction per detection via a YOLO-pose backend
+3. **Tracking** — Per-camera 2D temporal tracking, matching on keypoint similarity (OKS)
+4. **Association** — Cross-camera tracklet association using ray-ray geometry and Leiden clustering
 5. **Reconstruction** — DLT triangulation of 2D midlines into 3D B-spline midlines
 
 Long videos are processed in fixed-size temporal chunks with identity continuity across chunk boundaries.

@@ -410,7 +410,7 @@ Full details: `.planning/milestones/v3.10-ROADMAP.md`
 - [x] **Phase 113: Concepts & Tutorial** - Install guide, concepts page, and end-to-end tutorial against the published dataset (completed 2026-09-09)
 - [x] **Phase 113.1: Pre-Release Bug Fixes** (INSERTED) - Clear the verified bug backlog before the release is cut: both `calibrate-keypoints` defects (which block the DOI mint), the `init` n_animals sentinel, the stale GUIDEBOOK stage order, and the `core/` import boundary violation (completed 2026-09-02)
 - [x] **Phase 113.2: Typecheck Backlog** (INSERTED) - Bring `hatch run typecheck` from 98 errors to 0 so the CI typecheck job passes and Phase 114's badge row is honest (completed 2026-09-03, verified 2026-09-09)
-- [ ] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs
+- [x] **Phase 114: Publication — README, Badges, Live Docs** - README refresh, badge row, hero media, citation block, live Read the Docs (completed 2026-09-10)
 
 ## Phase Details
 
@@ -700,7 +700,7 @@ Plans:
 
 **Wave 5** *(blocked on Wave 4)*
 
-- [ ] 114-07-PLAN.md — Pass B: backfill the Zenodo software **concept** DOI into `CITATION.cff` and the seventh badge, then the phase-closing identifier map and evidence tables
+- [x] 114-07-PLAN.md — Pass B: backfill the Zenodo software **concept** DOI into `CITATION.cff` and the seventh badge, then the phase-closing identifier map and evidence tables
 
 ## Progress
 
@@ -716,4 +716,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 6/7 | In Progress|  |
+| 114. Publication — README, Badges, Live Docs | 7/7 | Complete   | 2026-09-10 |

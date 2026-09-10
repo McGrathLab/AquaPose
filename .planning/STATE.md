@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-status: executing
-stopped_at: Phase 114 context gathered
-last_updated: "2026-09-10T13:16:46.554Z"
+status: verifying
+stopped_at: Completed 114-07-PLAN.md — Phase 114 all 7 plans complete, ready for verification
+last_updated: "2026-09-10T14:46:02.582Z"
 last_activity: 2026-09-10
 progress:
   total_phases: 9
-  completed_phases: 8
+  completed_phases: 9
   total_plans: 47
-  completed_plans: 44
-  percent: 89
+  completed_plans: 47
+  percent: 100
 ---
 
 # Project State
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-08-12)
 ## Current Position
 
 Phase: 114 (publication-readme-badges-live-docs) — EXECUTING
-Plan: 2 of 7
-Status: Ready to execute
+Plan: 7 of 7
+Status: Phase complete — ready for verification
 Last activity: 2026-09-10
 
 ## Performance Metrics
@@ -62,6 +62,7 @@ Last activity: 2026-09-10
 | Phase 113.2 P05 | 3min | 2 tasks | 1 files |
 | Phase 113.2 P06 | ~2h | 3 tasks | 6 files |
 | Phase 114 P04 | ~20m | 2 tasks | 1 files |
+| Phase 114 P07 | 35m | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -124,6 +125,7 @@ Recent decisions affecting current work:
 - [Phase ?]: stitching.py: converted midlines-group read + frame_index read only; left grp/fish_id_ds cast() as lower-risk default, kept unreachable 'points is None' guard per D-06
 - [Phase ?]: Line-310 reportOptionalMemberAccess in swap_detector.py verdict: narrowing artifact (Any-typed .npz load assigned to declared-optional attribute), not a live defect — fixed via locally-annotated concrete NDArray bindings, no todo filed
 - [Phase ?]: README docs/badge targets use main/latest, not dev (D-07 override from 114-02, applied in 114-04)
+- [Phase 114]: 114-07: Backfilled Zenodo software concept DOI (10.5281/zenodo.22692575, not the version DOI) into CITATION.cff and README's 7th badge; completed phase-closing publication-surface audit (4-DOI map, badge/link audits, green gates: docs:build/lint/test all exit 0, 1410 passed) — Closes README-02/README-04; D-11 Pass B backfill after v4.0.0 release minted the DOIs
 
 ### Pending Todos
 
@@ -156,10 +158,10 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-**Last session:** 2026-09-10T13:16:37.197Z
+**Last session:** 2026-09-10T14:46:02.563Z
 
 Last activity: 2026-09-09 — Phases 113 and 113.2 both closed; quick task 260909-lkw fixed the gap-fish test defect
-Stopped at: Phase 114 context gathered
+Stopped at: Completed 114-07-PLAN.md — Phase 114 all 7 plans complete, ready for verification
 Resume file: None
 
 ## Performance Metrics

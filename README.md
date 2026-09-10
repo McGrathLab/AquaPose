@@ -1,11 +1,12 @@
 # AquaPose
 
-[![tests](https://img.shields.io/github/actions/workflow/status/McGrathLab/AquaPose/test.yml?branch=main)](https://github.com/McGrathLab/AquaPose/actions/workflows/test.yml)
+[![tests](https://img.shields.io/github/actions/workflow/status/McGrathLab/AquaPose/test.yml?branch=main&label=tests)](https://github.com/McGrathLab/AquaPose/actions/workflows/test.yml)
 [![docs](https://img.shields.io/readthedocs/aquapose/latest)](https://aquapose.readthedocs.io/en/latest/)
 [![coverage](https://img.shields.io/codecov/c/github/McGrathLab/AquaPose/main)](https://codecov.io/gh/McGrathLab/AquaPose)
 [![python](https://img.shields.io/pypi/pyversions/aquapose)](https://pypi.org/project/aquapose/)
 [![pypi](https://img.shields.io/pypi/v/aquapose)](https://pypi.org/project/aquapose/)
 [![license](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](https://github.com/McGrathLab/AquaPose/blob/main/LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22692575.svg)](https://doi.org/10.5281/zenodo.22692575)
 
 Measuring 3D fish posture and kinematics in a water tank is hard because the
 air-water interface refracts every camera ray, so ordinary multi-view
@@ -66,11 +67,14 @@ Full documentation is at [aquapose.readthedocs.io](https://aquapose.readthedocs.
 
 If you use AquaPose in your research, please cite the software via
 [CITATION.cff](https://github.com/McGrathLab/AquaPose/blob/main/CITATION.cff)
-or GitHub's "Cite this repository" button on the repository page. This is
-distinct from citing the tutorial dataset
+or GitHub's "Cite this repository" button on the repository page. The
+software is archived on Zenodo under the concept DOI
+[`10.5281/zenodo.22692575`](https://doi.org/10.5281/zenodo.22692575), which
+always resolves to the latest released version — use it when citing
+AquaPose the codebase. This is distinct from citing the tutorial dataset
 ([`10.5281/zenodo.22264079`](https://zenodo.org/records/22264079)): cite the
-software when you mean the AquaPose codebase, and cite the dataset when you
-mean the sample data it ships with.
+software DOI when you mean the AquaPose codebase, and cite the dataset DOI
+when you mean the sample data it ships with.
 
 ## License
 

@@ -12,6 +12,7 @@ authors:
     affiliation: McGrath Lab, Georgia Institute of Technology
 version: 4.0.0
 date-released: "2026-09-10"
+doi: 10.5281/zenodo.22692575
 url: "https://github.com/McGrathLab/AquaPose"
 repository-code: "https://github.com/McGrathLab/AquaPose"
 license: AGPL-3.0-or-later

@@ -4,8 +4,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/tlancaster6/aquapose.git
-cd aquapose
+git clone https://github.com/McGrathLab/AquaPose.git
+cd AquaPose
 
 # Install Hatch (build/environment manager)
 pip install hatch

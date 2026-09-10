@@ -73,3 +73,13 @@ token, findable with `grep -rn 'ZENODO-DOI-PENDING' docs/`.
 Nothing in the sequence above changed. Once the two `calibrate-keypoints`
 bugs are fixed and steps 2-4 above complete, filling in the tutorial's
 placeholder sites is a mechanical grep-and-replace, not a rewrite.
+
+## Closure note — 2026-09-10 (Phase 114 Plan 01)
+
+**Closed.** Completed by Phase 113 plan `113-06`, which minted the DOI
+`10.5281/zenodo.22264079` and filled it in repo-wide (deposit README, tutorial
+prose link, bibtex `doi` field, all `<!-- ZENODO-DOI-PENDING -->` sites). Moved
+from `todos/pending/` to `todos/done/` via `git mv` — this todo had surfaced
+again during Phase 114 context-gathering on stale "Zenodo"/"upload" keyword
+matches, not because the work was still outstanding.
+

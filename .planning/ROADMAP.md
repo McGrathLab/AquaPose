@@ -672,6 +672,7 @@ Plans:
   1. The README opens with what problem AquaPose solves, what a user gets out (3D midlines and kinematics), and who it is for — legible to a researcher who has never heard of it
   2. A badge row shows tests, docs, coverage, supported Python versions, PyPI version, license, and the Zenodo DOI, all green
   3. Hero media shows a 3D reconstruction rendering inline on GitHub
+     - *DEFERRED 2026-09-09 by user decision (see `114-CONTEXT.md` `<deferred>`); tracked in `.planning/todos/pending/2026-09-09-readme-hero-media-3d-reconstruction.md`. Phase 114 is verifiable against criteria 1, 2, 4, and 5.*
   4. Install, quick start against the Zenodo dataset, docs link, and a citation block with the DOI are all present and correct
   5. Documentation builds green on Read the Docs from `dev` and is reachable at the URL declared in `pyproject.toml`
 

@@ -51,7 +51,7 @@ Prerequisites. These gate doc authoring and the badge row.
 
 - [ ] **README-01**: The README opens with what problem AquaPose solves, what a user gets out (3D midlines and kinematics), and who it is for — legible to a researcher who has never heard of it
 - [ ] **README-02**: A badge row shows tests, docs, coverage, supported Python versions, PyPI version, license, and the Zenodo DOI — added only once CI is green
-- [ ] **README-03**: Hero media shows a 3D reconstruction rendering inline on GitHub
+- [ ] **README-03**: Hero media shows a 3D reconstruction rendering inline on GitHub — *deferred out of Phase 114 by user decision on 2026-09-09 (see `114-CONTEXT.md` `<deferred>`); tracked in `.planning/todos/pending/2026-09-09-readme-hero-media-3d-reconstruction.md`*
 - [ ] **README-04**: Install, quick start against the Zenodo dataset, docs link, and a citation block with the DOI are all present and correct
 
 ### Project Record
@@ -131,7 +131,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-03 | 111, 113 | Complete (Zenodo record 10.5281/zenodo.22264079, published 2026-09-03) |
 | README-01 | 114 | Pending |
 | README-02 | 114 | Pending |
-| README-03 | 114 | Pending |
+| README-03 | 114 | Deferred (user decision 2026-09-09, out of Phase 114 scope; see `.planning/todos/pending/2026-09-09-readme-hero-media-3d-reconstruction.md`) |
 | README-04 | 114 | Pending |
 | REC-01 | 108 | Complete |
 

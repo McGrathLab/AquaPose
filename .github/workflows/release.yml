@@ -1,8 +1,18 @@
 name: Release
 
+# Automated versioning is retired as of the v4.0 Publication milestone.
+#
+# python-semantic-release previously ran on every push to main and dev. That
+# rewrote pyproject.toml's version from commit history, which conflicts with
+# the deliberate 4.0.0 version reset and, on main, would have cut a tag matching
+# publish.yml's trigger and published an unintended version to PyPI (immutable).
+#
+# Release tags are now created deliberately as annotated tags (`git tag -a vX.Y.Z`).
+# Pushing such a tag fires publish.yml, which remains the PyPI path.
+#
+# This workflow is kept for manual invocation only.
 on:
-  push:
-    branches: [main, dev]
+  workflow_dispatch:
 
 jobs:
   release:

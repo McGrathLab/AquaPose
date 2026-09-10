@@ -1,6 +1,22 @@
 # AquaPose
 
-3D fish pose estimation via refractive multi-view triangulation. AquaPose reconstructs fish 3D midlines from multi-view video using a 13-camera aquarium rig with refractive calibration, producing dense 3D trajectories and midline kinematics for behavioral research on cichlids.
+[![tests](https://img.shields.io/github/actions/workflow/status/McGrathLab/AquaPose/test.yml?branch=main)](https://github.com/McGrathLab/AquaPose/actions/workflows/test.yml)
+[![docs](https://img.shields.io/readthedocs/aquapose/latest)](https://aquapose.readthedocs.io/en/latest/)
+[![coverage](https://img.shields.io/codecov/c/github/McGrathLab/AquaPose/main)](https://codecov.io/gh/McGrathLab/AquaPose)
+[![python](https://img.shields.io/pypi/pyversions/aquapose)](https://pypi.org/project/aquapose/)
+[![pypi](https://img.shields.io/pypi/v/aquapose)](https://pypi.org/project/aquapose/)
+[![license](https://img.shields.io/badge/license-AGPL--3.0--or--later-blue)](https://github.com/McGrathLab/AquaPose/blob/main/LICENSE)
+
+Measuring 3D fish posture and kinematics in a water tank is hard because the
+air-water interface refracts every camera ray, so ordinary multi-view
+triangulation is systematically wrong. AquaPose corrects for that: it takes
+synchronized multi-view video from a 12-camera aquarium rig and a refractive
+calibration and reconstructs per-fish 3D midlines across frames —
+arc-length-sampled anatomical keypoints triangulated and optionally
+spline-fitted — producing dense 3D trajectories and midline kinematics. It is
+built for behavioral and neuroscience researchers running multi-camera
+aquarium rigs who have video plus a calibration and want quantitative 3D
+posture out, as used for cichlid behavioral research.
 
 ## Pipeline
 
@@ -17,6 +33,14 @@ Long videos are processed in fixed-size temporal chunks with identity continuity
 ## Quick Start
 
 ```bash
+pip install aquapose
+```
+
+PyTorch is not pinned by this install; see the
+[Installation](https://aquapose.readthedocs.io/en/latest/getting-started/installation.html)
+page for the platform-specific PyTorch step before running the pipeline.
+
+```bash
 # Initialize a project
 aquapose init-config my_project
 
@@ -24,43 +48,34 @@ aquapose init-config my_project
 aquapose run --config path/to/config.yaml
 ```
 
-## Development
-
-```bash
-# Set up the development environment
-pip install hatch
-hatch env create
-hatch run pre-commit install
-hatch run pre-commit install --hook-type pre-push
-
-# Run tests, lint, and type check
-hatch run test
-hatch run lint
-hatch run typecheck
-```
-
-### GPU Support
-
-Hatch installs the CPU-only PyTorch by default. For GPU support, manually install
-the CUDA build after creating the environment:
-
-```bash
-hatch run pip install torch torchvision --force-reinstall --index-url https://download.pytorch.org/whl/cu124
-```
-
-> **Tip:** If you see `nvrtc: error: failed to open libnvrtc-builtins.so` during
-> training, your PyTorch CUDA version may not match the bundled NVIDIA library
-> layout. Reinstalling with an explicit CUDA 12 index URL (as shown above)
-> typically resolves this.
-
-See [Contributing](docs/contributing.md) for full development guidelines.
+To see it run end to end against real data, follow the
+[Tutorial](https://aquapose.readthedocs.io/en/latest/getting-started/tutorial.html),
+which walks a full pipeline run against the published tutorial dataset
+([`10.5281/zenodo.22264079`](https://zenodo.org/records/22264079)).
 
 ## Documentation
 
-<!-- TODO: Uncomment once docs are deployed -->
-<!-- Full documentation is available at [aquapose.readthedocs.io](https://aquapose.readthedocs.io). -->
+Full documentation is at [aquapose.readthedocs.io](https://aquapose.readthedocs.io/en/latest/):
+
+- [Installation](https://aquapose.readthedocs.io/en/latest/getting-started/installation.html)
+- [Concepts](https://aquapose.readthedocs.io/en/latest/getting-started/concepts.html)
+- [Tutorial](https://aquapose.readthedocs.io/en/latest/getting-started/tutorial.html)
+- [API reference](https://aquapose.readthedocs.io/en/latest/api/index.html)
+
+## Citation
+
+If you use AquaPose in your research, please cite the software via
+[CITATION.cff](https://github.com/McGrathLab/AquaPose/blob/main/CITATION.cff)
+or GitHub's "Cite this repository" button on the repository page. This is
+distinct from citing the tutorial dataset
+([`10.5281/zenodo.22264079`](https://zenodo.org/records/22264079)): cite the
+software when you mean the AquaPose codebase, and cite the dataset when you
+mean the sample data it ships with.
 
 ## License
 
-AquaPose is licensed under [AGPL-3.0-or-later](LICENSE). See
-[LICENSING.md](LICENSING.md) for why.
+AquaPose is licensed under
+[AGPL-3.0-or-later](https://github.com/McGrathLab/AquaPose/blob/main/LICENSE).
+See
+[LICENSING.md](https://github.com/McGrathLab/AquaPose/blob/main/LICENSING.md)
+for why.

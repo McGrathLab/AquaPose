@@ -716,4 +716,4 @@ Plans:
 | 113. Concepts & Tutorial | 7/7 | Complete | 2026-09-09 |
 | 113.1 Pre-Release Bug Fixes (INSERTED) | 7/7 | Complete | 2026-09-02 |
 | 113.2 Typecheck Backlog (INSERTED) | 6/6 | Complete | 2026-09-03 |
-| 114. Publication — README, Badges, Live Docs | 7/7 | Complete   | 2026-09-10 |
+| 114. Publication — README, Badges, Live Docs | 7/7 | Complete    | 2026-09-10 |

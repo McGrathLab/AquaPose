@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Publication
-status: verifying
-stopped_at: Completed 114-07-PLAN.md — Phase 114 all 7 plans complete, ready for verification
-last_updated: "2026-09-10T14:46:02.582Z"
+status: milestone_complete
+stopped_at: Milestone complete (Phase 114 was final phase)
+last_updated: 2026-09-10T15:08:20.872Z
 last_activity: 2026-09-10
 progress:
   total_phases: 9
   completed_phases: 9
   total_plans: 47
-  completed_plans: 47
+  completed_plans: 56
   percent: 100
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-12)
 
 **Core value:** Accurate 3D fish midline reconstruction from multi-view silhouettes via refractive multi-view triangulation
-**Current focus:** Phase 114 — publication-readme-badges-live-docs
+**Current focus:** Milestone complete
 
 ## Current Position
 
-Phase: 114 (publication-readme-badges-live-docs) — EXECUTING
-Plan: 7 of 7
-Status: Phase complete — ready for verification
+Phase: 114
+Plan: Not started
+Status: Milestone complete
 Last activity: 2026-09-10
 
 ## Performance Metrics
